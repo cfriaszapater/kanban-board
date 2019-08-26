@@ -1,7 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
-import Task from './task';
+import { Task, ITask } from './task';
+
+export interface IColumn {
+  id: string;
+  title: string;
+  taskIds: string[];
+}
+
+interface ColumnProps {
+  key: string;
+  column: IColumn;
+  tasks: ITask[];
+}
+
+interface TaskListProps {
+  isDraggingOver: boolean;
+}
+
+interface InnerListProps {
+  tasks: ITask[];
+}
 
 const Container = styled.div`
     margin: 8px;
@@ -16,21 +36,13 @@ const Title = styled.h3`
     padding: 8px;
 `;
 
-interface TaskListProps {
-  isDraggingOver: boolean
-}
-
-const TaskList = styled.div`
+const TaskList = styled.div<TaskListProps>`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${(props: TaskListProps) => props.isDraggingOver ? 'skyblue' : 'white'};
+    background-color: ${props => props.isDraggingOver ? 'skyblue' : 'white'};
     flex-grow: 1;
     min-height: 100px;
 `;
-
-interface InnerListProps {
-  tasks: ITask[]
-}
 
 class InnerList extends React.PureComponent<InnerListProps> {
   render () {
@@ -40,24 +52,7 @@ class InnerList extends React.PureComponent<InnerListProps> {
   }
 }
 
-interface ColumnProps {
-  key: string,
-  column: IColumn,
-  tasks: ITask[]
-}
-
-interface IColumn {
-  id: string;
-  title: string;
-  taskIds: string[];
-}
-
-interface ITask {
-  id: string;
-  content: string;
-}
-
-export default class Column extends React.Component<ColumnProps> {
+export class Column extends React.Component<ColumnProps> {
   render () {
     return (
       <Container>

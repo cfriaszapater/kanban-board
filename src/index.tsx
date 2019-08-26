@@ -3,22 +3,12 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { DragDropContext, DropResult, DraggableLocation, DraggableId } from 'react-beautiful-dnd';
 import initialData from './initial-data.json';
-import Column from './column';
-
-interface ITask {
-  id: string;
-  content: string;
-}
+import { Column, IColumn } from './column';
+import { ITask } from './task';
 
 interface INameToTaskMap
 {
     [key: string]: ITask;
-}
-
-interface IColumn {
-  id: string;
-  title: string;
-  taskIds: string[];
 }
 
 interface INameToColumnMap
