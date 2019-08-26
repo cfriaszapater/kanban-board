@@ -64,12 +64,9 @@ interface IAppState {
   columnOrder: string[];
 }
 
-
 export const FETCH_CARDS_BEGIN = 'FETCH_CARDS_BEGIN';
-export const FETCH_CARDS_SUCCESS =
-  'FETCH_CARDS_SUCCESS';
-export const FETCH_CARDS_FAILURE =
-  'FETCH_CARDS_FAILURE';
+export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
+export const FETCH_CARDS_FAILURE = 'FETCH_CARDS_FAILURE';
 
 export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN

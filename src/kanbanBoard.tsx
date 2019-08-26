@@ -7,6 +7,7 @@ import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { Column, IColumn } from './column';
 import { ITask } from './task';
+import { AppState } from './index'
 
 interface INameToTaskMap {
   [key: string]: ITask;
@@ -131,7 +132,7 @@ class KanbanBoard extends React.Component<KanbanBoardProps, IAppState> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState) => ({
   columnOrder: state.cards.columnOrder,
   columns: state.cards.columns,
   tasks: state.cards.tasks,

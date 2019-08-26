@@ -24,3 +24,5 @@ ReactDOM.render(
     <App />
   </Provider>,
   document.getElementById('root'));
+
+export type AppState = ReturnType<typeof rootReducer>
