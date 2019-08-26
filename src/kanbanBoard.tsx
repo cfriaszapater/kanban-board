@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchCards } from "./cardsActions";
+import { fetchCards } from "./store/cards/actions";
 import styled from 'styled-components';
 import { DragDropContext, DropResult, DraggableLocation, DraggableId } from 'react-beautiful-dnd';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { Column, IColumn } from './column';
-import { ITask } from './task';
+import { Column } from './column';
 import { AppState } from './index'
+import { IColumn, ITask } from './store/cards/types';
 
 interface INameToTaskMap {
   [key: string]: ITask;

@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
-import { Task, ITask } from './task';
-
-export interface IColumn {
-  id: string;
-  title: string;
-  taskIds: string[];
-}
+import { Task } from './task';
+import { IColumn, ITask } from './store/cards/types';
 
 interface ColumnProps {
   key: string;

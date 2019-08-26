@@ -1,6 +1,5 @@
 import initialData from './initial-data.json';
-import { IColumn } from './column';
-import { ITask } from './task';
+import { IColumn, ITask } from './types';
 
 function fakeGetCards() {
   return new Promise(resolve => {

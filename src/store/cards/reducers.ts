@@ -3,25 +3,8 @@ import {
   FETCH_CARDS_SUCCESS,
   FETCH_CARDS_FAILURE,
   CardsActionsTypes
-} from "./cardsActions";
-import { IColumn } from './column';
-import { ITask } from './task';
-
-interface INameToTaskMap {
-  [key: string]: ITask;
-}
-
-interface INameToColumnMap {
-  [key: string]: IColumn;
-}
-
-interface KanbanBoardState {
-  tasks: INameToTaskMap;
-  columns: INameToColumnMap;
-  columnOrder: string[];
-  loading: boolean;
-  error: Error | null;
-}
+} from "./actions";
+import { KanbanBoardState } from './types';
 
 const initialState: KanbanBoardState = {
   tasks: {},

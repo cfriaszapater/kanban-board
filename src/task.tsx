@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-
-export interface ITask {
-  id: string;
-  content: string;
-}
+import { ITask } from './store/cards/types';
 
 interface TaskProps {
   key: string;
