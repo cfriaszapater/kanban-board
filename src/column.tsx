@@ -15,15 +15,24 @@ const Container = styled.div`
 const Title = styled.h3`
     padding: 8px;
 `;
+
+interface TaskListProps {
+  isDraggingOver: boolean
+}
+
 const TaskList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
-    background-color: ${props => props.isDraggingOver ? 'skyblue' : 'white'};
+    background-color: ${(props: TaskListProps) => props.isDraggingOver ? 'skyblue' : 'white'};
     flex-grow: 1;
     min-height: 100px;
 `;
 
-class InnerList extends React.PureComponent {
+interface InnerListProps {
+  tasks: ITask[]
+}
+
+class InnerList extends React.PureComponent<InnerListProps> {
   render () {
     return this.props.tasks.map((task, index) => (
       <Task key={task.id} task={task} index={index} />
@@ -31,7 +40,24 @@ class InnerList extends React.PureComponent {
   }
 }
 
-export default class Column extends React.Component {
+interface ColumnProps {
+  key: string,
+  column: IColumn,
+  tasks: ITask[]
+}
+
+interface IColumn {
+  id: string;
+  title: string;
+  taskIds: string[];
+}
+
+interface ITask {
+  id: string;
+  content: string;
+}
+
+export default class Column extends React.Component<ColumnProps> {
   render () {
     return (
       <Container>

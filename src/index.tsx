@@ -37,7 +37,8 @@ const Container = styled.div`
 `;
 
 class App extends React.Component<{}, IAppState> {
-  constructor (props: any) {
+  // TODO refactor: extract KanbanBoard component
+  constructor (props: IAppState) {
     super(props);
     this.state = initialData;
   }
