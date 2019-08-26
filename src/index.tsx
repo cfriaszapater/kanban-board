@@ -1,21 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { DragDropContext } from 'react-beautiful-dnd';
-import initialData from './initial-data';
+import { DragDropContext, DropResult, DraggableLocation, DraggableId } from 'react-beautiful-dnd';
+import initialData from './initial-data.json';
 import Column from './column';
+
+interface ITask {
+  id: string;
+  content: string;
+}
+
+interface INameToTaskMap
+{
+    [key: string]: ITask;
+}
+
+interface IColumn {
+  id: string;
+  title: string;
+  taskIds: string[];
+}
+
+interface INameToColumnMap
+{
+    [key: string]: IColumn;
+}
+
+interface IAppState {
+  tasks: INameToTaskMap;
+  columns: INameToColumnMap;
+  columnOrder: string[];
+}
 
 const Container = styled.div`
   display: flex;
 `;
 
-class App extends React.Component {
-  constructor (props) {
+class App extends React.Component<{}, IAppState> {
+  constructor (props: any) {
     super(props);
     this.state = initialData;
   }
 
-  onDragEnd = result => {
+  onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -34,7 +61,7 @@ class App extends React.Component {
     }
   };
 
-  moveWithinSameColumn(startCol, source, destination, draggableId) {
+  moveWithinSameColumn(startCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
     const newTaskIds = Array.from(startCol.taskIds);
     newTaskIds.splice(source.index, 1);
     newTaskIds.splice(destination.index, 0, draggableId);
@@ -52,7 +79,7 @@ class App extends React.Component {
     this.setState(newState);
   }
 
-  moveBetweenColumns(startCol, endCol, source, destination, draggableId) {
+  moveBetweenColumns(startCol: IColumn, endCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
     const startTaskIds = Array.from(startCol.taskIds);
     startTaskIds.splice(source.index, 1);
     const newStartCol = {
