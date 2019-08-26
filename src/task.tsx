@@ -2,15 +2,30 @@ import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 
+interface ITask {
+  id: string;
+  content: string;
+}
+
+interface TaskProps {
+  key: string,
+  task: ITask,
+  index: number
+}
+
+interface ContainerProps {
+  isDragging: boolean
+}
+
 const Container = styled.div`
     border: 1px solid lightgrey;
     border-radius: 2px;
     padding: 8px;
     margin-bottom: 8px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
+    background-color: ${(props: ContainerProps) => (props.isDragging ? 'lightgreen' : 'white')};
 `;
 
-export default class Task extends React.Component {
+export default class Task extends React.Component<TaskProps> {
   render () {
     return (
       <Draggable draggableId={this.props.task.id} index={this.props.index}>
