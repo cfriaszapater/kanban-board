@@ -6,8 +6,8 @@ import {
   MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes,
 } from "./actions";
-import { CreateCardActions, CREATE_CARD_BEGIN, CreateCardBeginAction } from './createCardAction';
-import { KanbanBoardState, TaskLoading } from './types';
+import { CreateCardActions, CREATE_CARD_BEGIN, CreateCardBeginAction, CreateCardSuccessAction, CREATE_CARD_SUCCESS } from './createCardAction';
+import { KanbanBoardState, TaskLoading, TaskLoaded } from './types';
 
 export const initialState: KanbanBoardState = {
   tasks: {},
@@ -98,6 +98,9 @@ export function cardsReducer(
     case CREATE_CARD_BEGIN:
       return addTaskToState(action, state);
 
+    case CREATE_CARD_SUCCESS:
+      return markTaskLoadedInState(action, state);
+
     default:
       // ALWAYS have a default case in a reducer
       return state;
@@ -106,6 +109,17 @@ export function cardsReducer(
 
 function addTaskToState(action: CreateCardBeginAction, state: KanbanBoardState): KanbanBoardState {
   const task: TaskLoading = { ...action.payload, loading: true };
+  return {
+    ...state,
+    tasks: {
+      ...state.tasks,
+      [task.id]: task
+    }
+  }
+}
+
+function markTaskLoadedInState(action: CreateCardSuccessAction, state: KanbanBoardState): KanbanBoardState {
+  const task: TaskLoaded = { ...action.payload, loading: false };
   return {
     ...state,
     tasks: {

@@ -10,7 +10,11 @@ export interface Task {
 }
 
 export interface TaskLoading extends Task {
-  loading: boolean;
+  loading: true;
+}
+
+export interface TaskLoaded extends Task {
+  loading: false;
 }
 
 export interface NameToTaskMap {
