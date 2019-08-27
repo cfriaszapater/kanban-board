@@ -4,11 +4,12 @@ import {
   FETCH_CARDS_FAILURE,
   MOVE_WITHIN_COLUMN,
   MOVE_BETWEEN_COLUMNS,
-  CardsActionsTypes
+  CardsActionsTypes,
 } from "./actions";
+import { CreateCardActions, CREATE_CARD_BEGIN, CreateCardBeginAction } from './createCardAction';
 import { KanbanBoardState } from './types';
 
-const initialState: KanbanBoardState = {
+export const initialState: KanbanBoardState = {
   tasks: {},
   columns: {},
   columnOrder: [],
@@ -16,9 +17,9 @@ const initialState: KanbanBoardState = {
   error: null
 };
 
-export default function cardsReducer (
-  state = initialState,
-  action: CardsActionsTypes
+export function cardsReducer (
+  state: KanbanBoardState = initialState,
+  action: CardsActionsTypes | CreateCardActions
 ) {
   switch (action.type) {
     case FETCH_CARDS_BEGIN:
@@ -94,8 +95,22 @@ export default function cardsReducer (
         }
       };
 
+    case CREATE_CARD_BEGIN:
+      return addTaskToState(action, state);
+
     default:
       // ALWAYS have a default case in a reducer
       return state;
+  }
+}
+
+function addTaskToState(action: CreateCardBeginAction, state: KanbanBoardState) {
+  const task = action.payload;
+  return {
+    ...state,
+    tasks: {
+      ...state.tasks,
+      [task.id]: task
+    }
   }
 }

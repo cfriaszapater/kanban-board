@@ -15,7 +15,7 @@ describe('async create card action', () => {
     const store = mockStore();
     const card: Task = { id: 'task-13', content: 'Do the laundry' };
     const expectedActions = [
-      { type: actions.CREATE_CARD_BEGIN },
+      { type: actions.CREATE_CARD_BEGIN, payload: card },
       { type: actions.CREATE_CARD_SUCCESS, payload: card }
     ]
 
