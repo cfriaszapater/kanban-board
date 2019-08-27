@@ -3,7 +3,6 @@ import thunk from 'redux-thunk'
 import * as actions from './createAction'
 import expect from 'expect'
 import { Task } from './types';
-import initialData from './initial-data.json'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -13,7 +12,7 @@ describe('async create card action', () => {
   })
 
   it('should dispatch begin and success actions on create card', () => {
-    const store = mockStore(initialData);
+    const store = mockStore();
     const card: Task = { id: 'task-13', content: 'Do the laundry' };
     const expectedActions = [
       { type: actions.CREATE_CARD_BEGIN },
