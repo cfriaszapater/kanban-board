@@ -13,7 +13,7 @@ interface KanbanBoardProps {
   columns: NameToColumnMap;
   columnOrder: string[];
   loading: boolean;
-  error: Error;
+  error: Error | null;
   dispatch: ThunkDispatch<{}, {}, any>;
 }
 

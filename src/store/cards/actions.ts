@@ -57,7 +57,7 @@ interface FetchCardsSuccessAction {
 
 interface FetchCardsFailureAction {
   type: typeof FETCH_CARDS_FAILURE
-  error: any
+  error: Error | null
 }
 
 interface MoveWithinColumnAction {
