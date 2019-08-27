@@ -1,35 +1,20 @@
 import initialData from './initial-data.json';
-import { IColumn, ITask } from './types';
+import { Column, Cards } from './types';
 import { DraggableLocation, DraggableId } from 'react-beautiful-dnd';
 import { ThunkDispatch } from 'redux-thunk';
 
-function fakeGetCards() {
-  return new Promise(resolve => {
-    // Resolve after a timeout so we can see the loading indicator
-    setTimeout(
-      () =>
-        resolve(initialData),
-      1000
-    );
-  });
-}
+export const fetchCards = () => async (dispatch: ThunkDispatch<{}, {}, any>): Promise<FetchCardsSuccessAction | FetchCardsFailureAction> => {
+  dispatch(fetchCardsBegin());
+  try {
+    const json: Cards = await fakeGetCards();
+    return dispatch(fetchCardsSuccess(json));
+  }
+  catch (error) {
+    return dispatch(fetchCardsFailure(error));
+  }
+};
 
-export function fetchCards() {
-  return (dispatch: ThunkDispatch<{}, {}, any>) => {
-    dispatch(fetchCardsBegin());
-    return fakeGetCards()
-      .then((json: any) => {
-        dispatch(fetchCardsSuccess(json.tasks, json.columns, json.columnOrder));
-        // TODO return also columns and columnOrder?
-        return json.tasks;
-      })
-      .catch(error =>
-        dispatch(fetchCardsFailure(error))
-      );
-  };
-}
-
-export function moveWithinSameColumn(startCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId): MoveWithinColumnAction {
+export function moveWithinSameColumn(startCol: Column, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId): MoveWithinColumnAction {
   return {
     type: MOVE_WITHIN_COLUMN,
     startCol: startCol,
@@ -39,7 +24,7 @@ export function moveWithinSameColumn(startCol: IColumn, source: DraggableLocatio
   };
 }
 
-export function moveBetweenColumns(startCol: IColumn, endCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
+export function moveBetweenColumns(startCol: Column, endCol: Column, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
   return {
     type: MOVE_BETWEEN_COLUMNS,
     startCol: startCol,
@@ -50,13 +35,24 @@ export function moveBetweenColumns(startCol: IColumn, endCol: IColumn, source: D
   };
 }
 
+function fakeGetCards(): Promise<Cards> {
+  return new Promise(resolve => {
+    // Resolve after a timeout so we can see the loading indicator
+    setTimeout(
+      () =>
+        resolve(initialData),
+      1000
+    );
+  });
+}
+
 interface FetchCardsBeginAction {
   type: typeof FETCH_CARDS_BEGIN
 }
 
 interface FetchCardsSuccessAction {
   type: typeof FETCH_CARDS_SUCCESS
-  payload: IAppState
+  payload: Cards
 }
 
 interface FetchCardsFailureAction {
@@ -66,7 +62,7 @@ interface FetchCardsFailureAction {
 
 interface MoveWithinColumnAction {
   type: typeof MOVE_WITHIN_COLUMN;
-  startCol: IColumn;
+  startCol: Column;
   source: DraggableLocation;
   destination: DraggableLocation;
   draggableId: DraggableId;
@@ -74,25 +70,11 @@ interface MoveWithinColumnAction {
 
 interface MoveBetweenColumnsAction {
   type: typeof MOVE_BETWEEN_COLUMNS;
-  startCol: IColumn;
-  endCol: IColumn;
+  startCol: Column;
+  endCol: Column;
   source: DraggableLocation;
   destination: DraggableLocation;
   draggableId: DraggableId;
-}
-
-interface INameToTaskMap {
-  [key: string]: ITask;
-}
-
-interface INameToColumnMap {
-  [key: string]: IColumn;
-}
-
-interface IAppState {
-  tasks: INameToTaskMap;
-  columns: INameToColumnMap;
-  columnOrder: string[];
 }
 
 export const FETCH_CARDS_BEGIN = 'FETCH_CARDS_BEGIN';
@@ -105,9 +87,9 @@ export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN
 });
 
-export const fetchCardsSuccess = (tasks: any, columns: any, columnOrder: string[]): FetchCardsSuccessAction => ({
+export const fetchCardsSuccess = (cards: Cards): FetchCardsSuccessAction => ({
   type: FETCH_CARDS_SUCCESS,
-  payload: { tasks, columns, columnOrder }
+  payload: cards
 });
 
 export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({

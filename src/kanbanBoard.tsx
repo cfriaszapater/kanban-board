@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from 'styled-components';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { ThunkDispatch } from 'redux-thunk';
-import { Column } from './column';
+import { ColumnView } from './column';
 import { AppState } from './store'
 import { fetchCards, moveWithinSameColumn, moveBetweenColumns } from "./store/cards/actions";
 import { NameToColumnMap, NameToTaskMap, KanbanBoardState } from './store/cards/types';
@@ -64,7 +64,7 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
               const column = this.props.columns[columnId];
               const tasks = column.taskIds.map(taskId => this.props.tasks[taskId]);
 
-              return <Column key={column.id} column={column} tasks={tasks} />;
+              return <ColumnView key={column.id} column={column} tasks={tasks} />;
             })
           }
         </Container>

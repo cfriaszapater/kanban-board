@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
-import { ITask } from './store/cards/types';
+import { Task } from './store/cards/types';
 
 interface TaskProps {
   key: string;
-  task: ITask;
+  task: Task;
   index: number;
 }
 
@@ -21,7 +21,7 @@ const Container = styled.div<ContainerProps>`
     background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
 `;
 
-export class Task extends React.Component<TaskProps> {
+export class TaskView extends React.Component<TaskProps> {
   render () {
     return (
       <Draggable draggableId={this.props.task.id} index={this.props.index}>

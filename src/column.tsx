@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
-import { Task } from './task';
-import { IColumn, ITask } from './store/cards/types';
+import { TaskView } from './task';
+import { Column, Task } from './store/cards/types';
 
 interface ColumnProps {
   key: string;
-  column: IColumn;
-  tasks: ITask[];
+  column: Column;
+  tasks: Task[];
 }
 
 interface TaskListProps {
@@ -15,7 +15,7 @@ interface TaskListProps {
 }
 
 interface InnerListProps {
-  tasks: ITask[];
+  tasks: Task[];
 }
 
 const Container = styled.div`
@@ -42,12 +42,12 @@ const TaskList = styled.div<TaskListProps>`
 class InnerList extends React.PureComponent<InnerListProps> {
   render () {
     return this.props.tasks.map((task, index) => (
-      <Task key={task.id} task={task} index={index} />
+      <TaskView key={task.id} task={task} index={index} />
     ));
   }
 }
 
-export class Column extends React.Component<ColumnProps> {
+export class ColumnView extends React.Component<ColumnProps> {
   render () {
     return (
       <Container>
