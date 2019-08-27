@@ -1,5 +1,6 @@
 import initialData from './initial-data.json';
 import { IColumn, ITask } from './types';
+import { DraggableLocation, DraggableId } from 'react-beautiful-dnd';
 
 function fakeGetCards() {
   return new Promise(resolve => {
@@ -27,6 +28,16 @@ export function fetchCards() {
   };
 }
 
+export function moveWithinSameColumn(startCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId): MoveWithinColumnAction {
+  return {
+    type: MOVE_WITHIN_COLUMN,
+    startCol: startCol,
+    source: source,
+    destination: destination,
+    draggableId: draggableId
+  };
+}
+
 // // Handle HTTP errors since fetch won't.
 // function handleErrors(response: any) {
 //   if (!response.ok) {
@@ -49,6 +60,14 @@ interface FetchCardsFailureAction {
   error: any
 }
 
+interface MoveWithinColumnAction {
+  type: typeof MOVE_WITHIN_COLUMN
+  startCol: IColumn;
+  source: DraggableLocation;
+  destination: DraggableLocation;
+  draggableId: DraggableId;
+}
+
 interface INameToTaskMap {
   [key: string]: ITask;
 }
@@ -66,6 +85,7 @@ interface IAppState {
 export const FETCH_CARDS_BEGIN = 'FETCH_CARDS_BEGIN';
 export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
 export const FETCH_CARDS_FAILURE = 'FETCH_CARDS_FAILURE';
+export const MOVE_WITHIN_COLUMN = 'MOVE_WITHIN_COLUMN';
 
 export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN
@@ -81,4 +101,4 @@ export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   error: error
 });
 
-export type CardsActionsTypes = FetchCardsBeginAction | FetchCardsSuccessAction | FetchCardsFailureAction;
+export type CardsActionsTypes = FetchCardsBeginAction | FetchCardsSuccessAction | FetchCardsFailureAction | MoveWithinColumnAction;
