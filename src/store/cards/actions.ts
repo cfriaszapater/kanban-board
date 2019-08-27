@@ -1,6 +1,7 @@
 import initialData from './initial-data.json';
 import { IColumn, ITask } from './types';
 import { DraggableLocation, DraggableId } from 'react-beautiful-dnd';
+import { ThunkDispatch } from 'redux-thunk';
 
 function fakeGetCards() {
   return new Promise(resolve => {
@@ -14,7 +15,7 @@ function fakeGetCards() {
 }
 
 export function fetchCards() {
-  return (dispatch: any) => {
+  return (dispatch: ThunkDispatch<{}, {}, any>) => {
     dispatch(fetchCardsBegin());
     return fakeGetCards()
       .then((json: any) => {
@@ -48,15 +49,6 @@ export function moveBetweenColumns(startCol: IColumn, endCol: IColumn, source: D
     draggableId: draggableId
   };
 }
-
-
-// // Handle HTTP errors since fetch won't.
-// function handleErrors(response: any) {
-//   if (!response.ok) {
-//     throw Error(response.statusText);
-//   }
-//   return response;
-// }
 
 interface FetchCardsBeginAction {
   type: typeof FETCH_CARDS_BEGIN

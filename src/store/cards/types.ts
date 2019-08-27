@@ -9,17 +9,17 @@ export interface ITask {
   content: string;
 }
 
-interface INameToTaskMap {
+export interface NameToTaskMap {
   [key: string]: ITask;
 }
 
-interface INameToColumnMap {
+export interface NameToColumnMap {
   [key: string]: IColumn;
 }
 
 export interface KanbanBoardState {
-  tasks: INameToTaskMap;
-  columns: INameToColumnMap;
+  tasks: NameToTaskMap;
+  columns: NameToColumnMap;
   columnOrder: string[];
   loading: boolean;
   error: Error | null;

@@ -2,41 +2,26 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from 'styled-components';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { Column } from './column';
 import { AppState } from './store'
 import { fetchCards, moveWithinSameColumn, moveBetweenColumns } from "./store/cards/actions";
-import { IColumn, ITask } from './store/cards/types';
-
-interface INameToTaskMap {
-  [key: string]: ITask;
-}
-
-interface INameToColumnMap {
-  [key: string]: IColumn;
-}
-
-interface IAppState {
-  tasks: INameToTaskMap;
-  columns: INameToColumnMap;
-  columnOrder: string[];
-}
+import { NameToColumnMap, NameToTaskMap, KanbanBoardState } from './store/cards/types';
 
 interface KanbanBoardProps {
-  tasks: INameToTaskMap;
-  columns: INameToColumnMap;
+  tasks: NameToTaskMap;
+  columns: NameToColumnMap;
   columnOrder: string[];
   loading: boolean;
   error: Error;
-  dispatch: ThunkDispatch<{}, {}, AnyAction>;
+  dispatch: ThunkDispatch<{}, {}, any>;
 }
 
 const Container = styled.div`
   display: flex;
 `;
 
-class KanbanBoard extends React.Component<KanbanBoardProps, IAppState> {
+class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
   componentDidMount() {
     this.props.dispatch(fetchCards());
   }
