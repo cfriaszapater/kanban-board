@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from 'styled-components';
-import { DragDropContext, DropResult, DraggableLocation, DraggableId } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { Column } from './column';
 import { AppState } from './store'
-import { fetchCards, moveWithinSameColumn } from "./store/cards/actions";
+import { fetchCards, moveWithinSameColumn, moveBetweenColumns } from "./store/cards/actions";
 import { IColumn, ITask } from './store/cards/types';
 
 interface INameToTaskMap {
@@ -56,34 +56,9 @@ class KanbanBoard extends React.Component<KanbanBoardProps, IAppState> {
     if (startCol === endCol) {
       this.props.dispatch(moveWithinSameColumn(startCol, source, destination, draggableId));
     } else {
-      this.moveBetweenColumns(startCol, endCol, source, destination, draggableId);
+      this.props.dispatch(moveBetweenColumns(startCol, endCol, source, destination, draggableId));
     }
   };
-
-  moveBetweenColumns(startCol: IColumn, endCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
-    // TODO refactor to redux action
-    const startTaskIds = Array.from(startCol.taskIds);
-    startTaskIds.splice(source.index, 1);
-    const newStartCol = {
-      ...startCol,
-      taskIds: startTaskIds
-    };
-    const endTaskIds = Array.from(endCol.taskIds);
-    endTaskIds.splice(destination.index, 0, draggableId);
-    const newEndCol = {
-      ...endCol,
-      taskIds: endTaskIds
-    };
-    const newState = {
-      ...this.state,
-      columns: {
-        ...this.state.columns,
-        [newStartCol.id]: newStartCol,
-        [newEndCol.id]: newEndCol
-      }
-    };
-    this.setState(newState);
-  }
 
   render() {
     const { error, loading } = this.props;

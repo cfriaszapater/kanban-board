@@ -38,6 +38,18 @@ export function moveWithinSameColumn(startCol: IColumn, source: DraggableLocatio
   };
 }
 
+export function moveBetweenColumns(startCol: IColumn, endCol: IColumn, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
+  return {
+    type: MOVE_BETWEEN_COLUMNS,
+    startCol: startCol,
+    endCol: endCol,
+    source: source,
+    destination: destination,
+    draggableId: draggableId
+  };
+}
+
+
 // // Handle HTTP errors since fetch won't.
 // function handleErrors(response: any) {
 //   if (!response.ok) {
@@ -61,8 +73,17 @@ interface FetchCardsFailureAction {
 }
 
 interface MoveWithinColumnAction {
-  type: typeof MOVE_WITHIN_COLUMN
+  type: typeof MOVE_WITHIN_COLUMN;
   startCol: IColumn;
+  source: DraggableLocation;
+  destination: DraggableLocation;
+  draggableId: DraggableId;
+}
+
+interface MoveBetweenColumnsAction {
+  type: typeof MOVE_BETWEEN_COLUMNS;
+  startCol: IColumn;
+  endCol: IColumn;
   source: DraggableLocation;
   destination: DraggableLocation;
   draggableId: DraggableId;
@@ -86,6 +107,7 @@ export const FETCH_CARDS_BEGIN = 'FETCH_CARDS_BEGIN';
 export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
 export const FETCH_CARDS_FAILURE = 'FETCH_CARDS_FAILURE';
 export const MOVE_WITHIN_COLUMN = 'MOVE_WITHIN_COLUMN';
+export const MOVE_BETWEEN_COLUMNS = 'MOVE_BETWEEN_COLUMNS';
 
 export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN
@@ -101,4 +123,4 @@ export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   error: error
 });
 
-export type CardsActionsTypes = FetchCardsBeginAction | FetchCardsSuccessAction | FetchCardsFailureAction | MoveWithinColumnAction;
+export type CardsActionsTypes = FetchCardsBeginAction | FetchCardsSuccessAction | FetchCardsFailureAction | MoveWithinColumnAction | MoveBetweenColumnsAction;

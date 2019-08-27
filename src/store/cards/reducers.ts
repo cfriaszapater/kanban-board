@@ -3,6 +3,7 @@ import {
   FETCH_CARDS_SUCCESS,
   FETCH_CARDS_FAILURE,
   MOVE_WITHIN_COLUMN,
+  MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes
 } from "./actions";
 import { KanbanBoardState } from './types';
@@ -63,14 +64,35 @@ export default function cardsReducer (
           ...action.startCol,
           taskIds: newTaskIds
         };
-        const newState = {
+        return {
           ...state,
           columns: {
             ...state.columns,
             [newColumn.id]: newColumn
           }
         };
-        return newState;
+
+    case MOVE_BETWEEN_COLUMNS:
+      const startTaskIds = Array.from(action.startCol.taskIds);
+      startTaskIds.splice(action.source.index, 1);
+      const newStartCol = {
+        ...action.startCol,
+        taskIds: startTaskIds
+      };
+      const endTaskIds = Array.from(action.endCol.taskIds);
+      endTaskIds.splice(action.destination.index, 0, action.draggableId);
+      const newEndCol = {
+        ...action.endCol,
+        taskIds: endTaskIds
+      };
+      return {
+        ...state,
+        columns: {
+          ...state.columns,
+          [newStartCol.id]: newStartCol,
+          [newEndCol.id]: newEndCol
+        }
+      };
 
     default:
       // ALWAYS have a default case in a reducer
