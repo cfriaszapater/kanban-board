@@ -7,7 +7,7 @@ import {
   CardsActionsTypes,
 } from "./actions";
 import { CreateCardActions, CREATE_CARD_BEGIN, CreateCardBeginAction } from './createCardAction';
-import { KanbanBoardState } from './types';
+import { KanbanBoardState, TaskLoading } from './types';
 
 export const initialState: KanbanBoardState = {
   tasks: {},
@@ -17,7 +17,7 @@ export const initialState: KanbanBoardState = {
   error: null
 };
 
-export function cardsReducer (
+export function cardsReducer(
   state: KanbanBoardState = initialState,
   action: CardsActionsTypes | CreateCardActions
 ) {
@@ -58,20 +58,20 @@ export function cardsReducer (
       };
 
     case MOVE_WITHIN_COLUMN:
-        const newTaskIds = Array.from(action.startCol.taskIds);
-        newTaskIds.splice(action.source.index, 1);
-        newTaskIds.splice(action.destination.index, 0, action.draggableId);
-        const newColumn = {
-          ...action.startCol,
-          taskIds: newTaskIds
-        };
-        return {
-          ...state,
-          columns: {
-            ...state.columns,
-            [newColumn.id]: newColumn
-          }
-        };
+      const newTaskIds = Array.from(action.startCol.taskIds);
+      newTaskIds.splice(action.source.index, 1);
+      newTaskIds.splice(action.destination.index, 0, action.draggableId);
+      const newColumn = {
+        ...action.startCol,
+        taskIds: newTaskIds
+      };
+      return {
+        ...state,
+        columns: {
+          ...state.columns,
+          [newColumn.id]: newColumn
+        }
+      };
 
     case MOVE_BETWEEN_COLUMNS:
       const startTaskIds = Array.from(action.startCol.taskIds);
@@ -104,8 +104,8 @@ export function cardsReducer (
   }
 }
 
-function addTaskToState(action: CreateCardBeginAction, state: KanbanBoardState) {
-  const task = action.payload;
+function addTaskToState(action: CreateCardBeginAction, state: KanbanBoardState): KanbanBoardState {
+  const task: TaskLoading = { ...action.payload, loading: true };
   return {
     ...state,
     tasks: {

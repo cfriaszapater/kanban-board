@@ -9,6 +9,10 @@ export interface Task {
   content: string;
 }
 
+export interface TaskLoading extends Task {
+  loading: boolean;
+}
+
 export interface NameToTaskMap {
   [key: string]: Task;
 }
