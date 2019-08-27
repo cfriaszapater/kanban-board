@@ -1,19 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from "react-redux";
-import KanbanBoard from './kanbanBoard';
-import { store } from './store';
-
-function App() {
-  return (
-    <div className="App">
-      <KanbanBoard />
-    </div>
-  );
-}
+import App from './App';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <App />,
   document.getElementById('root'));
