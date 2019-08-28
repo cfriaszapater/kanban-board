@@ -2,10 +2,7 @@
   "tasks": {
     "task-1": { "id": "task-1", "content": "Create kanban board with react" },
     "task-2": { "id": "task-2", "content": "Deploy to heroku" },
-    "task-3": {
-      "id": "task-3",
-      "content": "Start adding other features (eg: persist state in mongodb...)"
-    }
+    "task-3": { "id": "task-3", "content": "Start adding other features (eg: persist state in mongodb...)" }
   },
   "columns": {
     "column-1": {

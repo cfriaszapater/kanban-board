@@ -1,12 +1,15 @@
-import { combineReducers } from 'redux';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { cardsReducer as cards } from './cards/reducers';
+import { combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import { cardsReducer as cards } from "./cards/reducers";
 
 const rootReducer = combineReducers({
-  cards,
+  cards
 });
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+);
 
 export type AppState = ReturnType<typeof rootReducer>;

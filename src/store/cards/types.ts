@@ -35,3 +35,4 @@ export interface KanbanBoardState extends Cards {
   loading: boolean;
   error: Error | null;
 }
+

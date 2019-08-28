@@ -1,20 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from "react";
+import { connect } from "react-redux";
 import styled from 'styled-components';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { ThunkDispatch } from 'redux-thunk';
 import { ColumnView } from './column';
-import { AppState } from './store';
-import {
-  fetchCards,
-  moveWithinSameColumn,
-  moveBetweenColumns,
-} from './store/cards/actions';
-import {
-  NameToColumnMap,
-  NameToTaskMap,
-  KanbanBoardState,
-} from './store/cards/types';
+import { AppState } from './store'
+import { fetchCards, moveWithinSameColumn, moveBetweenColumns } from "./store/cards/actions";
+import { NameToColumnMap, NameToTaskMap, KanbanBoardState } from './store/cards/types';
 
 interface KanbanBoardProps {
   tasks: NameToTaskMap;
@@ -40,23 +32,16 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
     if (!destination) {
       return;
     }
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return;
     }
 
     const startCol = this.props.columns[source.droppableId];
     const endCol = this.props.columns[destination.droppableId];
     if (startCol === endCol) {
-      this.props.dispatch(
-        moveWithinSameColumn(startCol, source, destination, draggableId)
-      );
+      this.props.dispatch(moveWithinSameColumn(startCol, source, destination, draggableId));
     } else {
-      this.props.dispatch(
-        moveBetweenColumns(startCol, endCol, source, destination, draggableId)
-      );
+      this.props.dispatch(moveBetweenColumns(startCol, endCol, source, destination, draggableId));
     }
   };
 
@@ -74,14 +59,14 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Container>
-          {this.props.columnOrder.map(columnId => {
-            const column = this.props.columns[columnId];
-            const tasks = column.taskIds.map(
-              taskId => this.props.tasks[taskId]
-            );
+          {
+            this.props.columnOrder.map(columnId => {
+              const column = this.props.columns[columnId];
+              const tasks = column.taskIds.map(taskId => this.props.tasks[taskId]);
 
-            return <ColumnView key={column.id} column={column} tasks={tasks} />;
-          })}
+              return <ColumnView key={column.id} column={column} tasks={tasks} />;
+            })
+          }
         </Container>
       </DragDropContext>
     );
@@ -93,7 +78,7 @@ const mapStateToProps = (state: AppState) => ({
   columns: state.cards.columns,
   tasks: state.cards.tasks,
   loading: state.cards.loading,
-  error: state.cards.error,
+  error: state.cards.error
 });
 
 export default connect(mapStateToProps)(KanbanBoard);

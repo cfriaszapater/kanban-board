@@ -5,14 +5,8 @@ import {
   MOVE_WITHIN_COLUMN,
   MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes,
-} from './actions';
-import {
-  CreateCardActions,
-  CREATE_CARD_BEGIN,
-  CreateCardBeginAction,
-  CreateCardSuccessAction,
-  CREATE_CARD_SUCCESS,
-} from './createCardAction';
+} from "./actions";
+import { CreateCardActions, CREATE_CARD_BEGIN, CreateCardBeginAction, CreateCardSuccessAction, CREATE_CARD_SUCCESS } from './createCardAction';
 import { KanbanBoardState, TaskLoading, TaskLoaded } from './types';
 
 export const initialState: KanbanBoardState = {
@@ -20,7 +14,7 @@ export const initialState: KanbanBoardState = {
   columns: {},
   columnOrder: [],
   loading: false,
-  error: null,
+  error: null
 };
 
 export function cardsReducer(
@@ -34,7 +28,7 @@ export function cardsReducer(
       return {
         ...state,
         loading: true,
-        error: null,
+        error: null
       };
 
     case FETCH_CARDS_SUCCESS:
@@ -45,7 +39,7 @@ export function cardsReducer(
         loading: false,
         tasks: action.payload.tasks,
         columns: action.payload.columns,
-        columnOrder: action.payload.columnOrder,
+        columnOrder: action.payload.columnOrder
       };
 
     case FETCH_CARDS_FAILURE:
@@ -60,7 +54,7 @@ export function cardsReducer(
         error: action.error,
         tasks: {},
         columns: {},
-        columnOrder: [],
+        columnOrder: []
       };
 
     case MOVE_WITHIN_COLUMN:
@@ -69,14 +63,14 @@ export function cardsReducer(
       newTaskIds.splice(action.destination.index, 0, action.draggableId);
       const newColumn = {
         ...action.startCol,
-        taskIds: newTaskIds,
+        taskIds: newTaskIds
       };
       return {
         ...state,
         columns: {
           ...state.columns,
-          [newColumn.id]: newColumn,
-        },
+          [newColumn.id]: newColumn
+        }
       };
 
     case MOVE_BETWEEN_COLUMNS:
@@ -84,21 +78,21 @@ export function cardsReducer(
       startTaskIds.splice(action.source.index, 1);
       const newStartCol = {
         ...action.startCol,
-        taskIds: startTaskIds,
+        taskIds: startTaskIds
       };
       const endTaskIds = Array.from(action.endCol.taskIds);
       endTaskIds.splice(action.destination.index, 0, action.draggableId);
       const newEndCol = {
         ...action.endCol,
-        taskIds: endTaskIds,
+        taskIds: endTaskIds
       };
       return {
         ...state,
         columns: {
           ...state.columns,
           [newStartCol.id]: newStartCol,
-          [newEndCol.id]: newEndCol,
-        },
+          [newEndCol.id]: newEndCol
+        }
       };
 
     case CREATE_CARD_BEGIN:
@@ -113,30 +107,24 @@ export function cardsReducer(
   }
 }
 
-function addTaskToState(
-  action: CreateCardBeginAction,
-  state: KanbanBoardState
-): KanbanBoardState {
+function addTaskToState(action: CreateCardBeginAction, state: KanbanBoardState): KanbanBoardState {
   const task: TaskLoading = { ...action.payload, loading: true };
   return {
     ...state,
     tasks: {
       ...state.tasks,
-      [task.id]: task,
-    },
-  };
+      [task.id]: task
+    }
+  }
 }
 
-function markTaskLoadedInState(
-  action: CreateCardSuccessAction,
-  state: KanbanBoardState
-): KanbanBoardState {
+function markTaskLoadedInState(action: CreateCardSuccessAction, state: KanbanBoardState): KanbanBoardState {
   const task: TaskLoaded = { ...action.payload, loading: false };
   return {
     ...state,
     tasks: {
       ...state.tasks,
-      [task.id]: task,
-    },
-  };
+      [task.id]: task
+    }
+  }
 }
