@@ -28,7 +28,6 @@ export type CreateCardActions =
 export const createCard = (card: Task) => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<CreateCardActions> => {
-  console.log("createCard");
   dispatch(createCardBegin(card));
   try {
     // TODO POST /cards
@@ -60,7 +59,7 @@ function createCardSuccess(createdCard: Task): CreateCardSuccessAction {
 }
 
 function createCardFailure(card: Task, error: Error): CreateCardFailureAction {
-  console.error(error);
+  console.log(error);
   return {
     type: CREATE_CARD_FAILURE,
     payload: card
