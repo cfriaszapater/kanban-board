@@ -67,9 +67,9 @@ describe("create card reducer", () => {
     };
     const previousTaskLoaded: TaskLoaded = { ...previousTask, loading: false };
     const stateAfterSuccess: KanbanBoardState = {
-      ...initialState,
-      tasks: { ...initialState.tasks, [previousTask.id]: previousTaskLoaded }
+      ...stateAfterBegin,
+      tasks: { ...stateAfterBegin.tasks, [previousTask.id]: previousTaskLoaded }
     };
-    expect(cardsReducer(initialState, action)).toEqual(stateAfterSuccess);
+    expect(cardsReducer(stateAfterBegin, action)).toEqual(stateAfterSuccess);
   });
 });
