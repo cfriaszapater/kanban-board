@@ -46,7 +46,7 @@ const TaskList = styled.div<TaskListProps>`
 class InnerList extends React.PureComponent<InnerListProps> {
   render() {
     return this.props.tasks.map((task, index) => (
-      <TaskView key={task.id} task={task} index={index} />
+      <TaskView key={task.id} task={task} index={index} error={task.error} />
     ));
   }
 }

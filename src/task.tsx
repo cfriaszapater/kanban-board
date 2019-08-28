@@ -7,10 +7,12 @@ interface TaskProps {
   key: string;
   task: Task;
   index: number;
+  error?: boolean;
 }
 
 interface ContainerProps {
   isDragging: boolean;
+  error?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -18,7 +20,8 @@ const Container = styled.div<ContainerProps>`
   border-radius: 2px;
   padding: 8px;
   margin-bottom: 8px;
-  background-color: ${props => (props.isDragging ? "lightgreen" : "white")};
+  background-color: ${props =>
+    props.isDragging ? "lightgreen" : props.error ? "lightred" : "white"};
 `;
 
 export class TaskView extends React.Component<TaskProps> {
@@ -31,6 +34,7 @@ export class TaskView extends React.Component<TaskProps> {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
+            error={this.props.error}
           >
             {this.props.task.content}
           </Container>

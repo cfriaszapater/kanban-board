@@ -7,6 +7,8 @@ export interface Column {
 export interface Task {
   id: string;
   content: string;
+  loading?: boolean;
+  error?: boolean;
 }
 
 export interface TaskLoading extends Task {
