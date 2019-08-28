@@ -21,7 +21,7 @@ const Container = styled.div<ContainerProps>`
   padding: 8px;
   margin-bottom: 8px;
   background-color: ${props =>
-    props.isDragging ? "lightgreen" : props.error ? "lightred" : "white"};
+    props.isDragging ? "lightgreen" : props.error ? "red" : "white"};
 `;
 
 export class TaskView extends React.Component<TaskProps> {

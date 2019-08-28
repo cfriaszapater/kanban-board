@@ -38,6 +38,7 @@ export const createCard = (card: Task) => async (
     const res = await fetch(req);
     // XXX When "POST /cards", remove ".json"
     const createdCard = (await res.json()).json;
+    randomlyThrowError();
     return dispatch(createCardSuccess(createdCard));
   } catch (ex) {
     return dispatch(createCardFailure(card, ex));
@@ -64,4 +65,16 @@ function createCardFailure(card: Task, error: Error): CreateCardFailureAction {
     type: CREATE_CARD_FAILURE,
     payload: card
   };
+}
+
+function randomlyThrowError() {
+  if (getRandomInt(0, 2)) {
+    throw new Error("simulated network error");
+  }
+}
+
+function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
