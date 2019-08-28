@@ -2,12 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 import { TaskView } from "./task";
+import { AddTaskButton } from "./addTaskButton";
 import { Column, Task } from "./store/cards/types";
+import { ThunkDispatch } from "redux-thunk";
 
 interface ColumnProps {
   key: string;
   column: Column;
   tasks: Task[];
+  addTaskButton: boolean;
+  dispatch: ThunkDispatch<{}, {}, any>;
 }
 
 interface TaskListProps {
@@ -52,6 +56,9 @@ export class ColumnView extends React.Component<ColumnProps> {
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
+        {this.props.addTaskButton ? (
+          <AddTaskButton dispatch={this.props.dispatch} />
+        ) : null}
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
             <TaskList

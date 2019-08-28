@@ -24,8 +24,24 @@ import {
 
 export const initialState: KanbanBoardState = {
   tasks: {},
-  columns: {},
-  columnOrder: [],
+  columns: {
+    "column-1": {
+      id: "column-1",
+      title: "To do",
+      taskIds: []
+    },
+    "column-2": {
+      id: "column-2",
+      title: "In progress",
+      taskIds: []
+    },
+    "column-3": {
+      id: "column-3",
+      title: "Done",
+      taskIds: []
+    }
+  },
+  columnOrder: ["column-1", "column-2", "column-3"],
   loading: false,
   error: null
 };
@@ -128,11 +144,17 @@ function addTaskToState(
   state: KanbanBoardState
 ): KanbanBoardState {
   const task: TaskLoading = { ...action.payload, loading: true };
+  // Task added to tasks and columns[0].taskIds (was empty before)
+  const firstCol = state.columns[Object.keys(state.columns)[0]];
   return {
     ...state,
-    tasks: {
-      ...state.tasks,
-      [task.id]: task
+    tasks: { ...state.tasks, [task.id]: task },
+    columns: {
+      ...state.columns,
+      [firstCol.id]: {
+        ...state.columns[firstCol.id],
+        taskIds: [...state.columns[firstCol.id].taskIds, task.id]
+      }
     }
   };
 }

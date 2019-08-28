@@ -71,16 +71,30 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
       return <div>Loading...</div>;
     }
 
+    let firstCol = true;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Container>
           {this.props.columnOrder.map(columnId => {
+            let addTaskButton = false;
+            if (firstCol) {
+              addTaskButton = true;
+              firstCol = false;
+            }
             const column = this.props.columns[columnId];
             const tasks = column.taskIds.map(
               taskId => this.props.tasks[taskId]
             );
 
-            return <ColumnView key={column.id} column={column} tasks={tasks} />;
+            return (
+              <ColumnView
+                key={column.id}
+                column={column}
+                tasks={tasks}
+                addTaskButton={addTaskButton}
+                dispatch={this.props.dispatch}
+              />
+            );
           })}
         </Container>
       </DragDropContext>

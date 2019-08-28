@@ -28,6 +28,7 @@ export type CreateCardActions =
 export const createCard = (card: Task) => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<CreateCardActions> => {
+  console.log("createCard");
   dispatch(createCardBegin(card));
   try {
     // TODO POST /cards
