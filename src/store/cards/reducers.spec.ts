@@ -5,7 +5,8 @@ import {
   KanbanBoardState,
   Task,
   TaskLoading,
-  TaskLoaded
+  TaskLoaded,
+  TaskErrorLoading
 } from "./types";
 
 describe("create card reducer", () => {
@@ -56,7 +57,7 @@ describe("create card reducer", () => {
       content: "An easy task",
       loading: true
     };
-    const stateAfterBegin: KanbanBoardState = {
+    const taskLoadingState: KanbanBoardState = {
       ...initialState,
       tasks: { ...initialState.tasks, [previousTask.id]: previousTask }
     };
@@ -65,11 +66,42 @@ describe("create card reducer", () => {
       type: types.CREATE_CARD_SUCCESS,
       payload: previousTask
     };
-    const previousTaskLoaded: TaskLoaded = { ...previousTask, loading: false };
+    const resultState = cardsReducer(taskLoadingState, action);
+
+    const taskLoaded: TaskLoaded = { ...previousTask, loading: false };
     const stateAfterSuccess: KanbanBoardState = {
-      ...stateAfterBegin,
-      tasks: { ...stateAfterBegin.tasks, [previousTask.id]: previousTaskLoaded }
+      ...taskLoadingState,
+      tasks: { ...taskLoadingState.tasks, [previousTask.id]: taskLoaded }
     };
-    expect(cardsReducer(stateAfterBegin, action)).toEqual(stateAfterSuccess);
+    expect(resultState).toEqual(stateAfterSuccess);
+  });
+
+  it("should set task with error on create card failure", () => {
+    const previousTask: TaskLoading = {
+      id: "task-1234",
+      content: "An easy task",
+      loading: true
+    };
+    const taskLoadingState: KanbanBoardState = {
+      ...initialState,
+      tasks: { ...initialState.tasks, [previousTask.id]: previousTask }
+    };
+
+    const action: types.CreateCardFailureAction = {
+      type: types.CREATE_CARD_FAILURE,
+      payload: previousTask
+    };
+    const resultState = cardsReducer(taskLoadingState, action);
+
+    const taskWithError: TaskErrorLoading = {
+      ...previousTask,
+      loading: false,
+      error: true
+    };
+    const stateAfterErrorLoadingTask: KanbanBoardState = {
+      ...taskLoadingState,
+      tasks: { ...taskLoadingState.tasks, [previousTask.id]: taskWithError }
+    };
+    expect(resultState).toEqual(stateAfterErrorLoadingTask);
   });
 });

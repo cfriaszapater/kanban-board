@@ -17,6 +17,11 @@ export interface TaskLoaded extends Task {
   loading: false;
 }
 
+export interface TaskErrorLoading extends Task {
+  loading: false;
+  error: true;
+}
+
 export interface NameToTaskMap {
   [key: string]: Task;
 }

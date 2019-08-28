@@ -11,9 +11,16 @@ import {
   CREATE_CARD_BEGIN,
   CreateCardBeginAction,
   CreateCardSuccessAction,
-  CREATE_CARD_SUCCESS
+  CREATE_CARD_SUCCESS,
+  CREATE_CARD_FAILURE,
+  CreateCardFailureAction
 } from "./createCardAction";
-import { KanbanBoardState, TaskLoading, TaskLoaded } from "./types";
+import {
+  KanbanBoardState,
+  TaskLoading,
+  TaskLoaded,
+  TaskErrorLoading
+} from "./types";
 
 export const initialState: KanbanBoardState = {
   tasks: {},
@@ -107,6 +114,9 @@ export function cardsReducer(
     case CREATE_CARD_SUCCESS:
       return markTaskLoadedInState(action, state);
 
+    case CREATE_CARD_FAILURE:
+      return markTaskWithErrorInState(action, state);
+
     default:
       // ALWAYS have a default case in a reducer
       return state;
@@ -132,6 +142,24 @@ function markTaskLoadedInState(
   state: KanbanBoardState
 ): KanbanBoardState {
   const task: TaskLoaded = { ...action.payload, loading: false };
+  return {
+    ...state,
+    tasks: {
+      ...state.tasks,
+      [task.id]: task
+    }
+  };
+}
+
+function markTaskWithErrorInState(
+  action: CreateCardFailureAction,
+  state: KanbanBoardState
+): KanbanBoardState {
+  const task: TaskErrorLoading = {
+    ...action.payload,
+    loading: false,
+    error: true
+  };
   return {
     ...state,
     tasks: {

@@ -17,7 +17,7 @@ export interface CreateCardSuccessAction {
 
 export interface CreateCardFailureAction {
   type: typeof CREATE_CARD_FAILURE;
-  error: Error | null;
+  payload: Task;
 }
 
 export type CreateCardActions =
@@ -40,7 +40,7 @@ export const createCard = (card: Task) => async (
     const createdCard = (await res.json()).json;
     return dispatch(createCardSuccess(createdCard));
   } catch (ex) {
-    return dispatch(createCardFailure(ex));
+    return dispatch(createCardFailure(card, ex));
   }
 };
 
@@ -58,9 +58,10 @@ function createCardSuccess(createdCard: Task): CreateCardSuccessAction {
   };
 }
 
-function createCardFailure(error: Error): CreateCardFailureAction {
+function createCardFailure(card: Task, error: Error): CreateCardFailureAction {
+  console.error(error);
   return {
     type: CREATE_CARD_FAILURE,
-    error: error
+    payload: card
   };
 }
