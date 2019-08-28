@@ -7,9 +7,6 @@ const rootReducer = combineReducers({
   cards
 });
 
-export const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk)
-);
+export const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export type AppState = ReturnType<typeof rootReducer>;

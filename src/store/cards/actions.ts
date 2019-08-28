@@ -1,20 +1,26 @@
-import initialData from './initial-data.json';
-import { Column, Cards } from './types';
-import { DraggableLocation, DraggableId } from 'react-beautiful-dnd';
-import { ThunkDispatch } from 'redux-thunk';
+import initialData from "./initial-data.json";
+import { Column, Cards } from "./types";
+import { DraggableLocation, DraggableId } from "react-beautiful-dnd";
+import { ThunkDispatch } from "redux-thunk";
 
-export const fetchCards = () => async (dispatch: ThunkDispatch<{}, {}, any>): Promise<FetchCardsSuccessAction | FetchCardsFailureAction> => {
+export const fetchCards = () => async (
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<FetchCardsSuccessAction | FetchCardsFailureAction> => {
   dispatch(fetchCardsBegin());
   try {
     const json: Cards = await fakeGetCards();
     return dispatch(fetchCardsSuccess(json));
-  }
-  catch (error) {
+  } catch (error) {
     return dispatch(fetchCardsFailure(error));
   }
 };
 
-export function moveWithinSameColumn(startCol: Column, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId): MoveWithinColumnAction {
+export function moveWithinSameColumn(
+  startCol: Column,
+  source: DraggableLocation,
+  destination: DraggableLocation,
+  draggableId: DraggableId
+): MoveWithinColumnAction {
   return {
     type: MOVE_WITHIN_COLUMN,
     startCol: startCol,
@@ -24,7 +30,13 @@ export function moveWithinSameColumn(startCol: Column, source: DraggableLocation
   };
 }
 
-export function moveBetweenColumns(startCol: Column, endCol: Column, source: DraggableLocation, destination: DraggableLocation, draggableId: DraggableId) {
+export function moveBetweenColumns(
+  startCol: Column,
+  endCol: Column,
+  source: DraggableLocation,
+  destination: DraggableLocation,
+  draggableId: DraggableId
+) {
   return {
     type: MOVE_BETWEEN_COLUMNS,
     startCol: startCol,
@@ -38,26 +50,22 @@ export function moveBetweenColumns(startCol: Column, endCol: Column, source: Dra
 function fakeGetCards(): Promise<Cards> {
   return new Promise(resolve => {
     // Resolve after a timeout so we can see the loading indicator
-    setTimeout(
-      () =>
-        resolve(initialData),
-      1000
-    );
+    setTimeout(() => resolve(initialData), 1000);
   });
 }
 
 interface FetchCardsBeginAction {
-  type: typeof FETCH_CARDS_BEGIN
+  type: typeof FETCH_CARDS_BEGIN;
 }
 
 interface FetchCardsSuccessAction {
-  type: typeof FETCH_CARDS_SUCCESS
-  payload: Cards
+  type: typeof FETCH_CARDS_SUCCESS;
+  payload: Cards;
 }
 
 interface FetchCardsFailureAction {
-  type: typeof FETCH_CARDS_FAILURE
-  error: Error | null
+  type: typeof FETCH_CARDS_FAILURE;
+  error: Error | null;
 }
 
 interface MoveWithinColumnAction {
@@ -77,11 +85,11 @@ interface MoveBetweenColumnsAction {
   draggableId: DraggableId;
 }
 
-export const FETCH_CARDS_BEGIN = 'FETCH_CARDS_BEGIN';
-export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
-export const FETCH_CARDS_FAILURE = 'FETCH_CARDS_FAILURE';
-export const MOVE_WITHIN_COLUMN = 'MOVE_WITHIN_COLUMN';
-export const MOVE_BETWEEN_COLUMNS = 'MOVE_BETWEEN_COLUMNS';
+export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
+export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
+export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
+export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
+export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
 
 export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN
@@ -97,4 +105,9 @@ export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   error: error
 });
 
-export type CardsActionsTypes = FetchCardsBeginAction | FetchCardsSuccessAction | FetchCardsFailureAction | MoveWithinColumnAction | MoveBetweenColumnsAction;
+export type CardsActionsTypes =
+  | FetchCardsBeginAction
+  | FetchCardsSuccessAction
+  | FetchCardsFailureAction
+  | MoveWithinColumnAction
+  | MoveBetweenColumnsAction;
