@@ -16,10 +16,12 @@ interface ColumnProps {
 
 interface TaskListProps {
   isDraggingOver: boolean;
+  dispatch: ThunkDispatch<{}, {}, any>;
 }
 
 interface InnerListProps {
   tasks: Task[];
+  dispatch: ThunkDispatch<{}, {}, any>;
 }
 
 const Container = styled.div`
@@ -46,7 +48,12 @@ const TaskList = styled.div<TaskListProps>`
 class InnerList extends React.PureComponent<InnerListProps> {
   render() {
     return this.props.tasks.map((task, index) => (
-      <TaskView key={task.id} task={task} index={index} error={task.error} />
+      <TaskView
+        key={task.id}
+        task={task}
+        index={index}
+        dispatch={this.props.dispatch}
+      />
     ));
   }
 }
@@ -65,8 +72,12 @@ export class ColumnView extends React.Component<ColumnProps> {
               ref={provided.innerRef}
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
+              dispatch={this.props.dispatch}
             >
-              <InnerList tasks={this.props.tasks} />
+              <InnerList
+                tasks={this.props.tasks}
+                dispatch={this.props.dispatch}
+              />
               {provided.placeholder}
             </TaskList>
           )}

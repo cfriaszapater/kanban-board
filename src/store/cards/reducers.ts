@@ -4,7 +4,9 @@ import {
   FETCH_CARDS_FAILURE,
   MOVE_WITHIN_COLUMN,
   MOVE_BETWEEN_COLUMNS,
-  CardsActionsTypes
+  CardsActionsTypes,
+  SET_TASK_EDITING,
+  SetTaskEditingAction
 } from "./actions";
 import {
   CreateCardActions,
@@ -19,7 +21,8 @@ import {
   KanbanBoardState,
   TaskLoading,
   TaskLoaded,
-  TaskErrorLoading
+  TaskErrorLoading,
+  Task
 } from "./types";
 
 export const initialState: KanbanBoardState = {
@@ -133,6 +136,9 @@ export function cardsReducer(
     case CREATE_CARD_FAILURE:
       return markTaskWithErrorInState(action, state);
 
+    case SET_TASK_EDITING:
+      return markTaskEditingInState(action, state);
+
     default:
       // ALWAYS have a default case in a reducer
       return state;
@@ -181,6 +187,23 @@ function markTaskWithErrorInState(
     ...action.payload,
     loading: false,
     error: true
+  };
+  return {
+    ...state,
+    tasks: {
+      ...state.tasks,
+      [task.id]: task
+    }
+  };
+}
+
+function markTaskEditingInState(
+  action: SetTaskEditingAction,
+  state: KanbanBoardState
+): KanbanBoardState {
+  const task: Task = {
+    ...action.task,
+    editing: action.editing
   };
   return {
     ...state,

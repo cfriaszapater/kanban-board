@@ -1,7 +1,59 @@
 import initialData from "./initial-data.json";
-import { Column, Cards } from "./types";
+import { Column, Cards, Task } from "./types";
 import { DraggableLocation, DraggableId } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
+
+export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
+export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
+export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
+export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
+export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
+export const SET_TASK_EDITING = "SET_TASK_EDITING";
+
+export type CardsActionsTypes =
+  | FetchCardsBeginAction
+  | FetchCardsSuccessAction
+  | FetchCardsFailureAction
+  | MoveWithinColumnAction
+  | MoveBetweenColumnsAction
+  | SetTaskEditingAction;
+
+export interface FetchCardsBeginAction {
+  type: typeof FETCH_CARDS_BEGIN;
+}
+
+export interface FetchCardsSuccessAction {
+  type: typeof FETCH_CARDS_SUCCESS;
+  payload: Cards;
+}
+
+export interface FetchCardsFailureAction {
+  type: typeof FETCH_CARDS_FAILURE;
+  error: Error | null;
+}
+
+export interface MoveWithinColumnAction {
+  type: typeof MOVE_WITHIN_COLUMN;
+  startCol: Column;
+  source: DraggableLocation;
+  destination: DraggableLocation;
+  draggableId: DraggableId;
+}
+
+export interface MoveBetweenColumnsAction {
+  type: typeof MOVE_BETWEEN_COLUMNS;
+  startCol: Column;
+  endCol: Column;
+  source: DraggableLocation;
+  destination: DraggableLocation;
+  draggableId: DraggableId;
+}
+
+export interface SetTaskEditingAction {
+  type: typeof SET_TASK_EDITING;
+  task: Task;
+  editing?: boolean;
+}
 
 export const fetchCards = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
@@ -54,43 +106,6 @@ function fakeGetCards(): Promise<Cards> {
   });
 }
 
-interface FetchCardsBeginAction {
-  type: typeof FETCH_CARDS_BEGIN;
-}
-
-interface FetchCardsSuccessAction {
-  type: typeof FETCH_CARDS_SUCCESS;
-  payload: Cards;
-}
-
-interface FetchCardsFailureAction {
-  type: typeof FETCH_CARDS_FAILURE;
-  error: Error | null;
-}
-
-interface MoveWithinColumnAction {
-  type: typeof MOVE_WITHIN_COLUMN;
-  startCol: Column;
-  source: DraggableLocation;
-  destination: DraggableLocation;
-  draggableId: DraggableId;
-}
-
-interface MoveBetweenColumnsAction {
-  type: typeof MOVE_BETWEEN_COLUMNS;
-  startCol: Column;
-  endCol: Column;
-  source: DraggableLocation;
-  destination: DraggableLocation;
-  draggableId: DraggableId;
-}
-
-export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
-export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
-export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
-export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
-export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
-
 export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN
 });
@@ -105,9 +120,13 @@ export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   error: error
 });
 
-export type CardsActionsTypes =
-  | FetchCardsBeginAction
-  | FetchCardsSuccessAction
-  | FetchCardsFailureAction
-  | MoveWithinColumnAction
-  | MoveBetweenColumnsAction;
+export function setTaskEditing(
+  task: Task,
+  editing: boolean
+): SetTaskEditingAction {
+  return {
+    type: SET_TASK_EDITING,
+    task: task,
+    editing: editing
+  };
+}

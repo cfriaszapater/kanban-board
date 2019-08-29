@@ -1,5 +1,13 @@
 import { cardsReducer, initialState } from "./reducers";
-import * as types from "./createCardAction";
+import {
+  CreateCardActions,
+  CreateCardBeginAction,
+  CreateCardSuccessAction,
+  CreateCardFailureAction,
+  CREATE_CARD_BEGIN,
+  CREATE_CARD_SUCCESS,
+  CREATE_CARD_FAILURE
+} from "./createCardAction";
 import {
   Cards,
   KanbanBoardState,
@@ -8,6 +16,7 @@ import {
   TaskLoaded,
   TaskErrorLoading
 } from "./types";
+import { SET_TASK_EDITING } from "./actions";
 
 describe("create card reducer", () => {
   it("should return the initial state", () => {
@@ -16,8 +25,8 @@ describe("create card reducer", () => {
 
   it("should add task in loading status on CREATE_CARD_BEGIN from initial state", () => {
     const task: Task = { id: "task-1234", content: "An easy task" };
-    const action: types.CreateCardBeginAction = {
-      type: types.CREATE_CARD_BEGIN,
+    const action: CreateCardBeginAction = {
+      type: CREATE_CARD_BEGIN,
       payload: task
     };
     const resultState = cardsReducer(initialState, action);
@@ -41,8 +50,8 @@ describe("create card reducer", () => {
     );
 
     const task: Task = { id: "task-1235", content: "A difficult task" };
-    const action: types.CreateCardBeginAction = {
-      type: types.CREATE_CARD_BEGIN,
+    const action: CreateCardBeginAction = {
+      type: CREATE_CARD_BEGIN,
       payload: task
     };
     const resultState = cardsReducer(previousState, action);
@@ -82,7 +91,7 @@ describe("create card reducer", () => {
     };
 
     const resultState = cardsReducer(taskLoadingState, {
-      type: types.CREATE_CARD_SUCCESS,
+      type: CREATE_CARD_SUCCESS,
       payload: previousTask
     });
 
@@ -106,7 +115,7 @@ describe("create card reducer", () => {
     };
 
     const resultState = cardsReducer(taskLoadingState, {
-      type: types.CREATE_CARD_FAILURE,
+      type: CREATE_CARD_FAILURE,
       payload: previousTask
     });
 
@@ -141,3 +150,27 @@ function stateAfterOneCreate(
     }
   };
 }
+
+describe("enable task editing reducer", () => {
+  it("should enable editing in task on ENABLE_TASK_EDITING", () => {
+    const previousTask: Task = { id: "task-1234", content: "An easy task" };
+    const previousState: KanbanBoardState = stateAfterOneCreate(
+      initialState,
+      previousTask
+    );
+
+    const resultState: KanbanBoardState = cardsReducer(previousState, {
+      type: SET_TASK_EDITING,
+      task: previousTask,
+      editing: true
+    });
+
+    expect(resultState).toEqual({
+      ...previousState,
+      tasks: {
+        ...previousState.tasks,
+        [previousTask.id]: { ...previousTask, editing: true }
+      }
+    });
+  });
+});

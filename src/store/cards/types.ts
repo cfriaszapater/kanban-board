@@ -9,6 +9,7 @@ export interface Task {
   content: string;
   loading?: boolean;
   error?: boolean;
+  editing?: boolean;
 }
 
 export interface TaskLoading extends Task {
