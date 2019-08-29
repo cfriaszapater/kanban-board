@@ -4,10 +4,7 @@ import {
   FETCH_CARDS_FAILURE,
   MOVE_WITHIN_COLUMN,
   MOVE_BETWEEN_COLUMNS,
-  CardsActionsTypes,
-  BEGIN_TASK_EDITING,
-  BEGIN_COMMIT_TASK_EDITING,
-  CHANGE_TASK_EDITING
+  CardsActionsTypes
 } from "./actions";
 import {
   CreateCardActions,
@@ -24,8 +21,13 @@ import {
 import {
   beginTaskEditing,
   changeTaskEditing,
-  beginCommitTaskEditing
+  updateCardBegin
 } from "./updateCardReducer";
+import {
+  BEGIN_TASK_EDITING,
+  CHANGE_TASK_EDITING,
+  UPDATE_CARD_BEGIN
+} from "./updateCardActions";
 
 export const initialState: KanbanBoardState = {
   tasks: {},
@@ -144,8 +146,8 @@ export function cardsReducer(
     case CHANGE_TASK_EDITING:
       return changeTaskEditing(action, state);
 
-    case BEGIN_COMMIT_TASK_EDITING:
-      return beginCommitTaskEditing(action, state);
+    case UPDATE_CARD_BEGIN:
+      return updateCardBegin(action, state);
 
     default:
       // ALWAYS have a default case in a reducer

@@ -12,11 +12,6 @@ import {
   TaskLoaded,
   TaskErrorLoading
 } from "./types";
-import {
-  BEGIN_TASK_EDITING,
-  BEGIN_COMMIT_TASK_EDITING,
-  CHANGE_TASK_EDITING
-} from "./actions";
 
 describe("create card reducer", () => {
   it("should return the initial state", () => {

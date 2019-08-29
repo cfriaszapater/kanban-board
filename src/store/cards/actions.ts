@@ -1,16 +1,19 @@
 import initialData from "./initial-data.json";
-import { Column, Cards, Task } from "./types";
+import { Column, Cards } from "./types";
 import { DraggableLocation, DraggableId } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
+import {
+  BeginTaskEditingAction,
+  ChangeTaskEditingAction,
+  UpdateCardActions
+} from "./updateCardActions.js";
+import { CreateCardActions } from "./createCardActions.js";
 
 export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
 export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
 export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
 export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
 export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
-export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
-export const CHANGE_TASK_EDITING = "CHANGE_TASK_EDITING";
-export const BEGIN_COMMIT_TASK_EDITING = "FINISH_TASK_EDITING";
 
 export type CardsActionsTypes =
   | FetchCardsBeginAction
@@ -18,9 +21,10 @@ export type CardsActionsTypes =
   | FetchCardsFailureAction
   | MoveWithinColumnAction
   | MoveBetweenColumnsAction
+  | CreateCardActions
   | BeginTaskEditingAction
   | ChangeTaskEditingAction
-  | FinishTaskEditingAction;
+  | UpdateCardActions;
 
 export interface FetchCardsBeginAction {
   type: typeof FETCH_CARDS_BEGIN;
@@ -51,24 +55,6 @@ export interface MoveBetweenColumnsAction {
   source: DraggableLocation;
   destination: DraggableLocation;
   draggableId: DraggableId;
-}
-
-export interface BeginTaskEditingAction {
-  type: typeof BEGIN_TASK_EDITING;
-  task: Task;
-  editing: true;
-}
-
-export interface ChangeTaskEditingAction {
-  type: typeof CHANGE_TASK_EDITING;
-  task: Task;
-  newContent: string;
-}
-
-export interface FinishTaskEditingAction {
-  type: typeof BEGIN_COMMIT_TASK_EDITING;
-  task: Task;
-  newContent: string;
 }
 
 export const fetchCards = () => async (

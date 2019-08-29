@@ -1,8 +1,8 @@
 import {
   BeginTaskEditingAction,
-  FinishTaskEditingAction,
-  ChangeTaskEditingAction
-} from "./actions";
+  ChangeTaskEditingAction,
+  UpdateCardBeginAction
+} from "./updateCardActions";
 import { KanbanBoardState, Task } from "./types";
 import { stateWithUpdatedTask } from "./reducers";
 
@@ -17,18 +17,6 @@ export function beginTaskEditing(
   return stateWithUpdatedTask(state, taskWithEditingEnabled);
 }
 
-export function beginCommitTaskEditing(
-  action: FinishTaskEditingAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const taskWithUpdatedContent: Task = {
-    ...action.task,
-    content: action.newContent,
-    editing: false
-  };
-  return stateWithUpdatedTask(state, taskWithUpdatedContent);
-}
-
 export function changeTaskEditing(
   action: ChangeTaskEditingAction,
   state: KanbanBoardState
@@ -39,4 +27,11 @@ export function changeTaskEditing(
     editing: true
   };
   return stateWithUpdatedTask(state, taskWithUpdatedContent);
+}
+
+export function updateCardBegin(
+  action: UpdateCardBeginAction,
+  state: KanbanBoardState
+): KanbanBoardState {
+  return stateWithUpdatedTask(state, action.task);
 }

@@ -2,9 +2,9 @@ import { cardsReducer, initialState } from "./reducers";
 import { KanbanBoardState, Task } from "./types";
 import {
   BEGIN_TASK_EDITING,
-  BEGIN_COMMIT_TASK_EDITING,
+  UPDATE_CARD_BEGIN,
   CHANGE_TASK_EDITING
-} from "./actions";
+} from "./updateCardActions";
 import { stateAfterOneCreate } from "./createCardReducer.spec";
 
 describe("card update (editing) reducer", () => {
@@ -61,7 +61,7 @@ describe("card update (editing) reducer", () => {
     });
   });
 
-  it("should update task with new content and not editing on BEGIN_COMMIT_TASK_EDITING", () => {
+  it("should update task on UPDATE_CARD_BEGIN", () => {
     const previousTask: Task = { id: "task-1234", content: "An easy task" };
     const previousState: KanbanBoardState = stateAfterOneCreate(
       initialState,
@@ -69,10 +69,14 @@ describe("card update (editing) reducer", () => {
     );
 
     const newContent = "jarl!";
+    const taskWithUpdatedContent: Task = {
+      ...previousTask,
+      content: newContent,
+      editing: false
+    };
     const resultState: KanbanBoardState = cardsReducer(previousState, {
-      type: BEGIN_COMMIT_TASK_EDITING,
-      task: previousTask,
-      newContent: newContent
+      type: UPDATE_CARD_BEGIN,
+      task: taskWithUpdatedContent
     });
 
     expect(resultState).toEqual({

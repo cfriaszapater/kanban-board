@@ -4,8 +4,8 @@ import { Draggable } from "react-beautiful-dnd";
 import { Task } from "./store/cards/types";
 import {
   beginTaskEditing,
-  finishTaskEditing,
-  changeTaskEditing
+  changeTaskEditing,
+  updateCard
 } from "./store/cards/updateCardActions";
 import { ThunkDispatch } from "redux-thunk";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
@@ -44,9 +44,7 @@ export class TaskView extends React.Component<TaskProps> {
 
   handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
     console.log("blur with value ", event.target.innerHTML);
-    this.props.dispatch(
-      finishTaskEditing(this.props.task, event.target.innerHTML)
-    );
+    this.props.dispatch(updateCard(this.props.task, event.target.innerHTML));
   };
 
   render() {
