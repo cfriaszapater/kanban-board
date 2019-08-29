@@ -6,7 +6,10 @@ import { ThunkDispatch } from "redux-thunk";
 
 export class AddTaskButton extends React.Component<AddTaskButtonProps> {
   onClick = () => {
-    let task: Task = { id: uuid(), content: "Hola" };
+    let task: Task = {
+      id: uuid(),
+      content: "Click here to edit this card"
+    };
     this.props.dispatch(createCard(task));
   };
 

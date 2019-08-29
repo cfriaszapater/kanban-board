@@ -16,7 +16,11 @@ import {
   TaskLoaded,
   TaskErrorLoading
 } from "./types";
-import { BEGIN_TASK_EDITING, FINISH_TASK_EDITING } from "./actions";
+import {
+  BEGIN_TASK_EDITING,
+  FINISH_TASK_EDITING,
+  CHANGE_TASK_EDITING
+} from "./actions";
 
 describe("create card reducer", () => {
   it("should return the initial state", () => {
@@ -170,6 +174,38 @@ describe("task editing reducer", () => {
       tasks: {
         ...previousState.tasks,
         [previousTask.id]: { ...previousTask, editing: true }
+      }
+    });
+  });
+
+  it("should update task with new content on CHANGE_TASK_EDITING", () => {
+    const previousTask: Task = {
+      id: "task-1234",
+      content: "An easy task",
+      editing: true
+    };
+    const previousState: KanbanBoardState = stateAfterOneCreate(
+      initialState,
+      previousTask
+    );
+
+    const newContent = "condemor!";
+    const resultState: KanbanBoardState = cardsReducer(previousState, {
+      type: CHANGE_TASK_EDITING,
+      task: previousTask,
+      newContent: newContent,
+      editing: true
+    });
+
+    expect(resultState).toEqual({
+      ...previousState,
+      tasks: {
+        ...previousState.tasks,
+        [previousTask.id]: {
+          ...previousTask,
+          content: newContent,
+          editing: true
+        }
       }
     });
   });

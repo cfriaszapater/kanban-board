@@ -9,6 +9,7 @@ export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
 export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
 export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
 export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
+export const CHANGE_TASK_EDITING = "CHANGE_TASK_EDITING";
 export const FINISH_TASK_EDITING = "FINISH_TASK_EDITING";
 
 export type CardsActionsTypes =
@@ -18,6 +19,7 @@ export type CardsActionsTypes =
   | MoveWithinColumnAction
   | MoveBetweenColumnsAction
   | BeginTaskEditingAction
+  | ChangeTaskEditingAction
   | FinishTaskEditingAction;
 
 export interface FetchCardsBeginAction {
@@ -55,6 +57,12 @@ export interface BeginTaskEditingAction {
   type: typeof BEGIN_TASK_EDITING;
   task: Task;
   editing: true;
+}
+
+export interface ChangeTaskEditingAction {
+  type: typeof CHANGE_TASK_EDITING;
+  task: Task;
+  newContent: string;
 }
 
 export interface FinishTaskEditingAction {
@@ -133,6 +141,17 @@ export function beginTaskEditing(task: Task): BeginTaskEditingAction {
     type: BEGIN_TASK_EDITING,
     task: task,
     editing: true
+  };
+}
+
+export function changeTaskEditing(
+  task: Task,
+  newContent: string
+): ChangeTaskEditingAction {
+  return {
+    type: CHANGE_TASK_EDITING,
+    task: task,
+    newContent: newContent
   };
 }
 

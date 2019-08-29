@@ -8,7 +8,9 @@ import {
   BEGIN_TASK_EDITING,
   BeginTaskEditingAction,
   FINISH_TASK_EDITING,
-  FinishTaskEditingAction
+  FinishTaskEditingAction,
+  ChangeTaskEditingAction,
+  CHANGE_TASK_EDITING
 } from "./actions";
 import {
   CreateCardActions,
@@ -141,6 +143,9 @@ export function cardsReducer(
     case BEGIN_TASK_EDITING:
       return markTaskEditingInState(action, state);
 
+    case CHANGE_TASK_EDITING:
+      return updateTaskContentOnChangeEditingInState(action, state);
+
     case FINISH_TASK_EDITING:
       return updateTaskContentAfterEditingInState(action, state);
 
@@ -209,6 +214,18 @@ function updateTaskContentAfterEditingInState(
     ...action.task,
     content: action.newContent,
     editing: false
+  };
+  return stateWithUpdatedTask(state, taskWithUpdatedContent);
+}
+
+function updateTaskContentOnChangeEditingInState(
+  action: ChangeTaskEditingAction,
+  state: KanbanBoardState
+): KanbanBoardState {
+  const taskWithUpdatedContent: Task = {
+    ...action.task,
+    content: action.newContent,
+    editing: true
   };
   return stateWithUpdatedTask(state, taskWithUpdatedContent);
 }
