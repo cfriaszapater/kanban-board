@@ -21,9 +21,22 @@ describe("async create card action", () => {
       { type: actions.CREATE_CARD_SUCCESS, payload: card }
     ];
 
-    return store.dispatch(actions.createCard(card) as any).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    return store
+      .dispatch(actions.createCard(card) as any)
+      .then(expectations(store, expectedActions));
+
+    function expectations(
+      store: any,
+      expectedActions: { type: string; payload: Task }[]
+    ): any {
+      return () => {
+        expect(store.getActions()).toEqual(expectedActions);
+        expect(fetchMock.mock.calls.length).toEqual(1);
+        expect(fetchMock.mock.calls[0][0].url).toEqual(
+          "http://httpbin.org/post"
+        );
+      };
+    }
   });
 
   it("should dispatch BEGIN and FAILURE on create card that fails", () => {
@@ -36,8 +49,21 @@ describe("async create card action", () => {
       { type: actions.CREATE_CARD_FAILURE, payload: card }
     ];
 
-    return store.dispatch(actions.createCard(card) as any).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    return store
+      .dispatch(actions.createCard(card) as any)
+      .then(expectations(store, expectedActions));
+
+    function expectations(
+      store: any,
+      expectedActions: { type: string; payload: Task }[]
+    ): any {
+      return () => {
+        expect(store.getActions()).toEqual(expectedActions);
+        expect(fetchMock.mock.calls.length).toEqual(1);
+        expect(fetchMock.mock.calls[0][0].url).toEqual(
+          "http://httpbin.org/post"
+        );
+      };
+    }
   });
 });
