@@ -6,7 +6,7 @@ import {
   beginTaskEditing,
   finishTaskEditing,
   changeTaskEditing
-} from "./store/cards/actions";
+} from "./store/cards/updateCardActions";
 import { ThunkDispatch } from "redux-thunk";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 

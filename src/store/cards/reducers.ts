@@ -6,28 +6,26 @@ import {
   MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes,
   BEGIN_TASK_EDITING,
-  BeginTaskEditingAction,
-  FINISH_TASK_EDITING,
-  FinishTaskEditingAction,
-  ChangeTaskEditingAction,
+  BEGIN_COMMIT_TASK_EDITING,
   CHANGE_TASK_EDITING
 } from "./actions";
 import {
   CreateCardActions,
   CREATE_CARD_BEGIN,
-  CreateCardBeginAction,
-  CreateCardSuccessAction,
   CREATE_CARD_SUCCESS,
-  CREATE_CARD_FAILURE,
-  CreateCardFailureAction
-} from "./createCardAction";
+  CREATE_CARD_FAILURE
+} from "./createCardActions";
+import { KanbanBoardState, Task } from "./types";
 import {
-  KanbanBoardState,
-  TaskLoading,
-  TaskLoaded,
-  TaskErrorLoading,
-  Task
-} from "./types";
+  createCardBegin,
+  createCardFailure,
+  createCardSuccess
+} from "./createCardReducer";
+import {
+  beginTaskEditing,
+  changeTaskEditing,
+  beginCommitTaskEditing
+} from "./updateCardReducer";
 
 export const initialState: KanbanBoardState = {
   tasks: {},
@@ -132,22 +130,22 @@ export function cardsReducer(
       };
 
     case CREATE_CARD_BEGIN:
-      return addTaskToState(action, state);
+      return createCardBegin(action, state);
 
     case CREATE_CARD_SUCCESS:
-      return markTaskLoadedInState(action, state);
+      return createCardSuccess(action, state);
 
     case CREATE_CARD_FAILURE:
-      return markTaskWithErrorInState(action, state);
+      return createCardFailure(action, state);
 
     case BEGIN_TASK_EDITING:
-      return markTaskEditingInState(action, state);
+      return beginTaskEditing(action, state);
 
     case CHANGE_TASK_EDITING:
-      return updateTaskContentOnChangeEditingInState(action, state);
+      return changeTaskEditing(action, state);
 
-    case FINISH_TASK_EDITING:
-      return updateTaskContentAfterEditingInState(action, state);
+    case BEGIN_COMMIT_TASK_EDITING:
+      return beginCommitTaskEditing(action, state);
 
     default:
       // ALWAYS have a default case in a reducer
@@ -155,82 +153,7 @@ export function cardsReducer(
   }
 }
 
-function addTaskToState(
-  action: CreateCardBeginAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const task: TaskLoading = { ...action.payload, loading: true };
-  // Task added to tasks and columns[0].taskIds (was empty before)
-  const firstCol = state.columns[Object.keys(state.columns)[0]];
-  return {
-    ...state,
-    tasks: { ...state.tasks, [task.id]: task },
-    columns: {
-      ...state.columns,
-      [firstCol.id]: {
-        ...state.columns[firstCol.id],
-        taskIds: [...state.columns[firstCol.id].taskIds, task.id]
-      }
-    }
-  };
-}
-
-function markTaskLoadedInState(
-  action: CreateCardSuccessAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const taskLoaded: TaskLoaded = { ...action.payload, loading: false };
-  return stateWithUpdatedTask(state, taskLoaded);
-}
-
-function markTaskWithErrorInState(
-  action: CreateCardFailureAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const taskWithErrorSet: TaskErrorLoading = {
-    ...action.payload,
-    loading: false,
-    error: true
-  };
-  return stateWithUpdatedTask(state, taskWithErrorSet);
-}
-
-function markTaskEditingInState(
-  action: BeginTaskEditingAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const taskWithEditingEnabled: Task = {
-    ...action.task,
-    editing: action.editing
-  };
-  return stateWithUpdatedTask(state, taskWithEditingEnabled);
-}
-
-function updateTaskContentAfterEditingInState(
-  action: FinishTaskEditingAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const taskWithUpdatedContent: Task = {
-    ...action.task,
-    content: action.newContent,
-    editing: false
-  };
-  return stateWithUpdatedTask(state, taskWithUpdatedContent);
-}
-
-function updateTaskContentOnChangeEditingInState(
-  action: ChangeTaskEditingAction,
-  state: KanbanBoardState
-): KanbanBoardState {
-  const taskWithUpdatedContent: Task = {
-    ...action.task,
-    content: action.newContent,
-    editing: true
-  };
-  return stateWithUpdatedTask(state, taskWithUpdatedContent);
-}
-
-function stateWithUpdatedTask(
+export function stateWithUpdatedTask(
   state: KanbanBoardState,
   taskToUpdate: Task
 ): KanbanBoardState {

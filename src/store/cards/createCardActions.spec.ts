@@ -1,6 +1,6 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as actions from "./createCardAction";
+import * as actions from "./createCardActions";
 import expect from "expect";
 import { Task } from "./types";
 

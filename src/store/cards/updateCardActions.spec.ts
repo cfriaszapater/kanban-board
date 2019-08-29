@@ -1,6 +1,7 @@
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as actions from "./actions";
+import * as beginTaskEditing from "./updateCardActions";
 import expect from "expect";
 
 const middlewares = [thunk];
@@ -11,7 +12,7 @@ describe("task editing actions", () => {
     const store = mockStore();
     const task = { id: "13", content: "hi" };
 
-    const action = store.dispatch(actions.beginTaskEditing(task));
+    const action = store.dispatch(beginTaskEditing.beginTaskEditing(task));
 
     expect(action).toEqual({
       type: actions.BEGIN_TASK_EDITING,
@@ -25,7 +26,9 @@ describe("task editing actions", () => {
     const task = { id: "13", content: "hi" };
 
     const newContent = "jarl";
-    const action = store.dispatch(actions.changeTaskEditing(task, newContent));
+    const action = store.dispatch(
+      beginTaskEditing.changeTaskEditing(task, newContent)
+    );
 
     expect(action).toEqual({
       type: actions.CHANGE_TASK_EDITING,
@@ -34,15 +37,17 @@ describe("task editing actions", () => {
     });
   });
 
-  it("should dispatch action on finish editing", () => {
+  it("should dispatch action on commit editing", () => {
     const store = mockStore();
     const task = { id: "13", content: "hi" };
 
     const newContent = "jarl";
-    const action = store.dispatch(actions.finishTaskEditing(task, newContent));
+    const action = store.dispatch(
+      beginTaskEditing.finishTaskEditing(task, newContent)
+    );
 
     expect(action).toEqual({
-      type: actions.FINISH_TASK_EDITING,
+      type: actions.BEGIN_COMMIT_TASK_EDITING,
       task: task,
       newContent: newContent
     });

@@ -10,7 +10,7 @@ export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
 export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
 export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
 export const CHANGE_TASK_EDITING = "CHANGE_TASK_EDITING";
-export const FINISH_TASK_EDITING = "FINISH_TASK_EDITING";
+export const BEGIN_COMMIT_TASK_EDITING = "FINISH_TASK_EDITING";
 
 export type CardsActionsTypes =
   | FetchCardsBeginAction
@@ -66,7 +66,7 @@ export interface ChangeTaskEditingAction {
 }
 
 export interface FinishTaskEditingAction {
-  type: typeof FINISH_TASK_EDITING;
+  type: typeof BEGIN_COMMIT_TASK_EDITING;
   task: Task;
   newContent: string;
 }
@@ -135,33 +135,3 @@ export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   type: FETCH_CARDS_FAILURE,
   error: error
 });
-
-export function beginTaskEditing(task: Task): BeginTaskEditingAction {
-  return {
-    type: BEGIN_TASK_EDITING,
-    task: task,
-    editing: true
-  };
-}
-
-export function changeTaskEditing(
-  task: Task,
-  newContent: string
-): ChangeTaskEditingAction {
-  return {
-    type: CHANGE_TASK_EDITING,
-    task: task,
-    newContent: newContent
-  };
-}
-
-export function finishTaskEditing(
-  task: Task,
-  newContent: string
-): FinishTaskEditingAction {
-  return {
-    type: FINISH_TASK_EDITING,
-    task: task,
-    newContent: newContent
-  };
-}

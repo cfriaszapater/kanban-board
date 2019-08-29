@@ -1,6 +1,6 @@
 import React from "react";
 import uuid from "uuid/v1";
-import { createCard } from "./store/cards/createCardAction";
+import { createCard } from "./store/cards/createCardActions";
 import { Task } from "./store/cards/types";
 import { ThunkDispatch } from "redux-thunk";
 
