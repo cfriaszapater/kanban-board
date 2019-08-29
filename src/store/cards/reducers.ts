@@ -5,8 +5,10 @@ import {
   MOVE_WITHIN_COLUMN,
   MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes,
-  SET_TASK_EDITING,
-  SetTaskEditingAction
+  BEGIN_TASK_EDITING,
+  BeginTaskEditingAction,
+  FINISH_TASK_EDITING,
+  FinishTaskEditingAction
 } from "./actions";
 import {
   CreateCardActions,
@@ -136,8 +138,11 @@ export function cardsReducer(
     case CREATE_CARD_FAILURE:
       return markTaskWithErrorInState(action, state);
 
-    case SET_TASK_EDITING:
+    case BEGIN_TASK_EDITING:
       return markTaskEditingInState(action, state);
+
+    case FINISH_TASK_EDITING:
+      return updateTaskContentAfterEditingInState(action, state);
 
     default:
       // ALWAYS have a default case in a reducer
@@ -169,47 +174,54 @@ function markTaskLoadedInState(
   action: CreateCardSuccessAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const task: TaskLoaded = { ...action.payload, loading: false };
-  return {
-    ...state,
-    tasks: {
-      ...state.tasks,
-      [task.id]: task
-    }
-  };
+  const taskLoaded: TaskLoaded = { ...action.payload, loading: false };
+  return stateWithUpdatedTask(state, taskLoaded);
 }
 
 function markTaskWithErrorInState(
   action: CreateCardFailureAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const task: TaskErrorLoading = {
+  const taskWithErrorSet: TaskErrorLoading = {
     ...action.payload,
     loading: false,
     error: true
   };
-  return {
-    ...state,
-    tasks: {
-      ...state.tasks,
-      [task.id]: task
-    }
-  };
+  return stateWithUpdatedTask(state, taskWithErrorSet);
 }
 
 function markTaskEditingInState(
-  action: SetTaskEditingAction,
+  action: BeginTaskEditingAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const task: Task = {
+  const taskWithEditingEnabled: Task = {
     ...action.task,
     editing: action.editing
   };
+  return stateWithUpdatedTask(state, taskWithEditingEnabled);
+}
+
+function updateTaskContentAfterEditingInState(
+  action: FinishTaskEditingAction,
+  state: KanbanBoardState
+): KanbanBoardState {
+  const taskWithUpdatedContent: Task = {
+    ...action.task,
+    content: action.newContent,
+    editing: false
+  };
+  return stateWithUpdatedTask(state, taskWithUpdatedContent);
+}
+
+function stateWithUpdatedTask(
+  state: KanbanBoardState,
+  taskToUpdate: Task
+): KanbanBoardState {
   return {
     ...state,
     tasks: {
       ...state.tasks,
-      [task.id]: task
+      [taskToUpdate.id]: taskToUpdate
     }
   };
 }

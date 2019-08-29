@@ -6,17 +6,31 @@ import expect from "expect";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe("enable task editing action", () => {
-  it("should dispatch action on set editing", () => {
+describe("task editing actions", () => {
+  it("should dispatch action on start editing", () => {
     const store = mockStore();
     const task = { id: "13", content: "hi" };
 
-    const action = store.dispatch(actions.setTaskEditing(task, true));
+    const action = store.dispatch(actions.beginTaskEditing(task));
 
     expect(action).toEqual({
-      type: actions.SET_TASK_EDITING,
+      type: actions.BEGIN_TASK_EDITING,
       task: task,
       editing: true
+    });
+  });
+
+  it("should dispatch action on finish editing", () => {
+    const store = mockStore();
+    const task = { id: "13", content: "hi" };
+
+    const newContent = "jarl";
+    const action = store.dispatch(actions.finishTaskEditing(task, newContent));
+
+    expect(action).toEqual({
+      type: actions.FINISH_TASK_EDITING,
+      task: task,
+      newContent: newContent
     });
   });
 });

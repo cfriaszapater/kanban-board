@@ -16,7 +16,7 @@ import {
   TaskLoaded,
   TaskErrorLoading
 } from "./types";
-import { SET_TASK_EDITING } from "./actions";
+import { BEGIN_TASK_EDITING, FINISH_TASK_EDITING } from "./actions";
 
 describe("create card reducer", () => {
   it("should return the initial state", () => {
@@ -151,8 +151,8 @@ function stateAfterOneCreate(
   };
 }
 
-describe("enable task editing reducer", () => {
-  it("should enable editing in task on ENABLE_TASK_EDITING", () => {
+describe("task editing reducer", () => {
+  it("should start editing in task on START_TASK_EDITING", () => {
     const previousTask: Task = { id: "task-1234", content: "An easy task" };
     const previousState: KanbanBoardState = stateAfterOneCreate(
       initialState,
@@ -160,7 +160,7 @@ describe("enable task editing reducer", () => {
     );
 
     const resultState: KanbanBoardState = cardsReducer(previousState, {
-      type: SET_TASK_EDITING,
+      type: BEGIN_TASK_EDITING,
       task: previousTask,
       editing: true
     });
@@ -170,6 +170,33 @@ describe("enable task editing reducer", () => {
       tasks: {
         ...previousState.tasks,
         [previousTask.id]: { ...previousTask, editing: true }
+      }
+    });
+  });
+
+  it("should update task with new content and not editing on FINISH_TASK_EDITING", () => {
+    const previousTask: Task = { id: "task-1234", content: "An easy task" };
+    const previousState: KanbanBoardState = stateAfterOneCreate(
+      initialState,
+      previousTask
+    );
+
+    const newContent = "jarl!";
+    const resultState: KanbanBoardState = cardsReducer(previousState, {
+      type: FINISH_TASK_EDITING,
+      task: previousTask,
+      newContent: newContent
+    });
+
+    expect(resultState).toEqual({
+      ...previousState,
+      tasks: {
+        ...previousState.tasks,
+        [previousTask.id]: {
+          ...previousTask,
+          content: newContent,
+          editing: false
+        }
       }
     });
   });

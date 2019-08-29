@@ -8,7 +8,8 @@ export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
 export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
 export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
 export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
-export const SET_TASK_EDITING = "SET_TASK_EDITING";
+export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
+export const FINISH_TASK_EDITING = "FINISH_TASK_EDITING";
 
 export type CardsActionsTypes =
   | FetchCardsBeginAction
@@ -16,7 +17,8 @@ export type CardsActionsTypes =
   | FetchCardsFailureAction
   | MoveWithinColumnAction
   | MoveBetweenColumnsAction
-  | SetTaskEditingAction;
+  | BeginTaskEditingAction
+  | FinishTaskEditingAction;
 
 export interface FetchCardsBeginAction {
   type: typeof FETCH_CARDS_BEGIN;
@@ -49,10 +51,16 @@ export interface MoveBetweenColumnsAction {
   draggableId: DraggableId;
 }
 
-export interface SetTaskEditingAction {
-  type: typeof SET_TASK_EDITING;
+export interface BeginTaskEditingAction {
+  type: typeof BEGIN_TASK_EDITING;
   task: Task;
-  editing?: boolean;
+  editing: true;
+}
+
+export interface FinishTaskEditingAction {
+  type: typeof FINISH_TASK_EDITING;
+  task: Task;
+  newContent: string;
 }
 
 export const fetchCards = () => async (
@@ -120,13 +128,21 @@ export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   error: error
 });
 
-export function setTaskEditing(
-  task: Task,
-  editing: boolean
-): SetTaskEditingAction {
+export function beginTaskEditing(task: Task): BeginTaskEditingAction {
   return {
-    type: SET_TASK_EDITING,
+    type: BEGIN_TASK_EDITING,
     task: task,
-    editing: editing
+    editing: true
+  };
+}
+
+export function finishTaskEditing(
+  task: Task,
+  newContent: string
+): FinishTaskEditingAction {
+  return {
+    type: FINISH_TASK_EDITING,
+    task: task,
+    newContent: newContent
   };
 }
