@@ -12,24 +12,19 @@ describe("async create card action", () => {
     fetchMock.resetMocks();
   });
 
-  it("should dispatch BEGIN and SUCCESS on create card", () => {
+  it("should BEGIN, fetch and SUCCESS on create card", () => {
     const store = mockStore();
     const card: Task = { id: "task-13", content: "Do the laundry" };
     fetchMock.once(JSON.stringify({ json: card }));
-    const expectedActions = [
-      { type: actions.CREATE_CARD_BEGIN, payload: card },
-      { type: actions.CREATE_CARD_SUCCESS, payload: card }
-    ];
 
-    return store
-      .dispatch(actions.createCard(card) as any)
-      .then(expectations(store, expectedActions));
+    return store.dispatch(actions.createCard(card) as any).then(expectations());
 
-    function expectations(
-      store: any,
-      expectedActions: { type: string; payload: Task }[]
-    ): any {
+    function expectations(): any {
       return () => {
+        const expectedActions = [
+          { type: actions.CREATE_CARD_BEGIN, payload: card },
+          { type: actions.CREATE_CARD_SUCCESS, payload: card }
+        ];
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
         expect(fetchMock.mock.calls[0][0].url).toEqual(
@@ -39,25 +34,20 @@ describe("async create card action", () => {
     }
   });
 
-  it("should dispatch BEGIN and FAILURE on create card that fails", () => {
-    const error = new TypeError("Failed to fetch");
+  it("should BEGIN, fetch and FAILURE on create card that fails", () => {
+    const error = new TypeError("Failed to fetch (simulated network error)");
     fetchMock.mockReject(error);
     const store = mockStore();
     const card: Task = { id: "task-13", content: "Do the laundry" };
-    const expectedActions = [
-      { type: actions.CREATE_CARD_BEGIN, payload: card },
-      { type: actions.CREATE_CARD_FAILURE, payload: card }
-    ];
 
-    return store
-      .dispatch(actions.createCard(card) as any)
-      .then(expectations(store, expectedActions));
+    return store.dispatch(actions.createCard(card) as any).then(expectations());
 
-    function expectations(
-      store: any,
-      expectedActions: { type: string; payload: Task }[]
-    ): any {
+    function expectations(): any {
       return () => {
+        const expectedActions = [
+          { type: actions.CREATE_CARD_BEGIN, payload: card },
+          { type: actions.CREATE_CARD_FAILURE, payload: card }
+        ];
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
         expect(fetchMock.mock.calls[0][0].url).toEqual(
