@@ -1,15 +1,11 @@
 import { cardsReducer, initialState } from "./reducers";
 import {
-  CreateCardActions,
   CreateCardBeginAction,
-  CreateCardSuccessAction,
-  CreateCardFailureAction,
   CREATE_CARD_BEGIN,
   CREATE_CARD_SUCCESS,
   CREATE_CARD_FAILURE
 } from "./createCardAction";
 import {
-  Cards,
   KanbanBoardState,
   Task,
   TaskLoading,
@@ -193,8 +189,7 @@ describe("task editing reducer", () => {
     const resultState: KanbanBoardState = cardsReducer(previousState, {
       type: CHANGE_TASK_EDITING,
       task: previousTask,
-      newContent: newContent,
-      editing: true
+      newContent: newContent
     });
 
     expect(resultState).toEqual({

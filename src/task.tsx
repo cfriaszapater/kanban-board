@@ -8,7 +8,7 @@ import {
   changeTaskEditing
 } from "./store/cards/actions";
 import { ThunkDispatch } from "redux-thunk";
-import ContentEditable from "react-contenteditable";
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 interface TaskProps {
   key: string;
@@ -37,16 +37,16 @@ export class TaskView extends React.Component<TaskProps> {
     this.props.dispatch(beginTaskEditing(this.props.task));
   };
 
+  handleChange = (event: ContentEditableEvent) => {
+    console.log("change with value ", event.target.value);
+    this.props.dispatch(changeTaskEditing(this.props.task, event.target.value));
+  };
+
   handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
     console.log("blur with value ", event.target.innerHTML);
     this.props.dispatch(
       finishTaskEditing(this.props.task, event.target.innerHTML)
     );
-  };
-
-  handleChange = (event: any) => {
-    console.log("change with value ", event.target.value);
-    this.props.dispatch(changeTaskEditing(this.props.task, event.target.value));
   };
 
   render() {

@@ -9,13 +9,13 @@ const mockStore = configureMockStore(middlewares);
 
 describe("async create card action", () => {
   beforeEach(() => {
-    fetch.resetMocks();
+    fetchMock.resetMocks();
   });
 
   it("should dispatch BEGIN and SUCCESS on create card", () => {
     const store = mockStore();
     const card: Task = { id: "task-13", content: "Do the laundry" };
-    fetch.mockResponseOnce(JSON.stringify({ json: card }));
+    fetchMock.once(JSON.stringify({ json: card }));
     const expectedActions = [
       { type: actions.CREATE_CARD_BEGIN, payload: card },
       { type: actions.CREATE_CARD_SUCCESS, payload: card }
@@ -28,7 +28,7 @@ describe("async create card action", () => {
 
   it("should dispatch BEGIN and FAILURE on create card that fails", () => {
     const error = new TypeError("Failed to fetch");
-    fetch.mockReject(error);
+    fetchMock.mockReject(error);
     const store = mockStore();
     const card: Task = { id: "task-13", content: "Do the laundry" };
     const expectedActions = [
