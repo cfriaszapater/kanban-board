@@ -10,6 +10,7 @@ export interface Task {
   loading?: boolean;
   error?: boolean;
   editing?: boolean;
+  _id?: string;
 }
 
 export interface TaskLoading extends Task {
@@ -18,6 +19,7 @@ export interface TaskLoading extends Task {
 
 export interface TaskLoaded extends Task {
   loading: false;
+  _id: string;
 }
 
 export interface TaskErrorLoading extends Task {

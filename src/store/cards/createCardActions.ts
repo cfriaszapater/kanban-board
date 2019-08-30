@@ -38,7 +38,6 @@ export const createCard = (card: Task) => async (
       },
       body: JSON.stringify(card)
     });
-    console.log("req", req);
     const res = await fetch(req);
     const createdCard = await res.json();
     return dispatch(createCardSuccess(createdCard));

@@ -15,7 +15,7 @@ describe("async create card action", () => {
   it("should BEGIN, fetch and SUCCESS on create card", () => {
     const store = mockStore();
     const card: Task = { id: "task-13", content: "Do the laundry" };
-    fetchMock.once(JSON.stringify({ json: card }));
+    fetchMock.once(JSON.stringify(card));
 
     return store.dispatch(actions.createCard(card) as any).then(expectations());
 
@@ -28,7 +28,7 @@ describe("async create card action", () => {
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
         expect(fetchMock.mock.calls[0][0].url).toEqual(
-          "http://httpbin.org/post"
+          "http://localhost:8080/cards"
         );
       };
     }
@@ -51,7 +51,7 @@ describe("async create card action", () => {
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
         expect(fetchMock.mock.calls[0][0].url).toEqual(
-          "http://httpbin.org/post"
+          "http://localhost:8080/cards"
         );
       };
     }
