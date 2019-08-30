@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import * as actions from "./createCardActions";
 import expect from "expect";
 import { Card } from "./types";
+import { backendUrl } from "../../backendUrl";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -27,9 +28,7 @@ describe("async create card action", () => {
         ];
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
-        expect(fetchMock.mock.calls[0][0].url).toEqual(
-          "http://localhost:8080/cards"
-        );
+        expect(fetchMock.mock.calls[0][0].url).toEqual(backendUrl() + "/cards");
       };
     }
   });
@@ -50,9 +49,7 @@ describe("async create card action", () => {
         ];
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
-        expect(fetchMock.mock.calls[0][0].url).toEqual(
-          "http://localhost:8080/cards"
-        );
+        expect(fetchMock.mock.calls[0][0].url).toEqual(backendUrl() + "/cards");
       };
     }
   });

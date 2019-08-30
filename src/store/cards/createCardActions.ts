@@ -1,5 +1,6 @@
 import { Card, CardLoaded } from "./types";
 import { ThunkDispatch } from "redux-thunk";
+import { backendUrl } from "../../backendUrl";
 
 export const CREATE_CARD_BEGIN = "CREATE_CARD_BEGIN";
 export const CREATE_CARD_SUCCESS = "CREATE_CARD_SUCCESS";
@@ -38,7 +39,7 @@ export const createCard = (card: Card) => async (
 };
 
 async function post(card: Card) {
-  const req = new Request("http://localhost:8080/cards", {
+  const req = new Request(backendUrl() + "/cards", {
     method: "POST",
     headers: {
       Accept: "application/json",

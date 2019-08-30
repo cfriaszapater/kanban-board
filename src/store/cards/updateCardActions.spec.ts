@@ -14,6 +14,7 @@ import {
 } from "./updateCardActions";
 import expect from "expect";
 import { Card, CardLoaded } from "./types";
+import { backendUrl } from "../../backendUrl";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -104,7 +105,7 @@ describe("card editing actions", () => {
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);
         expect(fetchMock.mock.calls[0][0].url).toEqual(
-          "http://localhost:8080/cards/" + card._id
+          backendUrl() + "/cards/" + card._id
         );
       };
     }

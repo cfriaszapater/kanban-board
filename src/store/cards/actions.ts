@@ -7,6 +7,7 @@ import {
   UpdateCardActions
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
+import { backendUrl } from "../../backendUrl";
 
 export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
 export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
@@ -88,11 +89,11 @@ async function getBoard(): Promise<Board> {
 }
 
 async function getCards() {
-  return await get("http://localhost:8080/cards");
+  return await get(backendUrl() + "/cards");
 }
 
 async function getColumns() {
-  return await get("http://localhost:8080/columns");
+  return await get(backendUrl() + "/columns");
 }
 
 async function get(url: string) {
