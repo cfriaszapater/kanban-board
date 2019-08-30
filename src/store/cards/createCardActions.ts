@@ -1,4 +1,4 @@
-import { Task } from "./types";
+import { Task, TaskLoaded } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 
 export const CREATE_CARD_BEGIN = "CREATE_CARD_BEGIN";
@@ -12,7 +12,7 @@ export interface CreateCardBeginAction {
 
 export interface CreateCardSuccessAction {
   type: typeof CREATE_CARD_SUCCESS;
-  payload: Task;
+  payload: TaskLoaded;
 }
 
 export interface CreateCardFailureAction {
@@ -53,7 +53,7 @@ function createCardBegin(card: Task): CreateCardBeginAction {
   };
 }
 
-function createCardSuccess(createdCard: Task): CreateCardSuccessAction {
+function createCardSuccess(createdCard: TaskLoaded): CreateCardSuccessAction {
   return {
     type: CREATE_CARD_SUCCESS,
     payload: createdCard

@@ -34,6 +34,12 @@ const ContainerDiv = styled.div<ContainerProps>`
 export class TaskView extends React.Component<TaskProps> {
   handleClick = () => {
     console.log("click");
+    if (this.cardCreateDidNotSuccessYet()) {
+      console.log(
+        "not beginning editing because this card's create has not yet finished",
+        this.props.task
+      );
+    }
     this.props.dispatch(beginTaskEditing(this.props.task));
   };
 
@@ -46,6 +52,10 @@ export class TaskView extends React.Component<TaskProps> {
     console.log("blur with value ", event.target.innerHTML);
     this.props.dispatch(updateCard(this.props.task, event.target.innerHTML));
   };
+
+  private cardCreateDidNotSuccessYet() {
+    return typeof this.props.task._id === "undefined";
+  }
 
   render() {
     return (

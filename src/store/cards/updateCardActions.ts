@@ -77,14 +77,25 @@ export type UpdateCardActions =
 export const updateCard = (card: Task, newContent: string) => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<UpdateCardActions> => {
+  if (typeof card._id === "undefined") {
+    throw new Error(
+      "Cannot update because this card's create has not yet finished" + card
+    );
+  }
   const updateCardBeginAction = dispatch(updateCardBegin(card, newContent));
   const cardWithNewContent = updateCardBeginAction.task;
   try {
-    // TODO PUT /cards/{cardId}
-    const req = new Request("http://httpbin.org/put/" + cardWithNewContent.id, {
-      method: "PUT",
-      body: JSON.stringify(cardWithNewContent)
-    });
+    const req = new Request(
+      "http://localhost:8080/cards/" + cardWithNewContent._id,
+      {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(cardWithNewContent)
+      }
+    );
     const res = await fetch(req);
     if (!res.ok) {
       throw new Error("Response not OK: " + res);
