@@ -1,5 +1,5 @@
 import { cardsReducer, initialState } from "./reducers";
-import { KanbanBoardState, Task } from "./types";
+import { KanbanBoardState, Card } from "./types";
 import {
   BEGIN_TASK_EDITING,
   UPDATE_CARD_BEGIN,
@@ -8,52 +8,52 @@ import {
 import { stateAfterOneCreate } from "./createCardReducer.spec";
 
 describe("card update (editing) reducer", () => {
-  it("should start editing in task on START_TASK_EDITING", () => {
-    const previousTask: Task = { id: "task-1234", content: "An easy task" };
+  it("should start editing in card on START_TASK_EDITING", () => {
+    const previousCard: Card = { id: "card-1234", content: "An easy card" };
     const previousState: KanbanBoardState = stateAfterOneCreate(
       initialState,
-      previousTask
+      previousCard
     );
 
     const resultState: KanbanBoardState = cardsReducer(previousState, {
       type: BEGIN_TASK_EDITING,
-      task: previousTask,
+      card: previousCard,
       editing: true
     });
 
     expect(resultState).toEqual({
       ...previousState,
-      tasks: {
-        ...previousState.tasks,
-        [previousTask.id]: { ...previousTask, editing: true }
+      cards: {
+        ...previousState.cards,
+        [previousCard.id]: { ...previousCard, editing: true }
       }
     });
   });
 
-  it("should update task with new content on CHANGE_TASK_EDITING", () => {
-    const previousTask: Task = {
-      id: "task-1234",
-      content: "An easy task",
+  it("should update card with new content on CHANGE_TASK_EDITING", () => {
+    const previousCard: Card = {
+      id: "card-1234",
+      content: "An easy card",
       editing: true
     };
     const previousState: KanbanBoardState = stateAfterOneCreate(
       initialState,
-      previousTask
+      previousCard
     );
 
     const newContent = "condemor!";
     const resultState: KanbanBoardState = cardsReducer(previousState, {
       type: CHANGE_TASK_EDITING,
-      task: previousTask,
+      card: previousCard,
       newContent: newContent
     });
 
     expect(resultState).toEqual({
       ...previousState,
-      tasks: {
-        ...previousState.tasks,
-        [previousTask.id]: {
-          ...previousTask,
+      cards: {
+        ...previousState.cards,
+        [previousCard.id]: {
+          ...previousCard,
           content: newContent,
           editing: true
         }
@@ -61,30 +61,30 @@ describe("card update (editing) reducer", () => {
     });
   });
 
-  it("should update task on UPDATE_CARD_BEGIN", () => {
-    const previousTask: Task = { id: "task-1234", content: "An easy task" };
+  it("should update card on UPDATE_CARD_BEGIN", () => {
+    const previousCard: Card = { id: "card-1234", content: "An easy card" };
     const previousState: KanbanBoardState = stateAfterOneCreate(
       initialState,
-      previousTask
+      previousCard
     );
 
     const newContent = "jarl!";
-    const taskWithUpdatedContent: Task = {
-      ...previousTask,
+    const cardWithUpdatedContent: Card = {
+      ...previousCard,
       content: newContent,
       editing: false
     };
     const resultState: KanbanBoardState = cardsReducer(previousState, {
       type: UPDATE_CARD_BEGIN,
-      task: taskWithUpdatedContent
+      card: cardWithUpdatedContent
     });
 
     expect(resultState).toEqual({
       ...previousState,
-      tasks: {
-        ...previousState.tasks,
-        [previousTask.id]: {
-          ...previousTask,
+      cards: {
+        ...previousState.cards,
+        [previousCard.id]: {
+          ...previousCard,
           content: newContent,
           editing: false
         }

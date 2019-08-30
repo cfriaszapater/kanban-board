@@ -1,9 +1,9 @@
-import { Column, Board, Task, NameToTaskMap, NameToColumnMap } from "./types";
+import { Column, Board, Card, NameToCardMap, NameToColumnMap } from "./types";
 import { DraggableLocation, DraggableId } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
 import {
-  BeginTaskEditingAction,
-  ChangeTaskEditingAction,
+  BeginCardEditingAction,
+  ChangeCardEditingAction,
   UpdateCardActions
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
@@ -21,8 +21,8 @@ export type CardsActionsTypes =
   | MoveWithinColumnAction
   | MoveBetweenColumnsAction
   | CreateCardActions
-  | BeginTaskEditingAction
-  | ChangeTaskEditingAction
+  | BeginCardEditingAction
+  | ChangeCardEditingAction
   | UpdateCardActions;
 
 export interface FetchCardsBeginAction {
@@ -69,19 +69,19 @@ export const fetchBoard = () => async (
 };
 
 async function getBoard(): Promise<Board> {
-  const cards: Task[] = await getCards();
+  const cards: Card[] = await getCards();
   const columns: Column[] = await getColumns();
 
-  const taskMap: NameToTaskMap = {};
+  const cardMap: NameToCardMap = {};
   cards.forEach(card => {
-    taskMap[card.id] = card;
+    cardMap[card.id] = card;
   });
   const columnMap: NameToColumnMap = {};
   columns.forEach(column => {
     columnMap[column.id] = column;
   });
   return {
-    tasks: taskMap,
+    cards: cardMap,
     columns: columnMap,
     columnOrder: Object.keys(columnMap)
   };

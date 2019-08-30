@@ -12,12 +12,12 @@ import {
 } from "./store/cards/actions";
 import {
   NameToColumnMap,
-  NameToTaskMap,
+  NameToCardMap,
   KanbanBoardState
 } from "./store/cards/types";
 
 interface KanbanBoardProps {
-  tasks: NameToTaskMap;
+  cards: NameToCardMap;
   columns: NameToColumnMap;
   columnOrder: string[];
   loading: boolean;
@@ -76,22 +76,22 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <Container>
           {this.props.columnOrder.map(columnId => {
-            let addTaskButton = false;
+            let addCardButton = false;
             if (firstCol) {
-              addTaskButton = true;
+              addCardButton = true;
               firstCol = false;
             }
             const column = this.props.columns[columnId];
-            const tasks = column.taskIds.map(
-              taskId => this.props.tasks[taskId]
+            const cards = column.cardIds.map(
+              cardId => this.props.cards[cardId]
             );
 
             return (
               <ColumnView
                 key={column.id}
                 column={column}
-                tasks={tasks}
-                addTaskButton={addTaskButton}
+                cards={cards}
+                addCardButton={addCardButton}
                 dispatch={this.props.dispatch}
               />
             );
@@ -105,7 +105,7 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
 const mapStateToProps = (state: AppState) => ({
   columnOrder: state.cards.columnOrder,
   columns: state.cards.columns,
-  tasks: state.cards.tasks,
+  cards: state.cards.cards,
   loading: state.cards.loading,
   error: state.cards.error
 });

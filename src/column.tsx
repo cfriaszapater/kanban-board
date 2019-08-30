@@ -1,26 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
-import { TaskView } from "./task";
-import { AddTaskButton } from "./addTaskButton";
-import { Column, Task } from "./store/cards/types";
+import { CardView } from "./card";
+import { AddCardButton } from "./addCardButton";
+import { Column, Card } from "./store/cards/types";
 import { ThunkDispatch } from "redux-thunk";
 
 interface ColumnProps {
   key: string;
   column: Column;
-  tasks: Task[];
-  addTaskButton: boolean;
+  cards: Card[];
+  addCardButton: boolean;
   dispatch: ThunkDispatch<{}, {}, any>;
 }
 
-interface TaskListProps {
+interface CardListProps {
   isDraggingOver: boolean;
   dispatch: ThunkDispatch<{}, {}, any>;
 }
 
 interface InnerListProps {
-  tasks: Task[];
+  cards: Card[];
   dispatch: ThunkDispatch<{}, {}, any>;
 }
 
@@ -37,7 +37,7 @@ const Title = styled.h3`
   padding: 8px;
 `;
 
-const TaskList = styled.div<TaskListProps>`
+const CardList = styled.div<CardListProps>`
   padding: 8px;
   transition: background-color 0.2s ease;
   background-color: ${props => (props.isDraggingOver ? "skyblue" : "white")};
@@ -47,10 +47,10 @@ const TaskList = styled.div<TaskListProps>`
 
 class InnerList extends React.PureComponent<InnerListProps> {
   render() {
-    return this.props.tasks.map((task, index) => (
-      <TaskView
-        key={task.id}
-        task={task}
+    return this.props.cards.map((card, index) => (
+      <CardView
+        key={card.id}
+        card={card}
         index={index}
         dispatch={this.props.dispatch}
       />
@@ -63,23 +63,23 @@ export class ColumnView extends React.Component<ColumnProps> {
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
-        {this.props.addTaskButton ? (
-          <AddTaskButton dispatch={this.props.dispatch} />
+        {this.props.addCardButton ? (
+          <AddCardButton dispatch={this.props.dispatch} />
         ) : null}
         <Droppable droppableId={this.props.column.id}>
           {(provided, snapshot) => (
-            <TaskList
+            <CardList
               ref={provided.innerRef}
               {...provided.droppableProps}
               isDraggingOver={snapshot.isDraggingOver}
               dispatch={this.props.dispatch}
             >
               <InnerList
-                tasks={this.props.tasks}
+                cards={this.props.cards}
                 dispatch={this.props.dispatch}
               />
               {provided.placeholder}
-            </TaskList>
+            </CardList>
           )}
         </Droppable>
       </Container>

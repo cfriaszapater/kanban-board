@@ -12,15 +12,15 @@ import {
   CREATE_CARD_SUCCESS,
   CREATE_CARD_FAILURE
 } from "./createCardActions";
-import { KanbanBoardState, Task } from "./types";
+import { KanbanBoardState, Card } from "./types";
 import {
   createCardBegin,
   createCardFailure,
   createCardSuccess
 } from "./createCardReducer";
 import {
-  beginTaskEditing,
-  changeTaskEditing,
+  beginCardEditing,
+  changeCardEditing,
   updateCardBegin
 } from "./updateCardReducer";
 import {
@@ -30,22 +30,22 @@ import {
 } from "./updateCardActions";
 
 export const initialState: KanbanBoardState = {
-  tasks: {},
+  cards: {},
   columns: {
     "column-1": {
       id: "column-1",
       title: "To do",
-      taskIds: []
+      cardIds: []
     },
     "column-2": {
       id: "column-2",
       title: "In progress",
-      taskIds: []
+      cardIds: []
     },
     "column-3": {
       id: "column-3",
       title: "Done",
-      taskIds: []
+      cardIds: []
     }
   },
   columnOrder: ["column-1", "column-2", "column-3"],
@@ -73,7 +73,7 @@ export function cardsReducer(
       return {
         ...state,
         loading: false,
-        tasks: action.payload.tasks,
+        cards: action.payload.cards,
         columns: action.payload.columns,
         columnOrder: action.payload.columnOrder
       };
@@ -88,18 +88,18 @@ export function cardsReducer(
         ...state,
         loading: false,
         error: action.error,
-        tasks: {},
+        cards: {},
         columns: {},
         columnOrder: []
       };
 
     case MOVE_WITHIN_COLUMN:
-      const newTaskIds = Array.from(action.startCol.taskIds);
-      newTaskIds.splice(action.source.index, 1);
-      newTaskIds.splice(action.destination.index, 0, action.draggableId);
+      const newCardIds = Array.from(action.startCol.cardIds);
+      newCardIds.splice(action.source.index, 1);
+      newCardIds.splice(action.destination.index, 0, action.draggableId);
       const newColumn = {
         ...action.startCol,
-        taskIds: newTaskIds
+        cardIds: newCardIds
       };
       return {
         ...state,
@@ -110,17 +110,17 @@ export function cardsReducer(
       };
 
     case MOVE_BETWEEN_COLUMNS:
-      const startTaskIds = Array.from(action.startCol.taskIds);
-      startTaskIds.splice(action.source.index, 1);
+      const startCardIds = Array.from(action.startCol.cardIds);
+      startCardIds.splice(action.source.index, 1);
       const newStartCol = {
         ...action.startCol,
-        taskIds: startTaskIds
+        cardIds: startCardIds
       };
-      const endTaskIds = Array.from(action.endCol.taskIds);
-      endTaskIds.splice(action.destination.index, 0, action.draggableId);
+      const endCardIds = Array.from(action.endCol.cardIds);
+      endCardIds.splice(action.destination.index, 0, action.draggableId);
       const newEndCol = {
         ...action.endCol,
-        taskIds: endTaskIds
+        cardIds: endCardIds
       };
       return {
         ...state,
@@ -141,10 +141,10 @@ export function cardsReducer(
       return createCardFailure(action, state);
 
     case BEGIN_TASK_EDITING:
-      return beginTaskEditing(action, state);
+      return beginCardEditing(action, state);
 
     case CHANGE_TASK_EDITING:
-      return changeTaskEditing(action, state);
+      return changeCardEditing(action, state);
 
     case UPDATE_CARD_BEGIN:
       return updateCardBegin(action, state);
@@ -155,15 +155,15 @@ export function cardsReducer(
   }
 }
 
-export function stateWithUpdatedTask(
+export function stateWithUpdatedCard(
   state: KanbanBoardState,
-  taskToUpdate: Task
+  cardToUpdate: Card
 ): KanbanBoardState {
   return {
     ...state,
-    tasks: {
-      ...state.tasks,
-      [taskToUpdate.id]: taskToUpdate
+    cards: {
+      ...state.cards,
+      [cardToUpdate.id]: cardToUpdate
     }
   };
 }

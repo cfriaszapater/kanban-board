@@ -2,7 +2,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as actions from "./createCardActions";
 import expect from "expect";
-import { Task } from "./types";
+import { Card } from "./types";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -14,7 +14,7 @@ describe("async create card action", () => {
 
   it("should BEGIN, fetch and SUCCESS on create card", () => {
     const store = mockStore();
-    const card: Task = { id: "task-13", content: "Do the laundry" };
+    const card: Card = { id: "card-13", content: "Do the laundry" };
     fetchMock.once(JSON.stringify(card));
 
     return store.dispatch(actions.createCard(card) as any).then(expectations());
@@ -38,7 +38,7 @@ describe("async create card action", () => {
     const error = new TypeError("Failed to fetch (simulated network error)");
     fetchMock.mockReject(error);
     const store = mockStore();
-    const card: Task = { id: "task-13", content: "Do the laundry" };
+    const card: Card = { id: "card-13", content: "Do the laundry" };
 
     return store.dispatch(actions.createCard(card) as any).then(expectations());
 

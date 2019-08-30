@@ -1,9 +1,9 @@
 {
-  "tasks": {
-    "task-1": { "id": "task-1", "content": "Create kanban board with react" },
-    "task-2": { "id": "task-2", "content": "Deploy to heroku" },
-    "task-3": {
-      "id": "task-3",
+  "cards": {
+    "card-1": { "id": "card-1", "content": "Create kanban board with react" },
+    "card-2": { "id": "card-2", "content": "Deploy to heroku" },
+    "card-3": {
+      "id": "card-3",
       "content": "Start adding other features (eg: persist state in mongodb...)"
     }
   },
@@ -11,17 +11,17 @@
     "column-1": {
       "id": "column-1",
       "title": "To do",
-      "taskIds": ["task-1", "task-2", "task-3"]
+      "cardIds": ["card-1", "card-2", "card-3"]
     },
     "column-2": {
       "id": "column-2",
       "title": "In progress",
-      "taskIds": []
+      "cardIds": []
     },
     "column-3": {
       "id": "column-3",
       "title": "Done",
-      "taskIds": []
+      "cardIds": []
     }
   },
   "columnOrder": ["column-1", "column-2", "column-3"]

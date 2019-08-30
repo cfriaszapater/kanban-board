@@ -1,10 +1,10 @@
 export interface Column {
   id: string;
   title: string;
-  taskIds: string[];
+  cardIds: string[];
 }
 
-export interface Task {
+export interface Card {
   id: string;
   content: string;
   loading?: boolean;
@@ -13,22 +13,22 @@ export interface Task {
   _id?: string;
 }
 
-export interface TaskLoading extends Task {
+export interface CardLoading extends Card {
   loading: true;
 }
 
-export interface TaskLoaded extends Task {
+export interface CardLoaded extends Card {
   loading: false;
   _id: string;
 }
 
-export interface TaskErrorLoading extends Task {
+export interface CardErrorLoading extends Card {
   loading: false;
   error: true;
 }
 
-export interface NameToTaskMap {
-  [key: string]: Task;
+export interface NameToCardMap {
+  [key: string]: Card;
 }
 
 export interface NameToColumnMap {
@@ -36,7 +36,7 @@ export interface NameToColumnMap {
 }
 
 export interface Board {
-  tasks: NameToTaskMap;
+  cards: NameToCardMap;
   columns: NameToColumnMap;
   columnOrder: string[];
 }

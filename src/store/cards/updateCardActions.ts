@@ -1,4 +1,4 @@
-import { Task } from "./types";
+import { Card } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 
 export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
@@ -7,65 +7,65 @@ export const UPDATE_CARD_BEGIN = "UPDATE_CARD_BEGIN";
 export const UPDATE_CARD_SUCCESS = "UPDATE_CARD_SUCCESS";
 export const UPDATE_CARD_FAILURE = "UPDATE_CARD_FAILURE";
 
-export interface BeginTaskEditingAction {
+export interface BeginCardEditingAction {
   type: typeof BEGIN_TASK_EDITING;
-  task: Task;
+  card: Card;
   editing: true;
 }
 
-export interface ChangeTaskEditingAction {
+export interface ChangeCardEditingAction {
   type: typeof CHANGE_TASK_EDITING;
-  task: Task;
+  card: Card;
   newContent: string;
 }
 
 export interface UpdateCardBeginAction {
   type: typeof UPDATE_CARD_BEGIN;
-  task: Task;
+  card: Card;
 }
 
 export interface UpdateCardSuccessAction {
   type: typeof UPDATE_CARD_SUCCESS;
-  task: Task;
+  card: Card;
 }
 
 export interface UpdateCardFailureAction {
   type: typeof UPDATE_CARD_FAILURE;
-  task: Task;
+  card: Card;
 }
 
-export function beginTaskEditing(task: Task): BeginTaskEditingAction {
+export function beginCardEditing(card: Card): BeginCardEditingAction {
   return {
     type: BEGIN_TASK_EDITING,
-    task: task,
+    card: card,
     editing: true
   };
 }
 
-export function changeTaskEditing(
-  task: Task,
+export function changeCardEditing(
+  card: Card,
   newContent: string
-): ChangeTaskEditingAction {
+): ChangeCardEditingAction {
   return {
     type: CHANGE_TASK_EDITING,
-    task: task,
+    card: card,
     newContent: newContent
   };
 }
 
 export function updateCardBegin(
-  task: Task,
+  card: Card,
   newContent: string
 ): UpdateCardBeginAction {
-  const taskWithUpdatedContent: Task = {
-    ...task,
+  const cardWithUpdatedContent: Card = {
+    ...card,
     content: newContent,
     editing: false
   };
 
   return {
     type: UPDATE_CARD_BEGIN,
-    task: taskWithUpdatedContent
+    card: cardWithUpdatedContent
   };
 }
 
@@ -74,7 +74,7 @@ export type UpdateCardActions =
   | UpdateCardSuccessAction
   | UpdateCardFailureAction;
 
-export const updateCard = (card: Task, newContent: string) => async (
+export const updateCard = (card: Card, newContent: string) => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<UpdateCardActions> => {
   if (typeof card._id === "undefined") {
@@ -83,7 +83,7 @@ export const updateCard = (card: Task, newContent: string) => async (
     );
   }
   const updateCardBeginAction = dispatch(updateCardBegin(card, newContent));
-  const cardWithNewContent = updateCardBeginAction.task;
+  const cardWithNewContent = updateCardBeginAction.card;
   try {
     put(cardWithNewContent);
     return dispatch(updateCardSuccess(cardWithNewContent));
@@ -92,7 +92,7 @@ export const updateCard = (card: Task, newContent: string) => async (
   }
 };
 
-async function put(cardWithNewContent: Task): Promise<void> {
+async function put(cardWithNewContent: Card): Promise<void> {
   const req = new Request(
     "http://localhost:8080/cards/" + cardWithNewContent._id,
     {
@@ -110,17 +110,17 @@ async function put(cardWithNewContent: Task): Promise<void> {
   }
 }
 
-function updateCardSuccess(card: Task): UpdateCardSuccessAction {
+function updateCardSuccess(card: Card): UpdateCardSuccessAction {
   return {
     type: UPDATE_CARD_SUCCESS,
-    task: card
+    card: card
   };
 }
 
-function updateCardFailure(card: Task, error: Error): UpdateCardFailureAction {
+function updateCardFailure(card: Card, error: Error): UpdateCardFailureAction {
   console.log(error);
   return {
     type: UPDATE_CARD_FAILURE,
-    task: card
+    card: card
   };
 }

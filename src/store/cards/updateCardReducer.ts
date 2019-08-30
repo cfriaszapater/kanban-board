@@ -1,37 +1,37 @@
 import {
-  BeginTaskEditingAction,
-  ChangeTaskEditingAction,
+  BeginCardEditingAction,
+  ChangeCardEditingAction,
   UpdateCardBeginAction
 } from "./updateCardActions";
-import { KanbanBoardState, Task } from "./types";
-import { stateWithUpdatedTask } from "./reducers";
+import { KanbanBoardState, Card } from "./types";
+import { stateWithUpdatedCard } from "./reducers";
 
-export function beginTaskEditing(
-  action: BeginTaskEditingAction,
+export function beginCardEditing(
+  action: BeginCardEditingAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const taskWithEditingEnabled: Task = {
-    ...action.task,
+  const cardWithEditingEnabled: Card = {
+    ...action.card,
     editing: action.editing
   };
-  return stateWithUpdatedTask(state, taskWithEditingEnabled);
+  return stateWithUpdatedCard(state, cardWithEditingEnabled);
 }
 
-export function changeTaskEditing(
-  action: ChangeTaskEditingAction,
+export function changeCardEditing(
+  action: ChangeCardEditingAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const taskWithUpdatedContent: Task = {
-    ...action.task,
+  const cardWithUpdatedContent: Card = {
+    ...action.card,
     content: action.newContent,
     editing: true
   };
-  return stateWithUpdatedTask(state, taskWithUpdatedContent);
+  return stateWithUpdatedCard(state, cardWithUpdatedContent);
 }
 
 export function updateCardBegin(
   action: UpdateCardBeginAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  return stateWithUpdatedTask(state, action.task);
+  return stateWithUpdatedCard(state, action.card);
 }

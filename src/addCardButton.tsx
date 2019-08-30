@@ -1,27 +1,27 @@
 import React from "react";
 import uuid from "uuid/v1";
 import { createCard } from "./store/cards/createCardActions";
-import { Task } from "./store/cards/types";
+import { Card } from "./store/cards/types";
 import { ThunkDispatch } from "redux-thunk";
 
-export class AddTaskButton extends React.Component<AddTaskButtonProps> {
+export class AddCardButton extends React.Component<AddCardButtonProps> {
   onClick = () => {
-    let task: Task = {
+    let card: Card = {
       id: uuid(),
       content: "Click here to edit this card"
     };
-    this.props.dispatch(createCard(task));
+    this.props.dispatch(createCard(card));
   };
 
   render() {
     return (
-      <button name="addTask" type="button" onClick={this.onClick}>
+      <button name="addCard" type="button" onClick={this.onClick}>
         +
       </button>
     );
   }
 }
 
-interface AddTaskButtonProps {
+interface AddCardButtonProps {
   dispatch: ThunkDispatch<{}, {}, any>;
 }

@@ -4,28 +4,28 @@ import {
 } from "./createCardActions";
 import {
   KanbanBoardState,
-  TaskLoading,
-  TaskLoaded,
-  TaskErrorLoading
+  CardLoading,
+  CardLoaded,
+  CardErrorLoading
 } from "./types";
 import { CreateCardSuccessAction } from "./createCardActions";
-import { stateWithUpdatedTask } from "./reducers";
+import { stateWithUpdatedCard } from "./reducers";
 
 export function createCardBegin(
   action: CreateCardBeginAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const task: TaskLoading = { ...action.payload, loading: true };
-  // Task added to tasks and columns[0].taskIds (was empty before)
+  const card: CardLoading = { ...action.payload, loading: true };
+  // Card added to cards and columns[0].cardIds (was empty before)
   const firstCol = state.columns[Object.keys(state.columns)[0]];
   return {
     ...state,
-    tasks: { ...state.tasks, [task.id]: task },
+    cards: { ...state.cards, [card.id]: card },
     columns: {
       ...state.columns,
       [firstCol.id]: {
         ...state.columns[firstCol.id],
-        taskIds: [...state.columns[firstCol.id].taskIds, task.id]
+        cardIds: [...state.columns[firstCol.id].cardIds, card.id]
       }
     }
   };
@@ -35,18 +35,18 @@ export function createCardSuccess(
   action: CreateCardSuccessAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const taskLoaded: TaskLoaded = { ...action.payload, loading: false };
-  return stateWithUpdatedTask(state, taskLoaded);
+  const cardLoaded: CardLoaded = { ...action.payload, loading: false };
+  return stateWithUpdatedCard(state, cardLoaded);
 }
 
 export function createCardFailure(
   action: CreateCardFailureAction,
   state: KanbanBoardState
 ): KanbanBoardState {
-  const taskWithErrorSet: TaskErrorLoading = {
+  const cardWithErrorSet: CardErrorLoading = {
     ...action.payload,
     loading: false,
     error: true
   };
-  return stateWithUpdatedTask(state, taskWithErrorSet);
+  return stateWithUpdatedCard(state, cardWithErrorSet);
 }
