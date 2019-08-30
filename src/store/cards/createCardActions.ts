@@ -30,14 +30,17 @@ export const createCard = (card: Task) => async (
 ): Promise<CreateCardActions> => {
   dispatch(createCardBegin(card));
   try {
-    // TODO POST /cards
-    const req = new Request("http://httpbin.org/post", {
+    const req = new Request("http://localhost:8080/cards", {
       method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(card)
     });
+    console.log("req", req);
     const res = await fetch(req);
-    // XXX When "POST /cards", remove ".json"
-    const createdCard = (await res.json()).json;
+    const createdCard = await res.json();
     return dispatch(createCardSuccess(createdCard));
   } catch (ex) {
     return dispatch(createCardFailure(card, ex));
