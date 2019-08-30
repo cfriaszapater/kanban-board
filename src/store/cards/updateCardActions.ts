@@ -85,26 +85,30 @@ export const updateCard = (card: Task, newContent: string) => async (
   const updateCardBeginAction = dispatch(updateCardBegin(card, newContent));
   const cardWithNewContent = updateCardBeginAction.task;
   try {
-    const req = new Request(
-      "http://localhost:8080/cards/" + cardWithNewContent._id,
-      {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(cardWithNewContent)
-      }
-    );
-    const res = await fetch(req);
-    if (!res.ok) {
-      throw new Error("Response not OK: " + res);
-    }
+    put(cardWithNewContent);
     return dispatch(updateCardSuccess(cardWithNewContent));
   } catch (ex) {
     return dispatch(updateCardFailure(cardWithNewContent, ex));
   }
 };
+
+async function put(cardWithNewContent: Task): Promise<void> {
+  const req = new Request(
+    "http://localhost:8080/cards/" + cardWithNewContent._id,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(cardWithNewContent)
+    }
+  );
+  const res = await fetch(req);
+  if (!res.ok) {
+    throw new Error("Could not update card, response KO: " + res);
+  }
+}
 
 function updateCardSuccess(card: Task): UpdateCardSuccessAction {
   return {

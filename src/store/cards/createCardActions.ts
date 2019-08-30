@@ -30,21 +30,29 @@ export const createCard = (card: Task) => async (
 ): Promise<CreateCardActions> => {
   dispatch(createCardBegin(card));
   try {
-    const req = new Request("http://localhost:8080/cards", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(card)
-    });
-    const res = await fetch(req);
-    const createdCard = await res.json();
+    const createdCard = await post(card);
     return dispatch(createCardSuccess(createdCard));
   } catch (ex) {
     return dispatch(createCardFailure(card, ex));
   }
 };
+
+async function post(card: Task) {
+  const req = new Request("http://localhost:8080/cards", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(card)
+  });
+  const res = await fetch(req);
+  if (!res.ok) {
+    throw new Error("Could not create card, response KO: " + res);
+  }
+  const createdCard = await res.json();
+  return createdCard;
+}
 
 function createCardBegin(card: Task): CreateCardBeginAction {
   return {

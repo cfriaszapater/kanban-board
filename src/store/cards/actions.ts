@@ -1,5 +1,4 @@
-import initialData from "./initial-data.json";
-import { Column, Cards } from "./types";
+import { Column, Board, Task, NameToTaskMap, NameToColumnMap } from "./types";
 import { DraggableLocation, DraggableId } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
 import {
@@ -32,7 +31,7 @@ export interface FetchCardsBeginAction {
 
 export interface FetchCardsSuccessAction {
   type: typeof FETCH_CARDS_SUCCESS;
-  payload: Cards;
+  payload: Board;
 }
 
 export interface FetchCardsFailureAction {
@@ -57,17 +56,58 @@ export interface MoveBetweenColumnsAction {
   draggableId: DraggableId;
 }
 
-export const fetchCards = () => async (
+export const fetchBoard = () => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<FetchCardsSuccessAction | FetchCardsFailureAction> => {
   dispatch(fetchCardsBegin());
   try {
-    const json: Cards = await fakeGetCards();
-    return dispatch(fetchCardsSuccess(json));
+    const board: Board = await getBoard();
+    return dispatch(fetchCardsSuccess(board));
   } catch (error) {
     return dispatch(fetchCardsFailure(error));
   }
 };
+
+async function getBoard(): Promise<Board> {
+  const cards: Task[] = await getCards();
+  const columns: Column[] = await getColumns();
+
+  const taskMap: NameToTaskMap = {};
+  cards.forEach(card => {
+    taskMap[card.id] = card;
+  });
+  const columnMap: NameToColumnMap = {};
+  columns.forEach(column => {
+    columnMap[column.id] = column;
+  });
+  return {
+    tasks: taskMap,
+    columns: columnMap,
+    columnOrder: Object.keys(columnMap)
+  };
+}
+
+async function getCards() {
+  return await get("http://localhost:8080/cards");
+}
+
+async function getColumns() {
+  return await get("http://localhost:8080/columns");
+}
+
+async function get(url: string) {
+  const req = new Request(url, {
+    method: "GET",
+    headers: {
+      Accept: "application/json"
+    }
+  });
+  const res = await fetch(req);
+  if (!res.ok) {
+    throw new Error("Could not update card, response KO: " + res);
+  }
+  return await res.json();
+}
 
 export function moveWithinSameColumn(
   startCol: Column,
@@ -101,18 +141,11 @@ export function moveBetweenColumns(
   };
 }
 
-function fakeGetCards(): Promise<Cards> {
-  return new Promise(resolve => {
-    // Resolve after a timeout so we can see the loading indicator
-    setTimeout(() => resolve(initialData), 1000);
-  });
-}
-
 export const fetchCardsBegin = (): FetchCardsBeginAction => ({
   type: FETCH_CARDS_BEGIN
 });
 
-export const fetchCardsSuccess = (cards: Cards): FetchCardsSuccessAction => ({
+export const fetchCardsSuccess = (cards: Board): FetchCardsSuccessAction => ({
   type: FETCH_CARDS_SUCCESS,
   payload: cards
 });

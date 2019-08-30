@@ -35,13 +35,13 @@ export interface NameToColumnMap {
   [key: string]: Column;
 }
 
-export interface Cards {
+export interface Board {
   tasks: NameToTaskMap;
   columns: NameToColumnMap;
   columnOrder: string[];
 }
 
-export interface KanbanBoardState extends Cards {
+export interface KanbanBoardState extends Board {
   loading: boolean;
   error: Error | null;
 }

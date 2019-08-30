@@ -6,7 +6,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { ColumnView } from "./column";
 import { AppState } from "./store";
 import {
-  fetchCards,
+  fetchBoard,
   moveWithinSameColumn,
   moveBetweenColumns
 } from "./store/cards/actions";
@@ -31,7 +31,7 @@ const Container = styled.div`
 
 class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
   componentDidMount() {
-    this.props.dispatch(fetchCards());
+    this.props.dispatch(fetchBoard());
   }
 
   onDragEnd = (result: DropResult) => {
