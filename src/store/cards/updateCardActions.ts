@@ -1,6 +1,6 @@
 import { Card } from "./types";
 import { ThunkDispatch } from "redux-thunk";
-import { backendUrl } from "../../backendUrl";
+import { backendUrl } from "../../util/backendUrl";
 import { put } from "../../util/fetchJson";
 
 export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";

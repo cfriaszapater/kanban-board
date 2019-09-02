@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 import * as actions from "./createCardActions";
 import expect from "expect";
 import { Card } from "./types";
-import { backendUrl } from "../../backendUrl";
+import { backendUrl } from "../../util/backendUrl";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

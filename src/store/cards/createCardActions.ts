@@ -1,6 +1,6 @@
 import { Card, CardLoaded } from "./types";
 import { ThunkDispatch } from "redux-thunk";
-import { backendUrl } from "../../backendUrl";
+import { backendUrl } from "../../util/backendUrl";
 import { post } from "../../util/fetchJson";
 
 export const CREATE_CARD_BEGIN = "CREATE_CARD_BEGIN";

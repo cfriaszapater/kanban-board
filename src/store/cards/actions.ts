@@ -7,7 +7,7 @@ import {
   UpdateCardActions
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
-import { backendUrl } from "../../backendUrl";
+import { backendUrl } from "../../util/backendUrl";
 import { get } from "../../util/fetchJson";
 
 export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";

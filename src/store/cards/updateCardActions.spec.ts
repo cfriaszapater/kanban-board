@@ -14,7 +14,7 @@ import {
 } from "./updateCardActions";
 import expect from "expect";
 import { Card, CardLoaded } from "./types";
-import { backendUrl } from "../../backendUrl";
+import { backendUrl } from "../../util/backendUrl";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
