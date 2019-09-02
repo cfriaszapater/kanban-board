@@ -1,6 +1,7 @@
 import { Card } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../backendUrl";
+import { put } from "../../util/fetchJson";
 
 export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
 export const CHANGE_TASK_EDITING = "CHANGE_TASK_EDITING";
@@ -86,27 +87,12 @@ export const updateCard = (card: Card, newContent: string) => async (
   const updateCardBeginAction = dispatch(updateCardBegin(card, newContent));
   const cardWithNewContent = updateCardBeginAction.card;
   try {
-    put(cardWithNewContent);
+    put(backendUrl() + "/cards/" + cardWithNewContent._id, cardWithNewContent);
     return dispatch(updateCardSuccess(cardWithNewContent));
   } catch (ex) {
     return dispatch(updateCardFailure(cardWithNewContent, ex));
   }
 };
-
-async function put(cardWithNewContent: Card): Promise<void> {
-  const req = new Request(backendUrl() + "/cards/" + cardWithNewContent._id, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(cardWithNewContent)
-  });
-  const res = await fetch(req);
-  if (!res.ok) {
-    throw new Error("Could not update card, response KO: " + res);
-  }
-}
 
 function updateCardSuccess(card: Card): UpdateCardSuccessAction {
   return {

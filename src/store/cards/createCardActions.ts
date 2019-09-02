@@ -1,6 +1,7 @@
 import { Card, CardLoaded } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../backendUrl";
+import { post } from "../../util/fetchJson";
 
 export const CREATE_CARD_BEGIN = "CREATE_CARD_BEGIN";
 export const CREATE_CARD_SUCCESS = "CREATE_CARD_SUCCESS";
@@ -31,29 +32,12 @@ export const createCard = (card: Card) => async (
 ): Promise<CreateCardActions> => {
   dispatch(createCardBegin(card));
   try {
-    const createdCard = await post(card);
+    const createdCard = await post(backendUrl() + "/cards", card);
     return dispatch(createCardSuccess(createdCard));
   } catch (ex) {
     return dispatch(createCardFailure(card, ex));
   }
 };
-
-async function post(card: Card) {
-  const req = new Request(backendUrl() + "/cards", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(card)
-  });
-  const res = await fetch(req);
-  if (!res.ok) {
-    throw new Error("Could not create card, response KO: " + res);
-  }
-  const createdCard = await res.json();
-  return createdCard;
-}
 
 function createCardBegin(card: Card): CreateCardBeginAction {
   return {

@@ -8,6 +8,7 @@ import {
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
 import { backendUrl } from "../../backendUrl";
+import { get } from "../../util/fetchJson";
 
 export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
 export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
@@ -96,26 +97,13 @@ async function getColumns() {
   return await get(backendUrl() + "/columns");
 }
 
-async function get(url: string) {
-  const req = new Request(url, {
-    method: "GET",
-    headers: {
-      Accept: "application/json"
-    }
-  });
-  const res = await fetch(req);
-  if (!res.ok) {
-    throw new Error("Could not update card, response KO: " + res);
-  }
-  return await res.json();
-}
-
 export function moveWithinSameColumn(
   startCol: Column,
   source: DraggableLocation,
   destination: DraggableLocation,
   draggableId: DraggableId
 ): MoveWithinColumnAction {
+  // TODO PUT /columns
   return {
     type: MOVE_WITHIN_COLUMN,
     startCol: startCol,
@@ -132,6 +120,7 @@ export function moveBetweenColumns(
   destination: DraggableLocation,
   draggableId: DraggableId
 ) {
+  // TODO PUT /columns
   return {
     type: MOVE_BETWEEN_COLUMNS,
     startCol: startCol,
