@@ -16,16 +16,16 @@ export function createCardBegin(
   state: KanbanBoardState
 ): KanbanBoardState {
   const card: CardLoading = { ...action.payload, loading: true };
-  // Card added to cards and columns[0].cardIds (was empty before)
-  const firstCol = state.columns[Object.keys(state.columns)[0]];
+  // Add Card to cards and add cardId to firstColumn.cardIds
+  const firstColumn = state.columns[Object.keys(state.columns)[0]];
   return {
     ...state,
     cards: { ...state.cards, [card.id]: card },
     columns: {
       ...state.columns,
-      [firstCol.id]: {
-        ...state.columns[firstCol.id],
-        cardIds: [...state.columns[firstCol.id].cardIds, card.id]
+      [firstColumn.id]: {
+        ...state.columns[firstColumn.id],
+        cardIds: [...state.columns[firstColumn.id].cardIds, card.id]
       }
     }
   };
