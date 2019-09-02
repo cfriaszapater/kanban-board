@@ -1,8 +1,8 @@
 import { KanbanBoardState } from "./types";
-import { MoveCardWithinColumnBeginAction } from "./dragCardActions";
+import { DragCardWithinColumnBeginAction } from "./dragCardActions";
 
-export function moveCardWithinColumnBegin(
-  action: MoveCardWithinColumnBeginAction,
+export function dragCardWithinColumnBegin(
+  action: DragCardWithinColumnBeginAction,
   state: KanbanBoardState
 ) {
   let updatedColumn = action.column;

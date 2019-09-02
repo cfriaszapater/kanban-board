@@ -5,11 +5,11 @@ import expect from "expect";
 import { Card, Column } from "./types";
 import { backendUrl } from "../../util/backendUrl";
 import {
-  moveCardWithinColumn,
-  MOVE_CARD_WITHIN_COLUMN_BEGIN,
-  MOVE_CARD_FAILURE,
-  moveCardBetweenColumns,
-  MOVE_CARD_BETWEEN_COLUMNS_BEGIN
+  dragCardWithinColumn,
+  DRAG_CARD_WITHIN_COLUMN_BEGIN,
+  DRAG_CARD_FAILURE,
+  dragCardBetweenColumns,
+  DRAG_CARD_BETWEEN_COLUMNS_BEGIN
 } from "./dragCardActions";
 import { CardsActionsTypes } from "./CardsActionsTypes";
 
@@ -30,7 +30,7 @@ describe("drag card actions", () => {
     const cardId2 = "card-2";
     const column: Column = columnWithCards(columnBackendId, cardId1, cardId2);
 
-    return moveCardWithinColumn(column, 0, 1, cardId1, store.dispatch).then(
+    return dragCardWithinColumn(column, 0, 1, cardId1, store.dispatch).then(
       expectations()
     );
 
@@ -43,7 +43,7 @@ describe("drag card actions", () => {
         };
         const expectedActions: CardsActionsTypes[] = [
           {
-            type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
+            type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
             column: expectedColumnWithSwappedCardIds
           }
         ];
@@ -66,7 +66,7 @@ describe("drag card actions", () => {
     const cardId2 = "card-2";
     const column: Column = columnWithCards(columnBackendId, cardId1, cardId2);
 
-    return moveCardWithinColumn(column, 0, 1, cardId1, store.dispatch).then(
+    return dragCardWithinColumn(column, 0, 1, cardId1, store.dispatch).then(
       expectations()
     );
 
@@ -78,10 +78,10 @@ describe("drag card actions", () => {
         };
         const expectedActions: CardsActionsTypes[] = [
           {
-            type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
+            type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
             column: expectedColumnWithSwappedCardIds
           },
-          { type: MOVE_CARD_FAILURE, error: error }
+          { type: DRAG_CARD_FAILURE, error: error }
         ];
         expect(store.getActions()).toEqual(expectedActions);
 
@@ -101,7 +101,7 @@ describe("drag card actions", () => {
     const startColumn: Column = columnWithCards("be-col-1", cardId1, cardId2);
     const endColumn: Column = columnWithCards("be-col-2");
 
-    return moveCardBetweenColumns(
+    return dragCardBetweenColumns(
       startColumn,
       endColumn,
       0,
@@ -123,7 +123,7 @@ describe("drag card actions", () => {
         };
         const expectedActions: CardsActionsTypes[] = [
           {
-            type: MOVE_CARD_BETWEEN_COLUMNS_BEGIN,
+            type: DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
             startColumn: expectedStartColumnWithoutDraggedCard,
             endColumn: expectedEndColumnWithDraggedCard
           }

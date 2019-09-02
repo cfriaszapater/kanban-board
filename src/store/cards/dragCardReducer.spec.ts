@@ -1,8 +1,8 @@
 import { Card, KanbanBoardState } from "./types";
 import { initialState, cardsReducer } from "./reducers";
 import {
-  MoveCardWithinColumnBeginAction,
-  MOVE_CARD_WITHIN_COLUMN_BEGIN
+  DragCardWithinColumnBeginAction,
+  DRAG_CARD_WITHIN_COLUMN_BEGIN
 } from "./dragCardActions";
 import { addCardToState } from "./createCardReducer";
 
@@ -22,8 +22,8 @@ describe("drag card reducer", () => {
       ...givenFirstColumn,
       cardIds: [card2.id, card1.id]
     };
-    const action: MoveCardWithinColumnBeginAction = {
-      type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
+    const action: DragCardWithinColumnBeginAction = {
+      type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
       column: columnWithSwappedCardIds
     };
     const resultState = cardsReducer(initialState, action);

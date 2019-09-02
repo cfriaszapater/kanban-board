@@ -26,10 +26,10 @@ import {
   UPDATE_CARD_BEGIN
 } from "./updateCardActions";
 import {
-  MOVE_CARD_WITHIN_COLUMN_BEGIN,
-  MOVE_CARD_BETWEEN_COLUMNS_BEGIN
+  DRAG_CARD_WITHIN_COLUMN_BEGIN,
+  DRAG_CARD_BETWEEN_COLUMNS_BEGIN
 } from "./dragCardActions";
-import { moveCardWithinColumnBegin } from "./dragCardReducer";
+import { dragCardWithinColumnBegin } from "./dragCardReducer";
 
 export const initialState: KanbanBoardState = {
   cards: {},
@@ -94,10 +94,10 @@ export function cardsReducer(
         columnOrder: []
       };
 
-    case MOVE_CARD_WITHIN_COLUMN_BEGIN:
-      return moveCardWithinColumnBegin(action, state);
+    case DRAG_CARD_WITHIN_COLUMN_BEGIN:
+      return dragCardWithinColumnBegin(action, state);
 
-    case MOVE_CARD_BETWEEN_COLUMNS_BEGIN:
+    case DRAG_CARD_BETWEEN_COLUMNS_BEGIN:
       return {
         ...state,
         columns: {

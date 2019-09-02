@@ -3,34 +3,34 @@ import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
 import { put } from "../../util/fetchJson";
 
-export const MOVE_CARD_WITHIN_COLUMN_BEGIN = "MOVE_CARD_WITHIN_COLUMN_BEGIN";
-export const MOVE_CARD_FAILURE = "MOVE_CARD_FAILURE";
-export const MOVE_CARD_BETWEEN_COLUMNS_BEGIN =
-  "MOVE_CARD_BETWEEN_COLUMNS_BEGIN";
+export const DRAG_CARD_WITHIN_COLUMN_BEGIN = "DRAG_CARD_WITHIN_COLUMN_BEGIN";
+export const DRAG_CARD_FAILURE = "DRAG_CARD_FAILURE";
+export const DRAG_CARD_BETWEEN_COLUMNS_BEGIN =
+  "DRAG_CARD_BETWEEN_COLUMNS_BEGIN";
 
-export interface MoveCardWithinColumnBeginAction {
-  type: typeof MOVE_CARD_WITHIN_COLUMN_BEGIN;
+export interface DragCardWithinColumnBeginAction {
+  type: typeof DRAG_CARD_WITHIN_COLUMN_BEGIN;
   column: Column;
 }
 
-export interface MoveCardFailureAction {
-  type: typeof MOVE_CARD_FAILURE;
+export interface DragCardFailureAction {
+  type: typeof DRAG_CARD_FAILURE;
   error: Error;
 }
 
-export interface MoveCardBetweenColumnsBeginAction {
-  type: typeof MOVE_CARD_BETWEEN_COLUMNS_BEGIN;
+export interface DragCardBetweenColumnsBeginAction {
+  type: typeof DRAG_CARD_BETWEEN_COLUMNS_BEGIN;
   startColumn: Column;
   endColumn: Column;
 }
 
-export async function moveCardWithinColumn(
+export async function dragCardWithinColumn(
   column: Column,
   sourceIndex: number,
   destinationIndex: number,
   draggableCardId: string,
   dispatch: ThunkDispatch<{}, {}, any>
-): Promise<void | MoveCardFailureAction> {
+): Promise<void | DragCardFailureAction> {
   const newCardIds = Array.from(column.cardIds);
   newCardIds.splice(sourceIndex, 1);
   newCardIds.splice(destinationIndex, 0, draggableCardId);
@@ -38,29 +38,29 @@ export async function moveCardWithinColumn(
     ...column,
     cardIds: newCardIds
   };
-  dispatch(moveCardWithinColumnBegin(updatedColumn));
+  dispatch(dragCardWithinColumnBegin(updatedColumn));
   try {
     await updateColumn(updatedColumn);
     // Nothing else to do on success, so no "success" dispatched action
     return;
   } catch (error) {
-    return dispatch(moveCardWithinColumnFailure(error));
+    return dispatch(dragCardWithinColumnFailure(error));
   }
 }
 
-function moveCardWithinColumnBegin(
+function dragCardWithinColumnBegin(
   updatedColumn: Column
-): MoveCardWithinColumnBeginAction {
+): DragCardWithinColumnBeginAction {
   return {
-    type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
+    type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
     column: updatedColumn
   };
 }
 
-function moveCardWithinColumnFailure(error: Error): MoveCardFailureAction {
+function dragCardWithinColumnFailure(error: Error): DragCardFailureAction {
   console.log(error);
   return {
-    type: MOVE_CARD_FAILURE,
+    type: DRAG_CARD_FAILURE,
     error: error
   };
 }
@@ -69,14 +69,14 @@ async function updateColumn(updatedColumn: Column) {
   return put(backendUrl() + "/columns/" + updatedColumn._id, updatedColumn);
 }
 
-export async function moveCardBetweenColumns(
+export async function dragCardBetweenColumns(
   startCol: Column,
   endCol: Column,
   sourceIndex: number,
   destinationIndex: number,
   draggableId: string,
   dispatch: ThunkDispatch<{}, {}, any>
-): Promise<void | MoveCardFailureAction> {
+): Promise<void | DragCardFailureAction> {
   const startCardIds = Array.from(startCol.cardIds);
   startCardIds.splice(sourceIndex, 1);
   const updatedStartCol = {
@@ -89,23 +89,23 @@ export async function moveCardBetweenColumns(
     ...endCol,
     cardIds: endCardIds
   };
-  dispatch(moveCardBetweenColumnsBegin(updatedStartCol, updatedEndCol));
+  dispatch(dragCardBetweenColumnsBegin(updatedStartCol, updatedEndCol));
   try {
     await updateColumn(updatedStartCol);
     await updateColumn(updatedEndCol);
     // Nothing else to do on success, so no "success" dispatched action
     return;
   } catch (error) {
-    return dispatch(moveCardWithinColumnFailure(error));
+    return dispatch(dragCardWithinColumnFailure(error));
   }
 }
 
-function moveCardBetweenColumnsBegin(
+function dragCardBetweenColumnsBegin(
   startCol: Column,
   endCol: Column
-): MoveCardBetweenColumnsBeginAction {
+): DragCardBetweenColumnsBeginAction {
   return {
-    type: MOVE_CARD_BETWEEN_COLUMNS_BEGIN,
+    type: DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
     startColumn: startCol,
     endColumn: endCol
   };

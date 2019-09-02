@@ -5,9 +5,9 @@ import {
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
 import {
-  MoveCardWithinColumnBeginAction,
-  MoveCardFailureAction,
-  MoveCardBetweenColumnsBeginAction
+  DragCardWithinColumnBeginAction,
+  DragCardFailureAction,
+  DragCardBetweenColumnsBeginAction
 } from "./dragCardActions";
 import {
   FetchCardsBeginAction,
@@ -19,9 +19,9 @@ export type CardsActionsTypes =
   | FetchCardsBeginAction
   | FetchCardsSuccessAction
   | FetchCardsFailureAction
-  | MoveCardWithinColumnBeginAction
-  | MoveCardFailureAction
-  | MoveCardBetweenColumnsBeginAction
+  | DragCardWithinColumnBeginAction
+  | DragCardFailureAction
+  | DragCardBetweenColumnsBeginAction
   | CreateCardActions
   | BeginCardEditingAction
   | ChangeCardEditingAction
