@@ -5,11 +5,11 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
 import { ColumnView } from "./column";
 import { AppState } from "./store";
+import { fetchBoard } from "./store/cards/fetchBoardActions";
 import {
-  fetchBoard,
   moveCardWithinColumn,
   moveBetweenColumns
-} from "./store/cards/actions";
+} from "./store/cards/dragCardActions";
 import {
   NameToColumnMap,
   NameToCardMap,

@@ -2,10 +2,8 @@ import {
   FETCH_CARDS_BEGIN,
   FETCH_CARDS_SUCCESS,
   FETCH_CARDS_FAILURE,
-  MOVE_CARD_WITHIN_COLUMN_BEGIN,
-  MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes
-} from "./actions";
+} from "./fetchBoardActions";
 import {
   CreateCardActions,
   CREATE_CARD_BEGIN,
@@ -28,6 +26,10 @@ import {
   CHANGE_TASK_EDITING,
   UPDATE_CARD_BEGIN
 } from "./updateCardActions";
+import {
+  MOVE_CARD_WITHIN_COLUMN_BEGIN,
+  MOVE_BETWEEN_COLUMNS
+} from "./dragCardActions";
 
 export const initialState: KanbanBoardState = {
   cards: {},
