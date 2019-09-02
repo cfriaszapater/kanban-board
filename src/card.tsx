@@ -31,6 +31,11 @@ const ContainerDiv = styled.div<ContainerProps>`
     props.isDragging ? "lightgreen" : props.error ? "red" : "white"};
 `;
 
+const DeleteButton = styled.a`
+  color: red;
+  float: right;
+`;
+
 export class CardView extends React.Component<CardProps> {
   handleClick = () => {
     console.log("click");
@@ -53,6 +58,11 @@ export class CardView extends React.Component<CardProps> {
     this.props.dispatch(updateCard(this.props.card, event.target.innerHTML));
   };
 
+  handleClickDelete = () => {
+    console.log("click delete");
+    // TODO this.props.dispatch(deleteCard(this.props.card));
+  };
+
   private cardCreateDidNotSuccessYet() {
     return typeof this.props.card._id === "undefined";
   }
@@ -71,6 +81,9 @@ export class CardView extends React.Component<CardProps> {
               error={this.props.card.error}
               onClick={this.handleClick}
             >
+              <DeleteButton id="deleteButton" onClick={this.handleClickDelete}>
+                &#10006;
+              </DeleteButton>
               <ContentEditable
                 html={this.props.card.content} // innerHTML of the editable div
                 disabled={!this.props.card.editing} // use true to disable edition
