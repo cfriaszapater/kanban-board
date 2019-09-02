@@ -29,17 +29,17 @@ export interface MoveBetweenColumnsAction {
 }
 
 export async function moveCardWithinColumn(
-  startCol: Column,
-  source: DraggableLocation,
-  destination: DraggableLocation,
-  draggableId: DraggableId,
+  column: Column,
+  sourceIndex: number,
+  destinationIndex: number,
+  draggableCardId: string,
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<void | MoveWithinColumnFailureAction> {
-  const newCardIds = Array.from(startCol.cardIds);
-  newCardIds.splice(source.index, 1);
-  newCardIds.splice(destination.index, 0, draggableId);
+  const newCardIds = Array.from(column.cardIds);
+  newCardIds.splice(sourceIndex, 1);
+  newCardIds.splice(destinationIndex, 0, draggableCardId);
   const updatedColumn = {
-    ...startCol,
+    ...column,
     cardIds: newCardIds
   };
   dispatch(moveCardWithinColumnBegin(updatedColumn));
@@ -64,11 +64,10 @@ function moveCardWithinColumnBegin(
 function moveCardWithinColumnFailure(
   error: Error
 ): MoveWithinColumnFailureAction {
-  const messageToDisplay = "Network error, please refresh: " + error.message;
-  console.error(error);
+  console.log(error);
   return {
     type: MOVE_CARD_WITHIN_COLUMN_FAILURE,
-    error: { ...error, message: messageToDisplay }
+    error: error
   };
 }
 

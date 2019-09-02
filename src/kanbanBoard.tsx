@@ -52,8 +52,8 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
     if (startCol === endCol) {
       moveCardWithinColumn(
         startCol,
-        source,
-        destination,
+        source.index,
+        destination.index,
         draggableId,
         this.props.dispatch
       );
