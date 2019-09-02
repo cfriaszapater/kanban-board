@@ -30,6 +30,7 @@ import {
   MOVE_CARD_WITHIN_COLUMN_BEGIN,
   MOVE_BETWEEN_COLUMNS
 } from "./dragCardActions";
+import { moveCardWithinColumnBegin } from "./dragCardReducer";
 
 export const initialState: KanbanBoardState = {
   cards: {},
@@ -94,14 +95,7 @@ export function cardsReducer(
       };
 
     case MOVE_CARD_WITHIN_COLUMN_BEGIN:
-      let updatedColumn = action.updatedColumn;
-      return {
-        ...state,
-        columns: {
-          ...state.columns,
-          [updatedColumn.id]: updatedColumn
-        }
-      };
+      return moveCardWithinColumnBegin(action, state);
 
     case MOVE_BETWEEN_COLUMNS:
       const startCardIds = Array.from(action.startCol.cardIds);
