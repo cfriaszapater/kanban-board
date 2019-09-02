@@ -2,6 +2,7 @@ export interface Column {
   id: string;
   title: string;
   cardIds: string[];
+  _id?: string;
 }
 
 export interface Card {

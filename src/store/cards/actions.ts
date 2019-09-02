@@ -8,19 +8,20 @@ import {
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
 import { backendUrl } from "../../util/backendUrl";
-import { get } from "../../util/fetchJson";
+import { get, put } from "../../util/fetchJson";
 
 export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
 export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
 export const FETCH_CARDS_FAILURE = "FETCH_CARDS_FAILURE";
-export const MOVE_WITHIN_COLUMN = "MOVE_WITHIN_COLUMN";
+export const MOVE_CARD_WITHIN_COLUMN_BEGIN = "MOVE_CARD_WITHIN_COLUMN_BEGIN";
+export const MOVE_WITHIN_COLUMN_FAILURE = "MOVE_WITHIN_COLUMN_FAILURE";
 export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
 
 export type CardsActionsTypes =
   | FetchCardsBeginAction
   | FetchCardsSuccessAction
   | FetchCardsFailureAction
-  | MoveWithinColumnAction
+  | MoveWithinColumnBeginAction
   | MoveBetweenColumnsAction
   | CreateCardActions
   | BeginCardEditingAction
@@ -41,12 +42,14 @@ export interface FetchCardsFailureAction {
   error: Error | null;
 }
 
-export interface MoveWithinColumnAction {
-  type: typeof MOVE_WITHIN_COLUMN;
-  startCol: Column;
-  source: DraggableLocation;
-  destination: DraggableLocation;
-  draggableId: DraggableId;
+export interface MoveWithinColumnBeginAction {
+  type: typeof MOVE_CARD_WITHIN_COLUMN_BEGIN;
+  updatedColumn: Column;
+}
+
+export interface MoveWithinColumnFailureAction {
+  type: typeof MOVE_WITHIN_COLUMN_FAILURE;
+  error: Error;
 }
 
 export interface MoveBetweenColumnsAction {
@@ -97,20 +100,53 @@ async function getColumns() {
   return await get(backendUrl() + "/columns");
 }
 
-export function moveWithinSameColumn(
+export async function moveCardWithinColumn(
   startCol: Column,
   source: DraggableLocation,
   destination: DraggableLocation,
-  draggableId: DraggableId
-): MoveWithinColumnAction {
-  // TODO PUT /columns
-  return {
-    type: MOVE_WITHIN_COLUMN,
-    startCol: startCol,
-    source: source,
-    destination: destination,
-    draggableId: draggableId
+  draggableId: DraggableId,
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<void | MoveWithinColumnFailureAction> {
+  const newCardIds = Array.from(startCol.cardIds);
+  newCardIds.splice(source.index, 1);
+  newCardIds.splice(destination.index, 0, draggableId);
+  const updatedColumn = {
+    ...startCol,
+    cardIds: newCardIds
   };
+  dispatch(moveCardWithinColumnBegin(updatedColumn));
+
+  try {
+    await updateColumn(updatedColumn);
+    // Nothing else to do on success, so no "success" dispatched action
+    return;
+  } catch (error) {
+    return dispatch(moveCardWithinColumnFailure(error));
+  }
+}
+
+function moveCardWithinColumnBegin(
+  updatedColumn: Column
+): MoveWithinColumnBeginAction {
+  return {
+    type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
+    updatedColumn: updatedColumn
+  };
+}
+
+function moveCardWithinColumnFailure(
+  error: Error
+): MoveWithinColumnFailureAction {
+  const messageToDisplay = "Network error, please refresh: " + error.message;
+  console.error(error);
+  return {
+    type: MOVE_WITHIN_COLUMN_FAILURE,
+    error: { ...error, message: messageToDisplay }
+  };
+}
+
+async function updateColumn(updatedColumn: Column) {
+  return put(backendUrl() + "/columns/" + updatedColumn._id, updatedColumn);
 }
 
 export function moveBetweenColumns(

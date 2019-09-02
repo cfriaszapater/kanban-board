@@ -2,7 +2,7 @@ import {
   FETCH_CARDS_BEGIN,
   FETCH_CARDS_SUCCESS,
   FETCH_CARDS_FAILURE,
-  MOVE_WITHIN_COLUMN,
+  MOVE_CARD_WITHIN_COLUMN_BEGIN,
   MOVE_BETWEEN_COLUMNS,
   CardsActionsTypes
 } from "./actions";
@@ -82,8 +82,6 @@ export function cardsReducer(
       // The request failed, but it did stop, so set loading to "false".
       // Save the error, and we can display it somewhere
       // Since it failed, we don't have items to display anymore, so set it empty.
-      // This is up to you and your app though: maybe you want to keep the items
-      // around! Do whatever seems right.
       return {
         ...state,
         loading: false,
@@ -93,19 +91,13 @@ export function cardsReducer(
         columnOrder: []
       };
 
-    case MOVE_WITHIN_COLUMN:
-      const newCardIds = Array.from(action.startCol.cardIds);
-      newCardIds.splice(action.source.index, 1);
-      newCardIds.splice(action.destination.index, 0, action.draggableId);
-      const newColumn = {
-        ...action.startCol,
-        cardIds: newCardIds
-      };
+    case MOVE_CARD_WITHIN_COLUMN_BEGIN:
+      let updatedColumn = action.updatedColumn;
       return {
         ...state,
         columns: {
           ...state.columns,
-          [newColumn.id]: newColumn
+          [updatedColumn.id]: updatedColumn
         }
       };
 

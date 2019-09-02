@@ -7,7 +7,7 @@ import { ColumnView } from "./column";
 import { AppState } from "./store";
 import {
   fetchBoard,
-  moveWithinSameColumn,
+  moveCardWithinColumn,
   moveBetweenColumns
 } from "./store/cards/actions";
 import {
@@ -50,8 +50,12 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
     const startCol = this.props.columns[source.droppableId];
     const endCol = this.props.columns[destination.droppableId];
     if (startCol === endCol) {
-      this.props.dispatch(
-        moveWithinSameColumn(startCol, source, destination, draggableId)
+      moveCardWithinColumn(
+        startCol,
+        source,
+        destination,
+        draggableId,
+        this.props.dispatch
       );
     } else {
       this.props.dispatch(
