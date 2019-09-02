@@ -8,7 +8,7 @@ import { AppState } from "./store";
 import { fetchBoard } from "./store/cards/fetchBoardActions";
 import {
   moveCardWithinColumn,
-  moveBetweenColumns
+  moveCardBetweenColumns
 } from "./store/cards/dragCardActions";
 import {
   NameToColumnMap,
@@ -58,8 +58,13 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
         this.props.dispatch
       );
     } else {
-      this.props.dispatch(
-        moveBetweenColumns(startCol, endCol, source, destination, draggableId)
+      moveCardBetweenColumns(
+        startCol,
+        endCol,
+        source.index,
+        destination.index,
+        draggableId,
+        this.props.dispatch
       );
     }
   };

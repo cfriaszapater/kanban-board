@@ -1,11 +1,10 @@
 import {
   FETCH_CARDS_BEGIN,
   FETCH_CARDS_SUCCESS,
-  FETCH_CARDS_FAILURE,
-  CardsActionsTypes
+  FETCH_CARDS_FAILURE
 } from "./fetchBoardActions";
+import { CardsActionsTypes } from "./CardsActionsTypes";
 import {
-  CreateCardActions,
   CREATE_CARD_BEGIN,
   CREATE_CARD_SUCCESS,
   CREATE_CARD_FAILURE
@@ -28,12 +27,13 @@ import {
 } from "./updateCardActions";
 import {
   MOVE_CARD_WITHIN_COLUMN_BEGIN,
-  MOVE_BETWEEN_COLUMNS
+  MOVE_CARD_BETWEEN_COLUMNS_BEGIN
 } from "./dragCardActions";
 import { moveCardWithinColumnBegin } from "./dragCardReducer";
 
 export const initialState: KanbanBoardState = {
   cards: {},
+  // XXX columns can be [] in initialState
   columns: {
     "column-1": {
       id: "column-1",
@@ -58,7 +58,7 @@ export const initialState: KanbanBoardState = {
 
 export function cardsReducer(
   state: KanbanBoardState = initialState,
-  action: CardsActionsTypes | CreateCardActions
+  action: CardsActionsTypes
 ) {
   switch (action.type) {
     case FETCH_CARDS_BEGIN:
@@ -97,25 +97,13 @@ export function cardsReducer(
     case MOVE_CARD_WITHIN_COLUMN_BEGIN:
       return moveCardWithinColumnBegin(action, state);
 
-    case MOVE_BETWEEN_COLUMNS:
-      const startCardIds = Array.from(action.startCol.cardIds);
-      startCardIds.splice(action.source.index, 1);
-      const newStartCol = {
-        ...action.startCol,
-        cardIds: startCardIds
-      };
-      const endCardIds = Array.from(action.endCol.cardIds);
-      endCardIds.splice(action.destination.index, 0, action.draggableId);
-      const newEndCol = {
-        ...action.endCol,
-        cardIds: endCardIds
-      };
+    case MOVE_CARD_BETWEEN_COLUMNS_BEGIN:
       return {
         ...state,
         columns: {
           ...state.columns,
-          [newStartCol.id]: newStartCol,
-          [newEndCol.id]: newEndCol
+          [action.startColumn.id]: action.startColumn,
+          [action.endColumn.id]: action.endColumn
         }
       };
 

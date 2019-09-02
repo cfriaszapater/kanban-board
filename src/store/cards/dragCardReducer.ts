@@ -5,7 +5,7 @@ export function moveCardWithinColumnBegin(
   action: MoveCardWithinColumnBeginAction,
   state: KanbanBoardState
 ) {
-  let updatedColumn = action.updatedColumn;
+  let updatedColumn = action.column;
   return {
     ...state,
     columns: {

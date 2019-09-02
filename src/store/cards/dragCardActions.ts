@@ -1,31 +1,27 @@
 import { Column } from "./types";
-import { DraggableLocation, DraggableId } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
 import { put } from "../../util/fetchJson";
 
 export const MOVE_CARD_WITHIN_COLUMN_BEGIN = "MOVE_CARD_WITHIN_COLUMN_BEGIN";
-export const MOVE_CARD_WITHIN_COLUMN_FAILURE =
-  "MOVE_CARD_WITHIN_COLUMN_FAILURE";
-export const MOVE_BETWEEN_COLUMNS = "MOVE_BETWEEN_COLUMNS";
+export const MOVE_CARD_FAILURE = "MOVE_CARD_FAILURE";
+export const MOVE_CARD_BETWEEN_COLUMNS_BEGIN =
+  "MOVE_CARD_BETWEEN_COLUMNS_BEGIN";
 
 export interface MoveCardWithinColumnBeginAction {
   type: typeof MOVE_CARD_WITHIN_COLUMN_BEGIN;
-  updatedColumn: Column;
+  column: Column;
 }
 
-export interface MoveWithinColumnFailureAction {
-  type: typeof MOVE_CARD_WITHIN_COLUMN_FAILURE;
+export interface MoveCardFailureAction {
+  type: typeof MOVE_CARD_FAILURE;
   error: Error;
 }
 
-export interface MoveBetweenColumnsAction {
-  type: typeof MOVE_BETWEEN_COLUMNS;
-  startCol: Column;
-  endCol: Column;
-  source: DraggableLocation;
-  destination: DraggableLocation;
-  draggableId: DraggableId;
+export interface MoveCardBetweenColumnsBeginAction {
+  type: typeof MOVE_CARD_BETWEEN_COLUMNS_BEGIN;
+  startColumn: Column;
+  endColumn: Column;
 }
 
 export async function moveCardWithinColumn(
@@ -34,7 +30,7 @@ export async function moveCardWithinColumn(
   destinationIndex: number,
   draggableCardId: string,
   dispatch: ThunkDispatch<{}, {}, any>
-): Promise<void | MoveWithinColumnFailureAction> {
+): Promise<void | MoveCardFailureAction> {
   const newCardIds = Array.from(column.cardIds);
   newCardIds.splice(sourceIndex, 1);
   newCardIds.splice(destinationIndex, 0, draggableCardId);
@@ -57,16 +53,14 @@ function moveCardWithinColumnBegin(
 ): MoveCardWithinColumnBeginAction {
   return {
     type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
-    updatedColumn: updatedColumn
+    column: updatedColumn
   };
 }
 
-function moveCardWithinColumnFailure(
-  error: Error
-): MoveWithinColumnFailureAction {
+function moveCardWithinColumnFailure(error: Error): MoveCardFailureAction {
   console.log(error);
   return {
-    type: MOVE_CARD_WITHIN_COLUMN_FAILURE,
+    type: MOVE_CARD_FAILURE,
     error: error
   };
 }
@@ -75,20 +69,44 @@ async function updateColumn(updatedColumn: Column) {
   return put(backendUrl() + "/columns/" + updatedColumn._id, updatedColumn);
 }
 
-export function moveBetweenColumns(
+export async function moveCardBetweenColumns(
   startCol: Column,
   endCol: Column,
-  source: DraggableLocation,
-  destination: DraggableLocation,
-  draggableId: DraggableId
-) {
-  // TODO PUT /columns
+  sourceIndex: number,
+  destinationIndex: number,
+  draggableId: string,
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<void | MoveCardFailureAction> {
+  const startCardIds = Array.from(startCol.cardIds);
+  startCardIds.splice(sourceIndex, 1);
+  const updatedStartCol = {
+    ...startCol,
+    cardIds: startCardIds
+  };
+  const endCardIds = Array.from(endCol.cardIds);
+  endCardIds.splice(destinationIndex, 0, draggableId);
+  const updatedEndCol = {
+    ...endCol,
+    cardIds: endCardIds
+  };
+  dispatch(moveCardBetweenColumnsBegin(updatedStartCol, updatedEndCol));
+  try {
+    await updateColumn(updatedStartCol);
+    await updateColumn(updatedEndCol);
+    // Nothing else to do on success, so no "success" dispatched action
+    return;
+  } catch (error) {
+    return dispatch(moveCardWithinColumnFailure(error));
+  }
+}
+
+function moveCardBetweenColumnsBegin(
+  startCol: Column,
+  endCol: Column
+): MoveCardBetweenColumnsBeginAction {
   return {
-    type: MOVE_BETWEEN_COLUMNS,
-    startCol: startCol,
-    endCol: endCol,
-    source: source,
-    destination: destination,
-    draggableId: draggableId
+    type: MOVE_CARD_BETWEEN_COLUMNS_BEGIN,
+    startColumn: startCol,
+    endColumn: endCol
   };
 }

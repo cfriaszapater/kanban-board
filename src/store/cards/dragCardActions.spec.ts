@@ -7,8 +7,11 @@ import { backendUrl } from "../../util/backendUrl";
 import {
   moveCardWithinColumn,
   MOVE_CARD_WITHIN_COLUMN_BEGIN,
-  MOVE_CARD_WITHIN_COLUMN_FAILURE
+  MOVE_CARD_FAILURE,
+  moveCardBetweenColumns,
+  MOVE_CARD_BETWEEN_COLUMNS_BEGIN
 } from "./dragCardActions";
+import { CardsActionsTypes } from "./CardsActionsTypes";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -38,10 +41,10 @@ describe("drag card actions", () => {
           ...column,
           cardIds: [cardId2, cardId1]
         };
-        const expectedActions = [
+        const expectedActions: CardsActionsTypes[] = [
           {
             type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
-            updatedColumn: expectedColumnWithSwappedCardIds
+            column: expectedColumnWithSwappedCardIds
           }
         ];
         expect(store.getActions()).toEqual(expectedActions);
@@ -73,12 +76,12 @@ describe("drag card actions", () => {
           ...column,
           cardIds: [cardId2, cardId1]
         };
-        const expectedActions = [
+        const expectedActions: CardsActionsTypes[] = [
           {
             type: MOVE_CARD_WITHIN_COLUMN_BEGIN,
-            updatedColumn: expectedColumnWithSwappedCardIds
+            column: expectedColumnWithSwappedCardIds
           },
-          { type: MOVE_CARD_WITHIN_COLUMN_FAILURE, error: error }
+          { type: MOVE_CARD_FAILURE, error: error }
         ];
         expect(store.getActions()).toEqual(expectedActions);
 
@@ -87,6 +90,55 @@ describe("drag card actions", () => {
           backendUrl() + "/columns/" + columnBackendId
         );
         expect(fetchMock.mock.calls[0][0].method).toEqual("PUT");
+      };
+    }
+  });
+
+  it("given start and destination columns and a card, when drag card between columns, then BEGIN and PUT both columns", () => {
+    fetchMock.mockResponses("{}", "{}");
+    const cardId1 = "card-1";
+    const cardId2 = "card-2";
+    const startColumn: Column = columnWithCards("be-col-1", cardId1, cardId2);
+    const endColumn: Column = columnWithCards("be-col-2");
+
+    return moveCardBetweenColumns(
+      startColumn,
+      endColumn,
+      0,
+      0,
+      cardId1,
+      store.dispatch
+    ).then(expectations());
+
+    function expectations(): any {
+      return () => {
+        // Nothing to do in UI on SUCCESS, then no SUCCESS action dispatched
+        const expectedStartColumnWithoutDraggedCard = {
+          ...startColumn,
+          cardIds: [cardId2]
+        };
+        const expectedEndColumnWithDraggedCard = {
+          ...endColumn,
+          cardIds: [cardId1]
+        };
+        const expectedActions: CardsActionsTypes[] = [
+          {
+            type: MOVE_CARD_BETWEEN_COLUMNS_BEGIN,
+            startColumn: expectedStartColumnWithoutDraggedCard,
+            endColumn: expectedEndColumnWithDraggedCard
+          }
+        ];
+        expect(store.getActions()).toEqual(expectedActions);
+
+        expect(fetchMock.mock.calls.length).toEqual(2);
+        expect(fetchMock.mock.calls[0][0].url).toEqual(
+          backendUrl() + "/columns/" + startColumn._id
+        );
+        expect(fetchMock.mock.calls[0][0].method).toEqual("PUT");
+        expect(fetchMock.mock.calls[1][0].url).toEqual(
+          backendUrl() + "/columns/" + endColumn._id
+        );
+        expect(fetchMock.mock.calls[1][0].method).toEqual("PUT");
       };
     }
   });

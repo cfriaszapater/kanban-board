@@ -33,7 +33,7 @@ export const createCard = (card: Card) => async (
   dispatch(createCardBegin(card));
   try {
     const createdCard = await post(backendUrl() + "/cards", card);
-    return dispatch(createCardSuccess(createdCard));
+    return dispatch(createCardSuccess({ ...createdCard, loading: false }));
   } catch (ex) {
     return dispatch(createCardFailure(card, ex));
   }
