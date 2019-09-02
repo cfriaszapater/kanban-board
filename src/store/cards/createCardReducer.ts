@@ -6,7 +6,8 @@ import {
   KanbanBoardState,
   CardLoading,
   CardLoaded,
-  CardErrorLoading
+  CardErrorLoading,
+  Card
 } from "./types";
 import { CreateCardSuccessAction } from "./createCardActions";
 import { stateWithUpdatedCard } from "./reducers";
@@ -17,6 +18,10 @@ export function createCardBegin(
 ): KanbanBoardState {
   const card: CardLoading = { ...action.payload, loading: true };
   // Add Card to cards and add cardId to firstColumn.cardIds
+  return addCardToState(state, card);
+}
+
+export function addCardToState(state: KanbanBoardState, card: Card) {
   const firstColumn = state.columns[Object.keys(state.columns)[0]];
   return {
     ...state,
