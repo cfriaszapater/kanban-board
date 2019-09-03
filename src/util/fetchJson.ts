@@ -43,3 +43,17 @@ export async function put(url: string, body: any): Promise<Response> {
   }
   return res;
 }
+
+export async function del(url: string): Promise<Response> {
+  const req = new Request(url, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json"
+    }
+  });
+  const res = await fetch(req);
+  if (!res.ok) {
+    throw new Error("Could not update card, response KO: " + res);
+  }
+  return res;
+}

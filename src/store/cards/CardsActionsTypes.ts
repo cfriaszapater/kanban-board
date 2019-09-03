@@ -1,7 +1,8 @@
 import {
   BeginCardEditingAction,
   ChangeCardEditingAction,
-  UpdateCardActions
+  UpdateCardActions,
+  DeleteCardAction
 } from "./updateCardActions.js";
 import { CreateCardActions } from "./createCardActions.js";
 import {
@@ -25,4 +26,5 @@ export type CardsActionsTypes =
   | CreateCardActions
   | BeginCardEditingAction
   | ChangeCardEditingAction
-  | UpdateCardActions;
+  | UpdateCardActions
+  | DeleteCardAction;

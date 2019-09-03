@@ -5,7 +5,8 @@ import { Card } from "./store/cards/types";
 import {
   beginCardEditing,
   changeCardEditing,
-  updateCard
+  updateCard,
+  deleteCard
 } from "./store/cards/updateCardActions";
 import { ThunkDispatch } from "redux-thunk";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
@@ -60,7 +61,7 @@ export class CardView extends React.Component<CardProps> {
 
   handleClickDelete = () => {
     console.log("click delete");
-    // TODO this.props.dispatch(deleteCard(this.props.card));
+    this.props.dispatch(deleteCard(this.props.card));
   };
 
   private cardCreateDidNotSuccessYet() {

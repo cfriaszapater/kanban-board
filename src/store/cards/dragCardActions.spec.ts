@@ -12,6 +12,7 @@ import {
   DRAG_CARD_BETWEEN_COLUMNS_BEGIN
 } from "./dragCardActions";
 import { CardsActionsTypes } from "./CardsActionsTypes";
+import { columnWithCards } from "../../../testUtil/columnWithCards";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -28,7 +29,12 @@ describe("drag card actions", () => {
     const cardId1 = "card-1";
     const columnBackendId = "be-col-1";
     const cardId2 = "card-2";
-    const column: Column = columnWithCards(columnBackendId, cardId1, cardId2);
+    const column: Column = columnWithCards(
+      columnBackendId,
+      "col-1",
+      cardId1,
+      cardId2
+    );
 
     return dragCardWithinColumn(column, 0, 1, cardId1, store.dispatch).then(
       expectations()
@@ -64,7 +70,12 @@ describe("drag card actions", () => {
     const cardId1 = "card-1";
     const columnBackendId = "be-col-1";
     const cardId2 = "card-2";
-    const column: Column = columnWithCards(columnBackendId, cardId1, cardId2);
+    const column: Column = columnWithCards(
+      columnBackendId,
+      "col-1",
+      cardId1,
+      cardId2
+    );
 
     return dragCardWithinColumn(column, 0, 1, cardId1, store.dispatch).then(
       expectations()
@@ -98,8 +109,13 @@ describe("drag card actions", () => {
     fetchMock.mockResponses("{}", "{}");
     const cardId1 = "card-1";
     const cardId2 = "card-2";
-    const startColumn: Column = columnWithCards("be-col-1", cardId1, cardId2);
-    const endColumn: Column = columnWithCards("be-col-2");
+    const startColumn: Column = columnWithCards(
+      "be-col-1",
+      "col-1",
+      cardId1,
+      cardId2
+    );
+    const endColumn: Column = columnWithCards("be-col-2", "col-2");
 
     return dragCardBetweenColumns(
       startColumn,
@@ -143,15 +159,3 @@ describe("drag card actions", () => {
     }
   });
 });
-
-function columnWithCards(
-  columnBackendId: string,
-  ...cardIds: string[]
-): Column {
-  return {
-    _id: columnBackendId,
-    id: "col-1",
-    title: "to do",
-    cardIds: cardIds
-  };
-}

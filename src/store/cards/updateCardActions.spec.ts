@@ -1,4 +1,4 @@
-import configureMockStore from "redux-mock-store";
+import configureMockStore, { MockStore } from "redux-mock-store";
 import thunk from "redux-thunk";
 import {
   BEGIN_TASK_EDITING,
@@ -10,22 +10,28 @@ import {
   updateCard,
   UPDATE_CARD_SUCCESS,
   UpdateCardBeginAction,
-  UpdateCardActions
+  UpdateCardActions,
+  deleteCard,
+  DELETE_CARD_BEGIN
 } from "./updateCardActions";
 import expect from "expect";
-import { Card, CardLoaded } from "./types";
+import { Card, CardLoaded, Column, KanbanBoardState } from "./types";
 import { backendUrl } from "../../util/backendUrl";
+import { columnWithCards } from "../../../testUtil/columnWithCards";
+import { CardsActionsTypes } from "./CardsActionsTypes";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe("card editing actions", () => {
+  var store: MockStore;
+
   beforeEach(() => {
     fetchMock.resetMocks();
+    store = mockStore();
   });
 
   it("should dispatch action on start editing", () => {
-    const store = mockStore();
     const card = { id: "13", content: "hi" };
 
     const action = store.dispatch(beginCardEditing(card));
@@ -38,7 +44,6 @@ describe("card editing actions", () => {
   });
 
   it("should dispatch action on change editing", () => {
-    const store = mockStore();
     const card = { id: "13", content: "hi" };
 
     const newContent = "jarl";
@@ -52,7 +57,6 @@ describe("card editing actions", () => {
   });
 
   it("should dispatch UPDATE_CARD_BEGIN for card with new content and not editing", () => {
-    const store = mockStore();
     const card: CardLoaded = {
       id: "13",
       content: "hi",
@@ -77,7 +81,6 @@ describe("card editing actions", () => {
   });
 
   it("should BEGIN, fetch and SUCCESS on update card", () => {
-    const store = mockStore();
     const card: CardLoaded = {
       id: "card-13",
       content: "Do the laundry",
@@ -107,6 +110,70 @@ describe("card editing actions", () => {
         expect(fetchMock.mock.calls[0][0].url).toEqual(
           backendUrl() + "/cards/" + card._id
         );
+      };
+    }
+  });
+
+  it("given column with cards, when delete card, then BEGIN and DELETE /cards and PUT /columns", () => {
+    fetchMock.mockResponses("", "");
+    const column1: Column = columnWithCards("be-col-1", "col-1");
+    const card1: Card = {
+      id: "card-1",
+      _id: "grmblf-1",
+      content: "I fear being deleted"
+    };
+    const card2: Card = {
+      id: "card-2",
+      _id: "grmblf-2",
+      content: "I fear being deleted 2"
+    };
+    const column2: Column = columnWithCards(
+      "be-col-2",
+      "col-2",
+      card1.id,
+      card2.id
+    );
+    const column3: Column = columnWithCards("be-col-3", "col-3", "card-42");
+    const givenState: KanbanBoardState = {
+      columns: {
+        [column1.id]: column1,
+        [column2.id]: column2,
+        [column3.id]: column3
+      },
+      cards: {
+        [card1.id]: card1,
+        [card2.id]: card2,
+        ["card-42"]: { id: "card-42", content: "jarl" }
+      },
+      columnOrder: [column2.id, column2.id],
+      loading: false,
+      error: null
+    };
+    const store = mockStore(givenState);
+
+    return store.dispatch(deleteCard(card1) as any).then(expectations());
+
+    function expectations(): any {
+      return () => {
+        // Nothing to do in UI on SUCCESS, then no SUCCESS action dispatched
+        const expectedActions: CardsActionsTypes[] = [
+          {
+            type: DELETE_CARD_BEGIN,
+            card: card1
+          }
+        ];
+        expect(store.getActions()).toEqual(expectedActions);
+
+        console.log(JSON.stringify(fetchMock.mock.calls));
+        expect(fetchMock.mock.calls.length).toEqual(2);
+        expect(fetchMock.mock.calls[0][0].url).toEqual(
+          backendUrl() + "/columns/" + column2._id
+        );
+        expect(fetchMock.mock.calls[0][0].method).toEqual("PUT");
+        expect(fetchMock.mock.calls[1][0].url).toEqual(
+          backendUrl() + "/cards/" + card1._id
+        );
+        expect(fetchMock.mock.calls[1][0].method).toEqual("DELETE");
       };
     }
   });
