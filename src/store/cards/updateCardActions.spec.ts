@@ -164,16 +164,11 @@ describe("card editing actions", () => {
         ];
         expect(store.getActions()).toEqual(expectedActions);
 
-        console.log(JSON.stringify(fetchMock.mock.calls));
-        expect(fetchMock.mock.calls.length).toEqual(2);
+        expect(fetchMock.mock.calls.length).toEqual(1);
         expect(fetchMock.mock.calls[0][0].url).toEqual(
-          backendUrl() + "/columns/" + column2._id
-        );
-        expect(fetchMock.mock.calls[0][0].method).toEqual("PUT");
-        expect(fetchMock.mock.calls[1][0].url).toEqual(
           backendUrl() + "/cards/" + card1._id
         );
-        expect(fetchMock.mock.calls[1][0].method).toEqual("DELETE");
+        expect(fetchMock.mock.calls[0][0].method).toEqual("DELETE");
       };
     }
   });

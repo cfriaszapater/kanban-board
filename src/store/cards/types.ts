@@ -1,3 +1,5 @@
+import { Card, Column, NameToColumnMap } from "./types";
+
 export interface Column {
   id: string;
   title: string;

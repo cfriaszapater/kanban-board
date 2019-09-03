@@ -1,10 +1,12 @@
 import {
   BeginCardEditingAction,
   ChangeCardEditingAction,
-  UpdateCardBeginAction
+  UpdateCardBeginAction,
+  DeleteCardBeginAction
 } from "./updateCardActions";
 import { KanbanBoardState, Card } from "./types";
 import { stateWithUpdatedCard } from "./reducers";
+import { columnsWithoutCard, cardsWithoutCard } from "./kanbanBoardState";
 
 export function beginCardEditing(
   action: BeginCardEditingAction,
@@ -34,4 +36,20 @@ export function updateCardBegin(
   state: KanbanBoardState
 ): KanbanBoardState {
   return stateWithUpdatedCard(state, action.card);
+}
+
+export function deleteCardBegin(
+  action: DeleteCardBeginAction,
+  state: KanbanBoardState
+): KanbanBoardState {
+  const columns = state.columns;
+  const cards = state.cards;
+  const card = action.card;
+  const updatedColumns = columnsWithoutCard(columns, card, state);
+  const updatedCards = cardsWithoutCard(cards, card);
+  return {
+    ...state,
+    columns: updatedColumns,
+    cards: updatedCards
+  };
 }

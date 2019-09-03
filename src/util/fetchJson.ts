@@ -39,7 +39,9 @@ export async function put(url: string, body: any): Promise<Response> {
   });
   const res = await fetch(req);
   if (!res.ok) {
-    throw new Error("Could not update card, response KO: " + res);
+    throw new Error(
+      "Could not update card, response KO: " + JSON.stringify(res)
+    );
   }
   return res;
 }
@@ -53,7 +55,9 @@ export async function del(url: string): Promise<Response> {
   });
   const res = await fetch(req);
   if (!res.ok) {
-    throw new Error("Could not update card, response KO: " + res);
+    throw new Error(
+      "Could not update card, response KO: " + JSON.stringify(res)
+    );
   }
   return res;
 }

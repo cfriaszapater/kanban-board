@@ -18,12 +18,14 @@ import {
 import {
   beginCardEditing,
   changeCardEditing,
-  updateCardBegin
+  updateCardBegin,
+  deleteCardBegin
 } from "./updateCardReducer";
 import {
   BEGIN_TASK_EDITING,
   CHANGE_TASK_EDITING,
-  UPDATE_CARD_BEGIN
+  UPDATE_CARD_BEGIN,
+  DELETE_CARD_BEGIN
 } from "./updateCardActions";
 import {
   DRAG_CARD_WITHIN_COLUMN_BEGIN,
@@ -124,6 +126,9 @@ export function cardsReducer(
 
     case UPDATE_CARD_BEGIN:
       return updateCardBegin(action, state);
+
+    case DELETE_CARD_BEGIN:
+      return deleteCardBegin(action, state);
 
     default:
       // ALWAYS have a default case in a reducer

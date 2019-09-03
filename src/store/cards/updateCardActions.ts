@@ -1,4 +1,4 @@
-import { Card, Column, KanbanBoardState, NameToColumnMap } from "./types";
+import { Card, KanbanBoardState } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
 import { put, del } from "../../util/fetchJson";
@@ -125,7 +125,7 @@ export const deleteCard = (card: Card) => async (
 ): Promise<void | UpdateCardFailureAction> => {
   dispatch(deleteCardBegin(card));
   try {
-    await deleteCardIdFromColumns(getState().columns, card);
+    // Backend deletes card id from columns on DELETE /cards/{cardId}
     await del(backendUrl() + "/cards/" + card._id);
     // Nothing else to do on success, so no "success" dispatched action
     return;
@@ -133,31 +133,6 @@ export const deleteCard = (card: Card) => async (
     updateCardFailure(card, error);
   }
 };
-
-async function deleteCardIdFromColumns(columns: NameToColumnMap, card: Card) {
-  const column: Column = columnContainingCard(columns, card.id);
-  const newCardIds = Array.from(column.cardIds);
-  newCardIds.splice(newCardIds.indexOf(card.id), 1);
-  const updatedColumn = {
-    ...column,
-    cardIds: newCardIds
-  };
-  await put(backendUrl() + "/columns/" + updatedColumn._id, updatedColumn);
-}
-
-function columnContainingCard(
-  columns: NameToColumnMap,
-  cardId: string
-): Column {
-  const keys = Object.keys(columns);
-  for (let i = 0; i < keys.length; i++) {
-    const column = columns[keys[i]];
-    if (column.cardIds.includes(cardId)) {
-      return column;
-    }
-  }
-  throw new Error("No column contains cardId " + cardId);
-}
 
 export function deleteCardBegin(card: Card): DeleteCardBeginAction {
   return {
