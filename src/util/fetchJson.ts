@@ -7,14 +7,7 @@ export async function get(url: string): Promise<any> {
   });
   const res = await fetch(req);
   if (!res.ok) {
-    const body = await res.text();
-    console.log(body);
-    throw new Error(
-      "Could not get resource, response KO: " +
-        res.status +
-        " " +
-        res.statusText
-    );
+    throw new Error(await errorMessage(res));
   }
   return await res.json();
 }
@@ -27,7 +20,7 @@ export async function post(url: string, body: any): Promise<any> {
   });
   const res = await fetch(req);
   if (!res.ok) {
-    throw new Error("Could not post resource, response KO: " + res);
+    throw new Error(await errorMessage(res));
   }
   return await res.json();
 }
@@ -40,9 +33,7 @@ export async function put(url: string, body: any): Promise<Response> {
   });
   const res = await fetch(req);
   if (!res.ok) {
-    throw new Error(
-      "Could not update card, response KO: " + JSON.stringify(res)
-    );
+    throw new Error(await errorMessage(res));
   }
   return res;
 }
@@ -54,9 +45,7 @@ export async function del(url: string): Promise<Response> {
   });
   const res = await fetch(req);
   if (!res.ok) {
-    throw new Error(
-      "Could not update card, response KO: " + JSON.stringify(res)
-    );
+    throw new Error(await errorMessage(res));
   }
   return res;
 }
@@ -70,4 +59,11 @@ function headers(): Headers {
     headers.append("Authorization", bearerToken);
   }
   return headers;
+}
+
+async function errorMessage(res: Response) {
+  const errorMsg = "Fetch response KO - " + res.status + " " + res.statusText;
+  const body = await res.text();
+  console.log(errorMsg + " - " + body);
+  return errorMsg;
 }

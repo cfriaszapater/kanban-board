@@ -22,8 +22,7 @@ class App extends React.Component<AppProps> {
 
   render() {
     const { alert } = this.props;
-    console.log("alert: " + JSON.stringify(alert));
-    console.log("App.props: " + JSON.stringify(this.props));
+    console.log(JSON.stringify(alert));
     return (
       <div className="App">
         {alert.message && (

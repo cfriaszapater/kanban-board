@@ -57,7 +57,7 @@ describe("async create card action", () => {
       return () => {
         const expectedActions = [
           { type: actions.CREATE_CARD_BEGIN, payload: card },
-          { type: actions.CREATE_CARD_FAILURE, payload: card }
+          { type: actions.CREATE_CARD_FAILURE, payload: card, error: error }
         ];
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);

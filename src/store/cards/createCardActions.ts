@@ -20,6 +20,7 @@ export interface CreateCardSuccessAction {
 export interface CreateCardFailureAction {
   type: typeof CREATE_CARD_FAILURE;
   payload: Card;
+  error: Error;
 }
 
 export type CreateCardActions =
@@ -57,6 +58,7 @@ function createCardFailure(card: Card, error: Error): CreateCardFailureAction {
   console.log(error);
   return {
     type: CREATE_CARD_FAILURE,
-    payload: card
+    payload: card,
+    error: error
   };
 }

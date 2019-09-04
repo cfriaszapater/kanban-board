@@ -53,5 +53,8 @@ export function createCardFailure(
     loading: false,
     error: true
   };
-  return stateWithUpdatedCard(state, cardWithErrorSet);
+  return {
+    ...stateWithUpdatedCard(state, cardWithErrorSet),
+    error: action.error
+  };
 }

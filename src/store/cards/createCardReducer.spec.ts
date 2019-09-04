@@ -113,9 +113,11 @@ describe("create card reducer", () => {
       cards: { ...initialState.cards, [previousCard.id]: previousCard }
     };
 
+    const error = new Error("an error");
     const resultState = cardsReducer(cardLoadingState, {
       type: CREATE_CARD_FAILURE,
-      payload: previousCard
+      payload: previousCard,
+      error: error
     });
 
     const cardWithError: CardErrorLoading = {
@@ -125,7 +127,8 @@ describe("create card reducer", () => {
     };
     const stateAfterErrorLoadingCard: KanbanBoardState = {
       ...cardLoadingState,
-      cards: { ...cardLoadingState.cards, [previousCard.id]: cardWithError }
+      cards: { ...cardLoadingState.cards, [previousCard.id]: cardWithError },
+      error: error
     };
     expect(resultState).toEqual(stateAfterErrorLoadingCard);
   });

@@ -29,7 +29,8 @@ import {
 } from "./updateCardActions";
 import {
   DRAG_CARD_WITHIN_COLUMN_BEGIN,
-  DRAG_CARD_BETWEEN_COLUMNS_BEGIN
+  DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
+  DRAG_CARD_FAILURE
 } from "./dragCardActions";
 import { dragCardWithinColumnBegin } from "./dragCardReducer";
 
@@ -129,6 +130,12 @@ export function cardsReducer(
 
     case DELETE_CARD_BEGIN:
       return deleteCardBegin(action, state);
+
+    case DRAG_CARD_FAILURE:
+      return {
+        ...state,
+        error: action.error
+      };
 
     default:
       // ALWAYS have a default case in a reducer

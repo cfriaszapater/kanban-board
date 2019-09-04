@@ -40,7 +40,6 @@ const DeleteButton = styled.a`
 
 export class CardView extends React.Component<CardProps> {
   handleClick = () => {
-    console.log("click");
     if (this.cardCreateDidNotSuccessYet()) {
       console.log(
         "not beginning editing because this card's create has not yet finished",
@@ -51,17 +50,14 @@ export class CardView extends React.Component<CardProps> {
   };
 
   handleChange = (event: ContentEditableEvent) => {
-    console.log("change with value ", event.target.value);
     this.props.dispatch(changeCardEditing(this.props.card, event.target.value));
   };
 
   handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
-    console.log("blur with value ", event.target.innerHTML);
     this.props.dispatch(updateCard(this.props.card, event.target.innerHTML));
   };
 
   handleClickDelete = () => {
-    console.log("click delete");
     this.props.dispatch(deleteCard(this.props.card));
   };
 
@@ -73,7 +69,6 @@ export class CardView extends React.Component<CardProps> {
     return (
       <Draggable draggableId={this.props.card.id} index={this.props.index}>
         {(provided, snapshot) => {
-          console.log("this.props.card.editing: ", this.props.card.editing);
           return (
             <ContainerDiv
               {...provided.draggableProps}

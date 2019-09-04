@@ -74,10 +74,6 @@ export default class KanbanBoard extends React.Component<
   render() {
     const { error, loading } = this.props;
 
-    if (error) {
-      return <div>Error! {error.message}</div>;
-    }
-
     if (loading) {
       return <div>Loading...</div>;
     }
@@ -88,6 +84,12 @@ export default class KanbanBoard extends React.Component<
         <div>
           <Link to="/login">Logout</Link>
         </div>
+        {error && (
+          <div className="alert alert-danger">
+            {error.message +
+              " Please check your network connection and refresh."}
+          </div>
+        )}
         <Container>
           {this.props.columnOrder.map(columnId => {
             let addCardButton = false;
