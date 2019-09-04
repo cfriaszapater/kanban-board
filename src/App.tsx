@@ -26,9 +26,9 @@ class App extends React.Component<AppProps> {
     console.log("App.props: " + JSON.stringify(this.props));
     return (
       <div className="App">
-        {/* TODO {alert && alert.message && (
+        {alert.message && (
           <div className={`alert ${alert.type}`}>{alert.message}</div>
-        )} */}
+        )}
         <Router history={history}>
           <div>
             <PrivateRoute
@@ -57,7 +57,7 @@ interface AppProps {
   columnOrder: string[];
   loading: boolean;
   error: Error | null;
-  alert?: {
+  alert: {
     message?: any;
     type?: string;
   };
