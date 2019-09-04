@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import KanbanBoard from "./kanbanBoard";
 import { history } from "./_helpers";
-import { alertActions } from "./_actions";
+import { alertActions } from "./_actions/alert.actions";
 import { PrivateRoute } from "./_components";
 import { LoginPage } from "./LoginPage";
 import { Router, Route } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "./store";
-import { NameToColumnMap, NameToCardMap } from "./store/cards/types";
+import { NameToColumnMap, NameToCardMap, Alert } from "./store/cards/types";
 
 class App extends React.Component<AppProps> {
   constructor(props: AppProps) {
@@ -56,10 +56,7 @@ interface AppProps {
   columnOrder: string[];
   loading: boolean;
   error: Error | null;
-  alert: {
-    message?: any;
-    type?: string;
-  };
+  alert: Alert;
 }
 
 const mapStateToProps = (state: AppState) => ({

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { userActions } from "../_actions";
+import { userActions } from "../_actions/user.actions";
 
 class LoginPage extends React.Component {
   constructor(props) {

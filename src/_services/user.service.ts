@@ -1,11 +1,12 @@
 import { backendUrl } from "../util/backendUrl";
+import { User } from "../store/cards/types";
 
 export const userService = {
   login,
   logout
 };
 
-function login(username, password) {
+function login(username: string, password: string): Promise<User> {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -27,9 +28,8 @@ function logout() {
   localStorage.removeItem("user");
 }
 
-function handleResponse(response) {
+function handleResponse(response: Response): Promise<User> {
   return response.text().then(text => {
-    const data = text && JSON.parse(text);
     if (!response.ok) {
       if (response.status === 401) {
         // auto logout if 401 response returned from api
@@ -38,10 +38,12 @@ function handleResponse(response) {
         location.reload(true);
       }
 
-      const error = (data && data.message) || response.statusText;
+      const data: any = text && JSON.parse(text);
+      const error: string = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
 
-    return data;
+    const user: User = text && JSON.parse(text);
+    return Promise.resolve(user);
   });
 }

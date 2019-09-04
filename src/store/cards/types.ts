@@ -48,3 +48,13 @@ export interface KanbanBoardState extends Board {
   loading: boolean;
   error: Error | null;
 }
+
+export interface User {
+  username: string;
+  password: string;
+}
+
+export interface Alert {
+  message?: string;
+  type?: string;
+}
