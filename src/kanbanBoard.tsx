@@ -13,6 +13,7 @@ import {
   NameToCardMap,
   KanbanBoardState
 } from "./store/cards/types";
+import { Link } from "react-router-dom";
 
 interface KanbanBoardProps {
   cards: NameToCardMap;
@@ -84,6 +85,9 @@ export default class KanbanBoard extends React.Component<
     let firstCol = true;
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
+        <div>
+          <Link to="/login">Logout</Link>
+        </div>
         <Container>
           {this.props.columnOrder.map(columnId => {
             let addCardButton = false;
