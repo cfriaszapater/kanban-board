@@ -18,7 +18,10 @@ function login(username: string, password: string) {
         dispatch(success(user));
         history.push("/");
       },
-      (error: Error) => {
+      (error: Error | string) => {
+        if (typeof error === "string") {
+          error = new Error(error);
+        }
         dispatch(failure(error));
         dispatch(alertActions.error(error.message));
       }
@@ -31,11 +34,8 @@ function login(username: string, password: string) {
   function success(user: User) {
     return { type: userConstants.LOGIN_SUCCESS, user };
   }
-  function failure(error: Error | string) {
+  function failure(error: Error) {
     console.log("user.actions.failure: " + error);
-    if (typeof error === "string") {
-      error = new Error(error);
-    }
     return { type: userConstants.LOGIN_FAILURE, error };
   }
 }
