@@ -15,10 +15,10 @@ import {
   DELETE_CARD_BEGIN
 } from "./updateCardActions";
 import expect from "expect";
-import { Card, CardLoaded, Column, KanbanBoardState } from "./types";
+import { Card, CardLoaded } from "./types";
 import { backendUrl } from "../../util/backendUrl";
-import { columnWithCards } from "../../../testUtil/columnWithCards";
 import { CardsActionsTypes } from "./CardsActionsTypes";
+import { givenKanbanBoardStateWithSomeCards } from "../../../testUtil/givenStateWithSomeCards";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -116,40 +116,9 @@ describe("card editing actions", () => {
 
   it("given column with cards, when delete card, then BEGIN and DELETE /cards and PUT /columns", () => {
     fetchMock.mockResponses("", "");
-    const column1: Column = columnWithCards("be-col-1", "col-1");
-    const card1: Card = {
-      id: "card-1",
-      _id: "grmblf-1",
-      content: "I fear being deleted"
-    };
-    const card2: Card = {
-      id: "card-2",
-      _id: "grmblf-2",
-      content: "I fear being deleted 2"
-    };
-    const column2: Column = columnWithCards(
-      "be-col-2",
-      "col-2",
-      card1.id,
-      card2.id
-    );
-    const column3: Column = columnWithCards("be-col-3", "col-3", "card-42");
-    const givenState: KanbanBoardState = {
-      columns: {
-        [column1.id]: column1,
-        [column2.id]: column2,
-        [column3.id]: column3
-      },
-      cards: {
-        [card1.id]: card1,
-        [card2.id]: card2,
-        ["card-42"]: { id: "card-42", content: "jarl" }
-      },
-      columnOrder: [column2.id, column2.id],
-      loading: false,
-      error: null
-    };
+    const givenState = givenKanbanBoardStateWithSomeCards();
     const store = mockStore(givenState);
+    const card1 = givenState.cards[Object.keys(givenState.cards)[0]];
 
     return store.dispatch(deleteCard(card1) as any).then(expectations());
 

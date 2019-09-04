@@ -7,7 +7,7 @@ import {
   DELETE_CARD_BEGIN
 } from "./updateCardActions";
 import { stateAfterOneCreate } from "./createCardReducer.spec";
-import { columnWithCards } from "../../../testUtil/columnWithCards";
+import { givenColumnWithCards } from "../../../testUtil/givenColumnWithCards";
 
 describe("card update (editing) reducer", () => {
   it("should start editing in card on START_TASK_EDITING", () => {
@@ -95,7 +95,7 @@ describe("card update (editing) reducer", () => {
   });
 
   it("given column with cards, when BEGIN delete, then deleted card and removed from column", () => {
-    const column1: Column = columnWithCards("be-col-1", "col-1");
+    const column1: Column = givenColumnWithCards("be-col-1", "col-1");
     const card1: Card = {
       id: "card-1",
       _id: "grmblf-1",
@@ -106,13 +106,17 @@ describe("card update (editing) reducer", () => {
       _id: "grmblf-2",
       content: "I fear being deleted 2"
     };
-    const column2: Column = columnWithCards(
+    const column2: Column = givenColumnWithCards(
       "be-col-2",
       "col-2",
       card1.id,
       card2.id
     );
-    const column3: Column = columnWithCards("be-col-3", "col-3", "card-42");
+    const column3: Column = givenColumnWithCards(
+      "be-col-3",
+      "col-3",
+      "card-42"
+    );
     const givenState: KanbanBoardState = {
       columns: {
         [column1.id]: column1,

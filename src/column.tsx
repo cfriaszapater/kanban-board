@@ -52,6 +52,7 @@ class InnerList extends React.PureComponent<InnerListProps> {
         key={card.id}
         card={card}
         index={index}
+        // XXX passing dispatch not needed
         dispatch={this.props.dispatch}
       />
     ));

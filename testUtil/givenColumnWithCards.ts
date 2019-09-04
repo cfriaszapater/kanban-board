@@ -1,5 +1,6 @@
 import { Column } from "../src/store/cards/types";
-export function columnWithCards(
+
+export function givenColumnWithCards(
   columnBackendId: string,
   columnId: string = "col-1",
   ...cardIds: string[]

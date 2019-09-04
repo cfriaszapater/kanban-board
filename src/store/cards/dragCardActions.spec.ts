@@ -12,7 +12,7 @@ import {
   DRAG_CARD_BETWEEN_COLUMNS_BEGIN
 } from "./dragCardActions";
 import { CardsActionsTypes } from "./CardsActionsTypes";
-import { columnWithCards } from "../../../testUtil/columnWithCards";
+import { givenColumnWithCards } from "../../../testUtil/givenColumnWithCards";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -29,7 +29,7 @@ describe("drag card actions", () => {
     const cardId1 = "card-1";
     const columnBackendId = "be-col-1";
     const cardId2 = "card-2";
-    const column: Column = columnWithCards(
+    const column: Column = givenColumnWithCards(
       columnBackendId,
       "col-1",
       cardId1,
@@ -70,7 +70,7 @@ describe("drag card actions", () => {
     const cardId1 = "card-1";
     const columnBackendId = "be-col-1";
     const cardId2 = "card-2";
-    const column: Column = columnWithCards(
+    const column: Column = givenColumnWithCards(
       columnBackendId,
       "col-1",
       cardId1,
@@ -109,13 +109,13 @@ describe("drag card actions", () => {
     fetchMock.mockResponses("{}", "{}");
     const cardId1 = "card-1";
     const cardId2 = "card-2";
-    const startColumn: Column = columnWithCards(
+    const startColumn: Column = givenColumnWithCards(
       "be-col-1",
       "col-1",
       cardId1,
       cardId2
     );
-    const endColumn: Column = columnWithCards("be-col-2", "col-2");
+    const endColumn: Column = givenColumnWithCards("be-col-2", "col-2");
 
     return dragCardBetweenColumns(
       startColumn,

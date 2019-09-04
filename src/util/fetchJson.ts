@@ -1,13 +1,20 @@
+import { authBearerToken } from "../util/authBearerToken";
+
 export async function get(url: string): Promise<any> {
   const req = new Request(url, {
     method: "GET",
-    headers: {
-      Accept: "application/json"
-    }
+    headers: headers()
   });
   const res = await fetch(req);
   if (!res.ok) {
-    throw new Error("Could not get resource, response KO: " + res);
+    const body = await res.text();
+    console.log(body);
+    throw new Error(
+      "Could not get resource, response KO: " +
+        res.status +
+        " " +
+        res.statusText
+    );
   }
   return await res.json();
 }
@@ -15,10 +22,7 @@ export async function get(url: string): Promise<any> {
 export async function post(url: string, body: any): Promise<any> {
   const req = new Request(url, {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
+    headers: headers(),
     body: JSON.stringify(body)
   });
   const res = await fetch(req);
@@ -31,10 +35,7 @@ export async function post(url: string, body: any): Promise<any> {
 export async function put(url: string, body: any): Promise<Response> {
   const req = new Request(url, {
     method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
+    headers: headers(),
     body: JSON.stringify(body)
   });
   const res = await fetch(req);
@@ -49,9 +50,7 @@ export async function put(url: string, body: any): Promise<Response> {
 export async function del(url: string): Promise<Response> {
   const req = new Request(url, {
     method: "DELETE",
-    headers: {
-      Accept: "application/json"
-    }
+    headers: headers()
   });
   const res = await fetch(req);
   if (!res.ok) {
@@ -60,4 +59,15 @@ export async function del(url: string): Promise<Response> {
     );
   }
   return res;
+}
+
+function headers(): Headers {
+  var headers = new Headers();
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
+  const bearerToken = authBearerToken();
+  if (bearerToken != null) {
+    headers.append("Authorization", bearerToken);
+  }
+  return headers;
 }

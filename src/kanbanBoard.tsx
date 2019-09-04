@@ -1,10 +1,8 @@
 import React from "react";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
 import { ColumnView } from "./column";
-import { AppState } from "./store";
 import { fetchBoard } from "./store/cards/fetchBoardActions";
 import {
   dragCardWithinColumn,
@@ -29,7 +27,10 @@ const Container = styled.div`
   display: flex;
 `;
 
-class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
+export default class KanbanBoard extends React.Component<
+  KanbanBoardProps,
+  KanbanBoardState
+> {
   componentDidMount() {
     this.props.dispatch(fetchBoard());
   }
@@ -101,6 +102,7 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
                 column={column}
                 cards={cards}
                 addCardButton={addCardButton}
+                // XXX passing dispatch not needed
                 dispatch={this.props.dispatch}
               />
             );
@@ -110,13 +112,3 @@ class KanbanBoard extends React.Component<KanbanBoardProps, KanbanBoardState> {
     );
   }
 }
-
-const mapStateToProps = (state: AppState) => ({
-  columnOrder: state.cards.columnOrder,
-  columns: state.cards.columns,
-  cards: state.cards.cards,
-  loading: state.cards.loading,
-  error: state.cards.error
-});
-
-export default connect(mapStateToProps)(KanbanBoard);

@@ -15,5 +15,9 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src", "testUtil/columnWithCards.ts"]
+  "include": [
+    "src",
+    "testUtil/givencolumnWithCards.ts",
+    "testUtil/givenStateWithSomeCards.ts"
+  ]
 }
