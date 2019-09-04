@@ -35,6 +35,7 @@ const ContainerDiv = styled.div<ContainerProps>`
 const DeleteButton = styled.a`
   color: red;
   float: right;
+  cursor: pointer;
 `;
 
 export class CardView extends React.Component<CardProps> {
