@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import KanbanBoard from "./kanbanBoard";
 import { history } from "./util/history";
 import { alertActions } from "./store/alert/alertActions";
-import { PrivateRoute } from "./_components";
+import { PrivateRoute } from "./components/PrivateRoute";
 import { LoginPage } from "./LoginPage";
 import { Router, Route } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";

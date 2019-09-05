@@ -1,5 +1,5 @@
 import { userConstants } from "../../_constants";
-import { userService } from "../../_services";
+import { loginClient } from "./client/login";
 import { alertActions } from "../alert/alertActions";
 import { history } from "../../util/history";
 import { User } from "../board/types";
@@ -13,7 +13,7 @@ function login(username: string, password: string) {
   return (dispatch: any) => {
     dispatch(request({ username: username, password: password }));
 
-    userService.login(username, password).then(
+    loginClient.login(username, password).then(
       user => {
         dispatch(success(user));
         history.push("/");
@@ -41,6 +41,6 @@ function login(username: string, password: string) {
 }
 
 function logout() {
-  userService.logout();
+  loginClient.logout();
   return { type: userConstants.LOGOUT };
 }

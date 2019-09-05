@@ -1,7 +1,7 @@
-import { backendUrl } from "../util/backendUrl";
-import { User } from "../store/board/types";
+import { backendUrl } from "../../../util/backendUrl";
+import { User } from "../../board/types";
 
-export const userService = {
+export const loginClient = {
   login,
   logout
 };
