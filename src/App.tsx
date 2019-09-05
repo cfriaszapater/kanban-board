@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import KanbanBoard from "./kanbanBoard";
-import { history } from "./_helpers";
+import { history } from "./util/history";
 import { alertActions } from "./store/alert/alertActions";
 import { PrivateRoute } from "./_components";
 import { LoginPage } from "./LoginPage";
