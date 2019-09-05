@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import App from "./App";
+import App from "./app";
 import { Provider } from "react-redux";
 import { givenAppStateWithSomeCards } from "../testUtil/givenStateWithSomeCards";
 
