@@ -10,7 +10,7 @@ import {
   Card
 } from "./types";
 import { CreateCardSuccessAction } from "./createCardActions";
-import { stateWithUpdatedCard } from "./reducers";
+import { stateWithUpdatedCard } from "./boardReducer";
 
 export function createCardBegin(
   action: CreateCardBeginAction,

@@ -43,7 +43,7 @@ export function givenAppStateWithSomeCards(): AppState {
   const boardState = givenKanbanBoardStateWithSomeCards();
   return {
     board: boardState,
-    authentication: { loggedIn: true, user: "jarl" },
+    login: { loggedIn: true, user: "jarl" },
     alert: {}
   };
 }

@@ -5,7 +5,7 @@ import {
   DeleteCardBeginAction
 } from "./updateCardActions";
 import { KanbanBoardState, Card } from "./types";
-import { stateWithUpdatedCard } from "./reducers";
+import { stateWithUpdatedCard } from "./boardReducer";
 import { columnsWithoutCard, cardsWithoutCard } from "./kanbanBoardState";
 
 export function beginCardEditing(

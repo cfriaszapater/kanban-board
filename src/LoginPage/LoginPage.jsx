@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { userActions } from "../_actions/user.actions";
+import { userActions } from "../store/login/loginActions";
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -103,7 +103,7 @@ class LoginPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { loggingIn } = state.authentication;
+  const { loggingIn } = state.login;
   return {
     loggingIn
   };

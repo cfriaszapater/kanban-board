@@ -1,4 +1,4 @@
-import { cardsReducer, initialState } from "./reducers";
+import { boardReducer, initialState } from "./boardReducer";
 import { KanbanBoardState, Card, Column } from "./types";
 import {
   BEGIN_TASK_EDITING,
@@ -17,7 +17,7 @@ describe("card update (editing) reducer", () => {
       previousCard
     );
 
-    const resultState: KanbanBoardState = cardsReducer(previousState, {
+    const resultState: KanbanBoardState = boardReducer(previousState, {
       type: BEGIN_TASK_EDITING,
       card: previousCard,
       editing: true
@@ -44,7 +44,7 @@ describe("card update (editing) reducer", () => {
     );
 
     const newContent = "condemor!";
-    const resultState: KanbanBoardState = cardsReducer(previousState, {
+    const resultState: KanbanBoardState = boardReducer(previousState, {
       type: CHANGE_TASK_EDITING,
       card: previousCard,
       newContent: newContent
@@ -76,7 +76,7 @@ describe("card update (editing) reducer", () => {
       content: newContent,
       editing: false
     };
-    const resultState: KanbanBoardState = cardsReducer(previousState, {
+    const resultState: KanbanBoardState = boardReducer(previousState, {
       type: UPDATE_CARD_BEGIN,
       card: cardWithUpdatedContent
     });
@@ -133,7 +133,7 @@ describe("card update (editing) reducer", () => {
       error: null
     };
 
-    const resultState: KanbanBoardState = cardsReducer(givenState, {
+    const resultState: KanbanBoardState = boardReducer(givenState, {
       type: DELETE_CARD_BEGIN,
       card: card1
     });

@@ -1,5 +1,5 @@
 import { Card, KanbanBoardState } from "./types";
-import { initialState, cardsReducer } from "./reducers";
+import { initialState, boardReducer } from "./boardReducer";
 import {
   DragCardWithinColumnBeginAction,
   DRAG_CARD_WITHIN_COLUMN_BEGIN
@@ -26,7 +26,7 @@ describe("drag card reducer", () => {
       type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
       column: columnWithSwappedCardIds
     };
-    const resultState = cardsReducer(initialState, action);
+    const resultState = boardReducer(initialState, action);
 
     const resultFirstColumn =
       resultState.columns[Object.keys(resultState.columns)[0]];

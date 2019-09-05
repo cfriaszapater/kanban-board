@@ -1,15 +1,15 @@
 import { combineReducers } from "redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
-import { cardsReducer as board } from "./board/reducers";
-import { authentication } from "./auth/authentication.reducer";
-import { alert } from "./alert/alert.reducer";
 import { createLogger } from "redux-logger";
+import { boardReducer as board } from "./board/boardReducer";
+import { loginReducer } from "./login/loginReducer";
+import { alertReducer } from "./alert/alertReducer";
 
 const rootReducer = combineReducers({
   board,
-  authentication,
-  alert
+  login: loginReducer,
+  alert: alertReducer
 });
 
 const loggerMiddleware = createLogger();

@@ -59,7 +59,7 @@ export const initialState: KanbanBoardState = {
   error: null
 };
 
-export function cardsReducer(
+export function boardReducer(
   state: KanbanBoardState = initialState,
   action: CardsActionsTypes
 ) {
