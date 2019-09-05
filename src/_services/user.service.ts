@@ -13,7 +13,7 @@ function login(username: string, password: string): Promise<User> {
     body: JSON.stringify({ username, password })
   };
 
-  return fetch(`${backendUrl()}/users/authenticate`, requestOptions)
+  return fetch(`${backendUrl()}/users/token`, requestOptions)
     .then(handleResponse)
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
