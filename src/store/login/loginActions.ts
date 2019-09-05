@@ -2,7 +2,7 @@ import { loginConstants } from "./loginConstants";
 import { loginClient } from "./client/login";
 import { alertActions } from "../alert/alertActions";
 import { history } from "../../util/history";
-import { User } from "../board/types";
+import { User } from "./types";
 
 export const userActions = {
   login,

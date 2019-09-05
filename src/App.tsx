@@ -5,10 +5,12 @@ import { history } from "./util/history";
 import { alertActions } from "./store/alert/alertActions";
 import { PrivateRoute } from "./components/privateRoute";
 import { LoginPage } from "./components/login/loginPage";
+import { RegisterPage } from "./components/register/registerPage";
 import { Router, Route } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "./store";
-import { NameToColumnMap, NameToCardMap, Alert } from "./store/board/types";
+import { NameToColumnMap, NameToCardMap } from "./store/board/types";
+import { Alert } from "./store/alert/types";
 
 class App extends React.Component<AppProps> {
   constructor(props: AppProps) {
@@ -42,6 +44,7 @@ class App extends React.Component<AppProps> {
               dispatch={this.props.dispatch}
             />
             <Route path="/login" component={LoginPage} />
+            <Route path="/register" component={RegisterPage} />
           </div>
         </Router>
       </div>

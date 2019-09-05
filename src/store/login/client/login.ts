@@ -1,5 +1,5 @@
 import { backendUrl } from "../../../util/backendUrl";
-import { User } from "../../board/types";
+import { User } from "../types";
 
 export const loginClient = {
   login,
