@@ -3,13 +3,13 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { boardReducer as board } from "./board/boardReducer";
-import { loginReducer } from "./login/loginReducer";
-import { alertReducer } from "./alert/alertReducer";
+import { loginReducer as login } from "./login/loginReducer";
+import { alertReducer as alert } from "./alert/alertReducer";
 
 const rootReducer = combineReducers({
   board,
-  login: loginReducer,
-  alert: alertReducer
+  login,
+  alert
 });
 
 const loggerMiddleware = createLogger();
