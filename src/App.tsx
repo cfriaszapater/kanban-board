@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import KanbanBoard from "./kanbanBoard";
+import KanbanBoard from "./components/board/kanbanBoard";
 import { history } from "./util/history";
 import { alertActions } from "./store/alert/alertActions";
 import { PrivateRoute } from "./components/PrivateRoute";
-import { LoginPage } from "./LoginPage";
+import { LoginPage } from "./components/login/LoginPage";
 import { Router, Route } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "./store";

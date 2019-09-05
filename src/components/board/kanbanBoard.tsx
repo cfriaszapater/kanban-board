@@ -3,16 +3,16 @@ import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { ThunkDispatch } from "redux-thunk";
 import { ColumnView } from "./column";
-import { fetchBoard } from "./store/board/fetchBoardActions";
+import { fetchBoard } from "../../store/board/fetchBoardActions";
 import {
   dragCardWithinColumn,
   dragCardBetweenColumns
-} from "./store/board/dragCardActions";
+} from "../../store/board/dragCardActions";
 import {
   NameToColumnMap,
   NameToCardMap,
   KanbanBoardState
-} from "./store/board/types";
+} from "../../store/board/types";
 import { Link } from "react-router-dom";
 
 interface KanbanBoardProps {
