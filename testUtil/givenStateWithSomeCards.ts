@@ -1,4 +1,4 @@
-import { Card, Column, KanbanBoardState } from "../src/store/cards/types";
+import { Card, Column, KanbanBoardState } from "../src/store/board/types";
 import { givenColumnWithCards } from "./givenColumnWithCards";
 import { AppState } from "../src/store";
 
@@ -42,7 +42,7 @@ export function givenKanbanBoardStateWithSomeCards() {
 export function givenAppStateWithSomeCards(): AppState {
   const boardState = givenKanbanBoardStateWithSomeCards();
   return {
-    cards: boardState,
+    board: boardState,
     authentication: { loggedIn: true, user: "jarl" },
     alert: {}
   };

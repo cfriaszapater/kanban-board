@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
-import { Card } from "./store/cards/types";
+import { Card } from "./store/board/types";
 import {
   beginCardEditing,
   changeCardEditing,
   updateCard,
   deleteCard
-} from "./store/cards/updateCardActions";
+} from "./store/board/updateCardActions";
 import { ThunkDispatch } from "redux-thunk";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 

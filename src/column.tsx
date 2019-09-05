@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 import { CardView } from "./card";
 import { AddCardButton } from "./addCardButton";
-import { Column, Card } from "./store/cards/types";
+import { Column, Card } from "./store/board/types";
 import { ThunkDispatch } from "redux-thunk";
 
 interface ColumnProps {

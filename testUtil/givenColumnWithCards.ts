@@ -1,4 +1,4 @@
-import { Column } from "../src/store/cards/types";
+import { Column } from "../src/store/board/types";
 
 export function givenColumnWithCards(
   columnBackendId: string,

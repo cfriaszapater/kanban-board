@@ -1,7 +1,7 @@
 import React from "react";
 import uuid from "uuid/v1";
-import { createCard } from "./store/cards/createCardActions";
-import { Card } from "./store/cards/types";
+import { createCard } from "./store/board/createCardActions";
+import { Card } from "./store/board/types";
 import { ThunkDispatch } from "redux-thunk";
 
 export class AddCardButton extends React.Component<AddCardButtonProps> {

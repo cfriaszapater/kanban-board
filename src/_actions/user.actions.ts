@@ -2,7 +2,7 @@ import { userConstants } from "../_constants";
 import { userService } from "../_services";
 import { alertActions } from "./alert.actions";
 import { history } from "../_helpers";
-import { User } from "../store/cards/types";
+import { User } from "../store/board/types";
 
 export const userActions = {
   login,

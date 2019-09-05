@@ -3,8 +3,8 @@ import {
   ChangeCardEditingAction,
   UpdateCardActions,
   DeleteCardBeginAction
-} from "./updateCardActions.js";
-import { CreateCardActions } from "./createCardActions.js";
+} from "./updateCardActions";
+import { CreateCardActions } from "./createCardActions";
 import {
   DragCardWithinColumnBeginAction,
   DragCardFailureAction,

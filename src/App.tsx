@@ -8,7 +8,7 @@ import { LoginPage } from "./LoginPage";
 import { Router, Route } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AppState } from "./store";
-import { NameToColumnMap, NameToCardMap, Alert } from "./store/cards/types";
+import { NameToColumnMap, NameToCardMap, Alert } from "./store/board/types";
 
 class App extends React.Component<AppProps> {
   constructor(props: AppProps) {
@@ -60,11 +60,11 @@ interface AppProps {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  columnOrder: state.cards.columnOrder,
-  columns: state.cards.columns,
-  cards: state.cards.cards,
-  loading: state.cards.loading,
-  error: state.cards.error,
+  columnOrder: state.board.columnOrder,
+  columns: state.board.columns,
+  cards: state.board.cards,
+  loading: state.board.loading,
+  error: state.board.error,
   alert: state.alert
 });
 
