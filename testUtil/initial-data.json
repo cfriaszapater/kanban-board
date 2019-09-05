@@ -1,0 +1,28 @@
+{
+  "cards": {
+    "card-1": { "id": "card-1", "content": "Create kanban board with react" },
+    "card-2": { "id": "card-2", "content": "Deploy to heroku" },
+    "card-3": {
+      "id": "card-3",
+      "content": "Start adding other features (eg: persist state in mongodb...)"
+    }
+  },
+  "columns": {
+    "column-1": {
+      "id": "column-1",
+      "title": "To do",
+      "cardIds": ["card-1", "card-2", "card-3"]
+    },
+    "column-2": {
+      "id": "column-2",
+      "title": "In progress",
+      "cardIds": []
+    },
+    "column-3": {
+      "id": "column-3",
+      "title": "Done",
+      "cardIds": []
+    }
+  },
+  "columnOrder": ["column-1", "column-2", "column-3"]
+}
