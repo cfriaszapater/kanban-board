@@ -1,4 +1,4 @@
-import { alertConstants } from "../../_constants";
+import { alertConstants } from "./alertConstants";
 
 export function alertReducer(state = {}, action) {
   switch (action.type) {

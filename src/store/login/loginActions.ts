@@ -1,4 +1,4 @@
-import { userConstants } from "../../_constants";
+import { loginConstants } from "./loginConstants";
 import { loginClient } from "./client/login";
 import { alertActions } from "../alert/alertActions";
 import { history } from "../../util/history";
@@ -29,18 +29,18 @@ function login(username: string, password: string) {
   };
 
   function request(user: User) {
-    return { type: userConstants.LOGIN_REQUEST, user };
+    return { type: loginConstants.LOGIN_REQUEST, user };
   }
   function success(user: User) {
-    return { type: userConstants.LOGIN_SUCCESS, user };
+    return { type: loginConstants.LOGIN_SUCCESS, user };
   }
   function failure(error: Error) {
     console.log("user.actions.failure: " + error);
-    return { type: userConstants.LOGIN_FAILURE, error };
+    return { type: loginConstants.LOGIN_FAILURE, error };
   }
 }
 
 function logout() {
   loginClient.logout();
-  return { type: userConstants.LOGOUT };
+  return { type: loginConstants.LOGOUT };
 }
