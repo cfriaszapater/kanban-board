@@ -1,38 +1,41 @@
 import React from "react";
 import { connect } from "react-redux";
+import {
+  createUser,
+  changeRegisterEditing
+} from "../../store/register/registerActions";
+import { RegisterState } from "../../store/register/registerReducer";
+import { AppState } from "../../store";
+import { ThunkDispatch } from "redux-thunk";
+import { ContentEditableEvent } from "react-contenteditable";
 
-import { createUser } from "../../store/register/registerActions";
-
-class RegisterPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: "",
-      password: "",
-      submitted: false
-    };
-  }
-
-  handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+class RegisterPage extends React.Component<RegisterProps, RegisterState> {
+  handleChangeUsername = (event: ContentEditableEvent) => {
+    const { value } = event.target;
+    console.log("handleChangeUsername", value);
+    this.props.dispatch(changeRegisterEditing({ username: value }));
   };
 
-  handleSubmit = e => {
+  handleChangePassword = (event: ContentEditableEvent) => {
+    const { value } = event.target;
+    console.log("handleChangePassword", value);
+    this.props.dispatch(changeRegisterEditing({ password: value }));
+  };
+
+  handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    this.setState({ submitted: true });
-    const { username, password } = this.state;
-    const { dispatch } = this.props;
+    const { username, password } = this.props;
+    console.log("handleSubmit", username, password);
     if (username && password) {
-      dispatch(createUser(username, password));
+      this.props.dispatch(
+        createUser({ username: username, password: password })
+      );
     }
   };
 
   render() {
-    const { registerInProgress } = this.props;
-    const { username, password, submitted } = this.state;
+    const { registerInProgress, username, password, submitted } = this.props;
     return (
       <div className="jumbotron">
         <div className="container">
@@ -53,7 +56,7 @@ class RegisterPage extends React.Component {
                       className="form-control"
                       name="username"
                       value={username}
-                      onChange={this.handleChange}
+                      onChange={this.handleChangeUsername}
                     />
                     {submitted && !username && (
                       <div className="help-block">Username is required</div>
@@ -71,14 +74,14 @@ class RegisterPage extends React.Component {
                       className="form-control"
                       name="password"
                       value={password}
-                      onChange={this.handleChange}
+                      onChange={this.handleChangePassword}
                     />
                     {submitted && !password && (
                       <div className="help-block">Password is required</div>
                     )}
                   </div>
                   <div className="form-group">
-                    <button className="btn btn-primary">Login</button>
+                    <button className="btn btn-primary">Register</button>
                     {registerInProgress && (
                       <img
                         alt="registration in progress"
@@ -96,10 +99,21 @@ class RegisterPage extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { registerInProgress } = state.register;
+interface RegisterProps {
+  dispatch: ThunkDispatch<{}, {}, any>;
+  registerInProgress?: boolean;
+  submitted?: boolean;
+  username?: string;
+  password?: string;
+}
+
+function mapStateToProps(state: AppState) {
+  const { registerInProgress, username, password, submitted } = state.register;
   return {
-    registerInProgress
+    registerInProgress,
+    username,
+    password,
+    submitted
   };
 }
 

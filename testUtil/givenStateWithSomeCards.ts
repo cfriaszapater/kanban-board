@@ -44,6 +44,7 @@ export function givenAppStateWithSomeCards(): AppState {
   return {
     board: boardState,
     login: { loggedIn: true, user: "jarl" },
-    alert: {}
+    alert: {},
+    register: {}
   };
 }

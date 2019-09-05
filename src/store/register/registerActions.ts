@@ -1,22 +1,23 @@
+import { ThunkDispatch } from "redux-thunk";
 import { alertActions } from "../alert/alertActions";
 import { history } from "../../util/history";
 import { User } from "../login/types";
 import { post } from "../../util/fetchJson";
 import { backendUrl } from "../../util/backendUrl";
 
-export async function createUser(user: User) {
-  return async (dispatch: any) => {
-    dispatch(request(user));
+export const createUser = (user: User) => async (
+  dispatch: ThunkDispatch<{}, {}, any>
+): Promise<void> => {
+  dispatch(request(user));
 
-    try {
-      const createdUser = await post(backendUrl() + "/users", user);
-      await dispatch(success(createdUser));
-      history.push("/");
-    } catch (err) {
-      dispatch(failure(err));
-      dispatch(alertActions.error(err.message));
-    }
-  };
+  try {
+    const createdUser = await post(backendUrl() + "/users", user);
+    dispatch(success(createdUser));
+    history.push("/");
+  } catch (err) {
+    dispatch(alertActions.error(err.message));
+    dispatch(failure(err));
+  }
 
   function request(user: User) {
     return { type: CREATE_USER_BEGIN, user };
@@ -28,8 +29,47 @@ export async function createUser(user: User) {
     console.log(error);
     return { type: CREATE_USER_FAILURE, error };
   }
+};
+
+export function changeRegisterEditing(userData: {
+  username?: string;
+  password?: string;
+}): ChangeRegisterEditingAction {
+  return {
+    type: CHANGE_REGISTER_EDITING,
+    username: userData.username,
+    password: userData.password
+  };
 }
 
 export const CREATE_USER_BEGIN = "CREATE_USER_BEGIN";
 export const CREATE_USER_SUCCESS = "CREATE_USER_SUCCESS";
 export const CREATE_USER_FAILURE = "CREATE_USER_FAILURE";
+export const CHANGE_REGISTER_EDITING = "CHANGE_REGISTER_EDITING";
+
+export type RegisterActions =
+  | CreateUserBeginAction
+  | CreateUserSuccessAction
+  | CreateUserFailureAction
+  | ChangeRegisterEditingAction;
+
+export interface CreateUserBeginAction {
+  type: typeof CREATE_USER_BEGIN;
+  user: User;
+}
+
+export interface CreateUserSuccessAction {
+  type: typeof CREATE_USER_SUCCESS;
+  user: User;
+}
+
+export interface CreateUserFailureAction {
+  type: typeof CREATE_USER_FAILURE;
+  error: Error;
+}
+
+export interface ChangeRegisterEditingAction {
+  type: typeof CHANGE_REGISTER_EDITING;
+  username?: string;
+  password?: string;
+}
