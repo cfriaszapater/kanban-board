@@ -1,10 +1,10 @@
 import {
+  CHANGE_REGISTER_EDITING,
   CREATE_USER_BEGIN,
   CREATE_USER_FAILURE,
   CREATE_USER_SUCCESS,
-  RegisterActions,
-  CHANGE_REGISTER_EDITING,
-  REGISTER_SUBMIT_VALIDATION_FAILED
+  REGISTER_SUBMIT_VALIDATION_FAILED,
+  RegisterActions
 } from "./registerActions";
 
 export interface RegisterState {

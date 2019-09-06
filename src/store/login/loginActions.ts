@@ -1,7 +1,7 @@
-import { loginConstants } from "./loginConstants";
-import { loginClient } from "./client/login";
-import { alertActions } from "../alert/alertActions";
 import { history } from "../../util/history";
+import { alertActions } from "../alert/alertActions";
+import { loginClient } from "./client/login";
+import { loginConstants } from "./loginConstants";
 import { User } from "./types";
 
 export const userActions = {
@@ -11,7 +11,7 @@ export const userActions = {
 
 function login(username: string, password: string) {
   return (dispatch: any) => {
-    dispatch(request({ username: username, password: password }));
+    dispatch(request({ username, password }));
 
     loginClient.loginForToken(username, password).then(
       () => {

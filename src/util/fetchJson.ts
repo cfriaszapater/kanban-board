@@ -51,7 +51,7 @@ export async function del(url: string): Promise<Response> {
 }
 
 function headers(): Headers {
-  var headers = new Headers();
+  let headers = new Headers();
   headers.append("Accept", "application/json");
   headers.append("Content-Type", "application/json");
   const bearerToken = authBearerToken();

@@ -1,30 +1,30 @@
+import expect from "expect";
 import configureMockStore, { MockStore } from "redux-mock-store";
 import thunk from "redux-thunk";
-import {
-  BEGIN_TASK_EDITING,
-  CHANGE_TASK_EDITING,
-  UPDATE_CARD_BEGIN,
-  beginCardEditing,
-  changeCardEditing,
-  updateCardBegin,
-  updateCard,
-  UPDATE_CARD_SUCCESS,
-  UpdateCardBeginAction,
-  UpdateCardActions,
-  deleteCard,
-  DELETE_CARD_BEGIN
-} from "./updateCardActions";
-import expect from "expect";
-import { Card, CardLoaded } from "./types";
+import { givenKanbanBoardStateWithSomeCards } from "../../../testUtil/givenStateWithSomeCards";
 import { backendUrl } from "../../util/backendUrl";
 import { CardsActionsTypes } from "./CardsActionsTypes";
-import { givenKanbanBoardStateWithSomeCards } from "../../../testUtil/givenStateWithSomeCards";
+import { Card, CardLoaded } from "./types";
+import {
+  BEGIN_TASK_EDITING,
+  beginCardEditing,
+  CHANGE_TASK_EDITING,
+  changeCardEditing,
+  DELETE_CARD_BEGIN,
+  deleteCard,
+  UPDATE_CARD_BEGIN,
+  UPDATE_CARD_SUCCESS,
+  updateCard,
+  UpdateCardActions,
+  updateCardBegin,
+  UpdateCardBeginAction
+} from "./updateCardActions";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe("card editing actions", () => {
-  var store: MockStore;
+  let store: MockStore;
 
   beforeEach(() => {
     fetchMock.resetMocks();
@@ -38,7 +38,7 @@ describe("card editing actions", () => {
 
     expect(action).toEqual({
       type: BEGIN_TASK_EDITING,
-      card: card,
+      card,
       editing: true
     });
   });
@@ -51,8 +51,8 @@ describe("card editing actions", () => {
 
     expect(action).toEqual({
       type: CHANGE_TASK_EDITING,
-      card: card,
-      newContent: newContent
+      card,
+      newContent
     });
   });
 

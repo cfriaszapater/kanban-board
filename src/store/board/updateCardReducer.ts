@@ -1,12 +1,12 @@
+import { stateWithUpdatedCard } from "./boardReducer";
+import { cardsWithoutCard, columnsWithoutCard } from "./kanbanBoardState";
+import { Card, KanbanBoardState } from "./types";
 import {
   BeginCardEditingAction,
   ChangeCardEditingAction,
-  UpdateCardBeginAction,
-  DeleteCardBeginAction
+  DeleteCardBeginAction,
+  UpdateCardBeginAction
 } from "./updateCardActions";
-import { KanbanBoardState, Card } from "./types";
-import { stateWithUpdatedCard } from "./boardReducer";
-import { columnsWithoutCard, cardsWithoutCard } from "./kanbanBoardState";
 
 export function beginCardEditing(
   action: BeginCardEditingAction,

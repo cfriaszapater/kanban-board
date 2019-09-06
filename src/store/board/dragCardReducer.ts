@@ -1,11 +1,11 @@
-import { KanbanBoardState } from "./types";
 import { DragCardWithinColumnBeginAction } from "./dragCardActions";
+import { KanbanBoardState } from "./types";
 
 export function dragCardWithinColumnBegin(
   action: DragCardWithinColumnBeginAction,
   state: KanbanBoardState
 ) {
-  let updatedColumn = action.column;
+  const updatedColumn = action.column;
   return {
     ...state,
     columns: {

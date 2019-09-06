@@ -1,7 +1,7 @@
-import { Card, CardLoaded } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
 import { post } from "../../util/fetchJson";
+import { Card, CardLoaded } from "./types";
 
 export const CREATE_CARD_BEGIN = "CREATE_CARD_BEGIN";
 export const CREATE_CARD_SUCCESS = "CREATE_CARD_SUCCESS";
@@ -59,6 +59,6 @@ function createCardFailure(card: Card, error: Error): CreateCardFailureAction {
   return {
     type: CREATE_CARD_FAILURE,
     payload: card,
-    error: error
+    error
   };
 }

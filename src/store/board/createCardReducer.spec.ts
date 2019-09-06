@@ -1,16 +1,16 @@
 import { boardReducer, initialState } from "./boardReducer";
 import {
-  CreateCardBeginAction,
   CREATE_CARD_BEGIN,
+  CREATE_CARD_FAILURE,
   CREATE_CARD_SUCCESS,
-  CREATE_CARD_FAILURE
+  CreateCardBeginAction
 } from "./createCardActions";
 import {
-  KanbanBoardState,
   Card,
-  CardLoading,
+  CardErrorLoading,
   CardLoaded,
-  CardErrorLoading
+  CardLoading,
+  KanbanBoardState
 } from "./types";
 
 describe("create card reducer", () => {
@@ -117,7 +117,7 @@ describe("create card reducer", () => {
     const resultState = boardReducer(cardLoadingState, {
       type: CREATE_CARD_FAILURE,
       payload: previousCard,
-      error: error
+      error
     });
 
     const cardWithError: CardErrorLoading = {
@@ -128,7 +128,7 @@ describe("create card reducer", () => {
     const stateAfterErrorLoadingCard: KanbanBoardState = {
       ...cardLoadingState,
       cards: { ...cardLoadingState.cards, [previousCard.id]: cardWithError },
-      error: error
+      error
     };
     expect(resultState).toEqual(stateAfterErrorLoadingCard);
   });

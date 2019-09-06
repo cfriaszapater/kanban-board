@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+import { applyMiddleware, createStore } from "redux";
 import { createLogger } from "redux-logger";
+import thunk from "redux-thunk";
+import { alertReducer as alert } from "./alert/alertReducer";
 import { boardReducer as board } from "./board/boardReducer";
 import { loginReducer as login } from "./login/loginReducer";
 import { registerReducer as register } from "./register/registerReducer";
-import { alertReducer as alert } from "./alert/alertReducer";
 
 const rootReducer = combineReducers({
   board,

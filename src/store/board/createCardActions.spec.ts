@@ -1,10 +1,10 @@
+import expect from "expect";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as actions from "./createCardActions";
-import expect from "expect";
-import { Card } from "./types";
 import { backendUrl } from "../../util/backendUrl";
 import { CardsActionsTypes } from "./CardsActionsTypes";
+import * as actions from "./createCardActions";
+import { Card } from "./types";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -57,7 +57,7 @@ describe("async create card action", () => {
       return () => {
         const expectedActions = [
           { type: actions.CREATE_CARD_BEGIN, payload: card },
-          { type: actions.CREATE_CARD_FAILURE, payload: card, error: error }
+          { type: actions.CREATE_CARD_FAILURE, payload: card, error }
         ];
         expect(store.getActions()).toEqual(expectedActions);
         expect(fetchMock.mock.calls.length).toEqual(1);

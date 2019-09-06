@@ -1,7 +1,7 @@
-import { Column } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
 import { put } from "../../util/fetchJson";
+import { Column } from "./types";
 
 export const DRAG_CARD_WITHIN_COLUMN_BEGIN = "DRAG_CARD_WITHIN_COLUMN_BEGIN";
 export const DRAG_CARD_FAILURE = "DRAG_CARD_FAILURE";
@@ -61,7 +61,7 @@ function dragCardWithinColumnFailure(error: Error): DragCardFailureAction {
   console.log(error);
   return {
     type: DRAG_CARD_FAILURE,
-    error: error
+    error
   };
 }
 

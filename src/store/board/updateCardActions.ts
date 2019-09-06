@@ -1,7 +1,7 @@
-import { Card, KanbanBoardState } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
-import { put, del } from "../../util/fetchJson";
+import { del, put } from "../../util/fetchJson";
+import { Card, KanbanBoardState } from "./types";
 
 export const BEGIN_TASK_EDITING = "BEGIN_TASK_EDITING";
 export const CHANGE_TASK_EDITING = "CHANGE_TASK_EDITING";
@@ -50,7 +50,7 @@ export interface DeleteCardBeginAction {
 export function beginCardEditing(card: Card): BeginCardEditingAction {
   return {
     type: BEGIN_TASK_EDITING,
-    card: card,
+    card,
     editing: true
   };
 }
@@ -61,8 +61,8 @@ export function changeCardEditing(
 ): ChangeCardEditingAction {
   return {
     type: CHANGE_TASK_EDITING,
-    card: card,
-    newContent: newContent
+    card,
+    newContent
   };
 }
 
@@ -107,7 +107,7 @@ export const updateCard = (card: Card, newContent: string) => async (
 function updateCardSuccess(card: Card): UpdateCardSuccessAction {
   return {
     type: UPDATE_CARD_SUCCESS,
-    card: card
+    card
   };
 }
 
@@ -115,7 +115,7 @@ function updateCardFailure(card: Card, error: Error): UpdateCardFailureAction {
   console.log(error);
   return {
     type: UPDATE_CARD_FAILURE,
-    card: card
+    card
   };
 }
 
@@ -137,6 +137,6 @@ export const deleteCard = (card: Card) => async (
 export function deleteCardBegin(card: Card): DeleteCardBeginAction {
   return {
     type: DELETE_CARD_BEGIN,
-    card: card
+    card
   };
 }

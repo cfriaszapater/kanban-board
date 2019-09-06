@@ -1,16 +1,16 @@
+import { stateWithUpdatedCard } from "./boardReducer";
 import {
   CreateCardBeginAction,
   CreateCardFailureAction
 } from "./createCardActions";
-import {
-  KanbanBoardState,
-  CardLoading,
-  CardLoaded,
-  CardErrorLoading,
-  Card
-} from "./types";
 import { CreateCardSuccessAction } from "./createCardActions";
-import { stateWithUpdatedCard } from "./boardReducer";
+import {
+  Card,
+  CardErrorLoading,
+  CardLoaded,
+  CardLoading,
+  KanbanBoardState
+} from "./types";
 
 export function createCardBegin(
   action: CreateCardBeginAction,

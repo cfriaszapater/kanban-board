@@ -1,20 +1,20 @@
-import {
-  BeginCardEditingAction,
-  ChangeCardEditingAction,
-  UpdateCardActions,
-  DeleteCardBeginAction
-} from "./updateCardActions";
 import { CreateCardActions } from "./createCardActions";
 import {
-  DragCardWithinColumnBeginAction,
+  DragCardBetweenColumnsBeginAction,
   DragCardFailureAction,
-  DragCardBetweenColumnsBeginAction
+  DragCardWithinColumnBeginAction
 } from "./dragCardActions";
 import {
   FetchCardsBeginAction,
-  FetchCardsSuccessAction,
-  FetchCardsFailureAction
+  FetchCardsFailureAction,
+  FetchCardsSuccessAction
 } from "./fetchBoardActions";
+import {
+  BeginCardEditingAction,
+  ChangeCardEditingAction,
+  DeleteCardBeginAction,
+  UpdateCardActions
+} from "./updateCardActions";
 
 export type CardsActionsTypes =
   | FetchCardsBeginAction

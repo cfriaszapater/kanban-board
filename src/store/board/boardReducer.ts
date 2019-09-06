@@ -1,38 +1,38 @@
-import {
-  FETCH_CARDS_BEGIN,
-  FETCH_CARDS_SUCCESS,
-  FETCH_CARDS_FAILURE
-} from "./fetchBoardActions";
 import { CardsActionsTypes } from "./CardsActionsTypes";
 import {
   CREATE_CARD_BEGIN,
-  CREATE_CARD_SUCCESS,
-  CREATE_CARD_FAILURE
+  CREATE_CARD_FAILURE,
+  CREATE_CARD_SUCCESS
 } from "./createCardActions";
-import { KanbanBoardState, Card } from "./types";
 import {
   createCardBegin,
   createCardFailure,
   createCardSuccess
 } from "./createCardReducer";
 import {
-  beginCardEditing,
-  changeCardEditing,
-  updateCardBegin,
-  deleteCardBegin
-} from "./updateCardReducer";
+  DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
+  DRAG_CARD_FAILURE,
+  DRAG_CARD_WITHIN_COLUMN_BEGIN
+} from "./dragCardActions";
+import { dragCardWithinColumnBegin } from "./dragCardReducer";
+import {
+  FETCH_CARDS_BEGIN,
+  FETCH_CARDS_FAILURE,
+  FETCH_CARDS_SUCCESS
+} from "./fetchBoardActions";
+import { Card, KanbanBoardState } from "./types";
 import {
   BEGIN_TASK_EDITING,
   CHANGE_TASK_EDITING,
-  UPDATE_CARD_BEGIN,
-  DELETE_CARD_BEGIN
+  DELETE_CARD_BEGIN,
+  UPDATE_CARD_BEGIN
 } from "./updateCardActions";
 import {
-  DRAG_CARD_WITHIN_COLUMN_BEGIN,
-  DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
-  DRAG_CARD_FAILURE
-} from "./dragCardActions";
-import { dragCardWithinColumnBegin } from "./dragCardReducer";
+  beginCardEditing,
+  changeCardEditing,
+  deleteCardBegin,
+  updateCardBegin
+} from "./updateCardReducer";
 
 export const initialState: KanbanBoardState = {
   cards: {},

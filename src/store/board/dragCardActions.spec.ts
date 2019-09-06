@@ -1,24 +1,24 @@
+import expect from "expect";
 import configureMockStore, { MockStore } from "redux-mock-store";
 import thunk from "redux-thunk";
-import * as actions from "./createCardActions";
-import expect from "expect";
-import { Card, Column } from "./types";
-import { backendUrl } from "../../util/backendUrl";
-import {
-  dragCardWithinColumn,
-  DRAG_CARD_WITHIN_COLUMN_BEGIN,
-  DRAG_CARD_FAILURE,
-  dragCardBetweenColumns,
-  DRAG_CARD_BETWEEN_COLUMNS_BEGIN
-} from "./dragCardActions";
-import { CardsActionsTypes } from "./CardsActionsTypes";
 import { givenColumnWithCards } from "../../../testUtil/givenColumnWithCards";
+import { backendUrl } from "../../util/backendUrl";
+import { CardsActionsTypes } from "./CardsActionsTypes";
+import * as actions from "./createCardActions";
+import {
+  DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
+  DRAG_CARD_FAILURE,
+  DRAG_CARD_WITHIN_COLUMN_BEGIN,
+  dragCardBetweenColumns,
+  dragCardWithinColumn
+} from "./dragCardActions";
+import { Card, Column } from "./types";
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe("drag card actions", () => {
-  var store: MockStore;
+  let store: MockStore;
   beforeEach(() => {
     fetchMock.resetMocks();
     store = mockStore();
@@ -92,7 +92,7 @@ describe("drag card actions", () => {
             type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
             column: expectedColumnWithSwappedCardIds
           },
-          { type: DRAG_CARD_FAILURE, error: error }
+          { type: DRAG_CARD_FAILURE, error }
         ];
         expect(store.getActions()).toEqual(expectedActions);
 

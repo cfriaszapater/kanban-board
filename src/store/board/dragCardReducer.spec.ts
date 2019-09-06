@@ -1,10 +1,10 @@
-import { Card, KanbanBoardState } from "./types";
-import { initialState, boardReducer } from "./boardReducer";
-import {
-  DragCardWithinColumnBeginAction,
-  DRAG_CARD_WITHIN_COLUMN_BEGIN
-} from "./dragCardActions";
+import { boardReducer, initialState } from "./boardReducer";
 import { addCardToState } from "./createCardReducer";
+import {
+  DRAG_CARD_WITHIN_COLUMN_BEGIN,
+  DragCardWithinColumnBeginAction
+} from "./dragCardActions";
+import { Card, KanbanBoardState } from "./types";
 
 describe("drag card reducer", () => {
   it("given cards in first column, when drag card within column, then first column cardIds updated", () => {

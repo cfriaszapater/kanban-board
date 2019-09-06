@@ -1,9 +1,9 @@
 import {
   Card,
   Column,
-  NameToColumnMap,
   KanbanBoardState,
-  NameToCardMap
+  NameToCardMap,
+  NameToColumnMap
 } from "./types";
 
 export function columnWithoutCard(column: Column, card: Card) {
@@ -21,7 +21,7 @@ export function columnsWithoutCard(
   card: Card,
   state: KanbanBoardState
 ) {
-  let column = columnContainingCard(columns, card);
+  const column = columnContainingCard(columns, card);
   const updatedColumn = columnWithoutCard(column, card);
   const updatedColumns = {
     ...state.columns,

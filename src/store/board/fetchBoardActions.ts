@@ -1,7 +1,7 @@
-import { Column, Board, Card, NameToCardMap, NameToColumnMap } from "./types";
 import { ThunkDispatch } from "redux-thunk";
 import { backendUrl } from "../../util/backendUrl";
 import { get } from "../../util/fetchJson";
+import { Board, Card, Column, NameToCardMap, NameToColumnMap } from "./types";
 
 export const FETCH_CARDS_BEGIN = "FETCH_CARDS_BEGIN";
 export const FETCH_CARDS_SUCCESS = "FETCH_CARDS_SUCCESS";
@@ -71,5 +71,5 @@ export const fetchCardsSuccess = (cards: Board): FetchCardsSuccessAction => ({
 
 export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
   type: FETCH_CARDS_FAILURE,
-  error: error
+  error
 });

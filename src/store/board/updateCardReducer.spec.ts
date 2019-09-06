@@ -1,13 +1,13 @@
+import { givenColumnWithCards } from "../../../testUtil/givenColumnWithCards";
 import { boardReducer, initialState } from "./boardReducer";
-import { KanbanBoardState, Card, Column } from "./types";
+import { stateAfterOneCreate } from "./createCardReducer.spec";
+import { Card, Column, KanbanBoardState } from "./types";
 import {
   BEGIN_TASK_EDITING,
-  UPDATE_CARD_BEGIN,
   CHANGE_TASK_EDITING,
-  DELETE_CARD_BEGIN
+  DELETE_CARD_BEGIN,
+  UPDATE_CARD_BEGIN
 } from "./updateCardActions";
-import { stateAfterOneCreate } from "./createCardReducer.spec";
-import { givenColumnWithCards } from "../../../testUtil/givenColumnWithCards";
 
 describe("card update (editing) reducer", () => {
   it("should start editing in card on START_TASK_EDITING", () => {
@@ -47,7 +47,7 @@ describe("card update (editing) reducer", () => {
     const resultState: KanbanBoardState = boardReducer(previousState, {
       type: CHANGE_TASK_EDITING,
       card: previousCard,
-      newContent: newContent
+      newContent
     });
 
     expect(resultState).toEqual({
