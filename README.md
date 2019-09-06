@@ -12,29 +12,41 @@ If you want to run it locally:
 
 ### Build
 
-`npm install`
+```sh
+npm install
+```
 
 ### Test
 
-`npm test`
+```sh
+npm test
+```
 
 ### Run
 
-`npm start`
+```sh
+npm start
+```
 
 ### Deploy to production
 
 This is what I used to deploy to production (having an heroku account and git heroku remote set to point to it):
 
-`git push heroku master && heroku open`
+```sh
+git push heroku master && heroku open
+```
 
 View logs:
 
-`heroku logs --tail`
+```sh
+heroku logs --tail
+```
 
 Config:
 
-`heroku config`
+```sh
+heroku config
+```
 
 ## License
 
