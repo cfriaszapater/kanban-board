@@ -43,6 +43,7 @@ function handleResponse(response: Response): Promise<User> {
       return Promise.reject(error);
     }
 
+    // TODO this is not User, it also contains .token attribute (which is the important one indeed, we could change it to be just Token)
     const user: User = text && JSON.parse(text);
     return Promise.resolve(user);
   });

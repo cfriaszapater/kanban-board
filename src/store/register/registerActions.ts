@@ -4,6 +4,8 @@ import { history } from "../../util/history";
 import { User } from "../login/types";
 import { post } from "../../util/fetchJson";
 import { backendUrl } from "../../util/backendUrl";
+import { Column } from "../board/types";
+import { loginClient } from "../login/client/login";
 
 export const createUser = (username?: string, password?: string) => async (
   dispatch: ThunkDispatch<{}, {}, any>
@@ -17,7 +19,8 @@ export const createUser = (username?: string, password?: string) => async (
   dispatch(request(user));
 
   try {
-    const createdUser = await post(backendUrl() + "/users", user);
+    const createdUser = await registerAndSetupUser(user);
+
     dispatch(success(createdUser));
     history.push("/");
   } catch (err) {
@@ -36,6 +39,33 @@ export const createUser = (username?: string, password?: string) => async (
     return { type: CREATE_USER_FAILURE, error };
   }
 };
+
+async function registerAndSetupUser(user: User) {
+  const createdUser = await postUser(user);
+
+  // In the future we may allow users creating the columns they want, so we create columns here in frontend instead of backend on user creation
+  // Get token for POST /columns; it's stored in localStorage
+  await loginClient.login(user.username, user.password);
+  // Reads the token from localStorage and sets it in the fetch headers
+  await postColumns();
+
+  return createdUser;
+}
+
+async function postUser(user: { username: string; password: string }) {
+  return post(backendUrl() + "/users", user);
+}
+
+async function postColumns() {
+  const col1: Column = { id: "col-1", title: "To Do", cardIds: [] };
+  const col2: Column = { id: "col-2", title: "In Progress", cardIds: [] };
+  const col3: Column = { id: "col-3", title: "Done", cardIds: [] };
+  await Promise.all([
+    post(backendUrl() + "/columns", col1),
+    post(backendUrl() + "/columns", col2),
+    post(backendUrl() + "/columns", col3)
+  ]);
+}
 
 export function changeRegisterEditing(userData: {
   username?: string;

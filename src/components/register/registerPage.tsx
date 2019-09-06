@@ -75,6 +75,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
                       <div className="help-block">Password is required</div>
                     )}
                   </div>
+                  {/* TODO password2 field */}
                   <div className="form-group">
                     <button className="btn btn-primary">Register</button>
                     {registerInProgress && (
