@@ -1,5 +1,4 @@
 import React from "react";
-import { ContentEditableEvent } from "react-contenteditable";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppState } from "../../store";
@@ -11,9 +10,8 @@ import {
 import { RegisterState } from "../../store/register/registerReducer";
 
 class RegisterPage extends React.Component<RegisterProps, RegisterState> {
-  public handleChange = (event: ContentEditableEvent) => {
+  public handleChange = (event: React.SyntheticEvent) => {
     const { value, name } = event.target as HTMLInputElement;
-    console.log("handleChange", name, value);
     this.props.changeRegisterEditing({ [name]: value });
   };
 
@@ -21,7 +19,6 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
     e.preventDefault();
 
     const { username, password, password2 } = this.props;
-    console.log("handleSubmit", username, password, password2);
     this.props.createUser(username, password, password2);
   };
 
@@ -126,7 +123,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
   }
 }
 
-interface RegisterStateProps {
+interface RegisterPropsToMapState {
   username: string;
   password: string;
   password2: string;
@@ -134,7 +131,7 @@ interface RegisterStateProps {
   registerInProgress: boolean;
 }
 
-interface RegisterDispatchProps {
+interface RegisterPropsToMapDispatch {
   changeRegisterEditing: typeof changeRegisterEditing;
   // XXX ActionCreator<CreateUserThunk>?
   createUser: (
@@ -144,9 +141,11 @@ interface RegisterDispatchProps {
   ) => Promise<void>;
 }
 
-interface RegisterProps extends RegisterStateProps, RegisterDispatchProps {}
+interface RegisterProps
+  extends RegisterPropsToMapState,
+    RegisterPropsToMapDispatch {}
 
-function mapStateToProps(state: AppState): RegisterStateProps {
+function mapStateToProps(state: AppState): RegisterPropsToMapState {
   const {
     registerInProgress,
     username,

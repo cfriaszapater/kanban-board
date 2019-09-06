@@ -1,45 +1,36 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { AppState } from "../../store";
+import {
+  changeLoginEditing,
+  login,
+  logout
+} from "../../store/login/loginActions";
+import { LoginState } from "../../store/login/loginReducer";
 
-import { userActions } from "../../store/login/loginActions";
-
-class LoginPage extends React.Component {
-  constructor(props) {
+class LoginPage extends React.Component<LoginProps, LoginState> {
+  constructor(props: LoginProps) {
     super(props);
 
     // reset login status
-    this.props.dispatch(userActions.logout());
-
-    this.state = {
-      username: "",
-      password: "",
-      submitted: false
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.props.logout();
   }
 
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  }
+  public handleChange = (event: React.SyntheticEvent) => {
+    const { value, name } = event.target as HTMLInputElement;
+    this.props.changeLoginEditing({ [name]: value });
+  };
 
-  handleSubmit(e) {
+  public handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    this.setState({ submitted: true });
-    const { username, password } = this.state;
-    const { dispatch } = this.props;
-    if (username && password) {
-      dispatch(userActions.login(username, password));
-    }
-  }
+    const { username, password } = this.props;
+    this.props.login(username, password);
+  };
 
-  render() {
-    const { loggingIn } = this.props;
-    const { username, password, submitted } = this.state;
+  public render() {
+    const { loggingIn, username, password, submitted } = this.props;
     return (
       <div className="jumbotron">
         <div className="container">
@@ -106,12 +97,31 @@ class LoginPage extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { loggingIn } = state.login;
+interface LoginPropsToMapState {
+  loggingIn: boolean;
+  username: string;
+  password: string;
+  submitted: boolean;
+}
+
+interface LoginProps extends LoginPropsToMapState {
+  changeLoginEditing: typeof changeLoginEditing;
+  login: any;
+  logout: any;
+}
+
+function mapStateToProps(state: AppState): LoginPropsToMapState {
+  const { loggingIn, username, password, submitted } = state.login;
   return {
-    loggingIn
+    loggingIn,
+    password,
+    submitted,
+    username
   };
 }
 
-const connectedLoginPage = connect(mapStateToProps)(LoginPage);
+const connectedLoginPage = connect(
+  mapStateToProps,
+  { changeLoginEditing, login, logout }
+)(LoginPage);
 export { connectedLoginPage as LoginPage };
