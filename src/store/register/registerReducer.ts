@@ -3,7 +3,8 @@ import {
   CREATE_USER_FAILURE,
   CREATE_USER_SUCCESS,
   RegisterActions,
-  CHANGE_REGISTER_EDITING
+  CHANGE_REGISTER_EDITING,
+  REGISTER_SUBMIT_VALIDATION_FAILED
 } from "./registerActions";
 
 export interface RegisterState {
@@ -47,6 +48,11 @@ export function registerReducer(
           password: action.password
         };
       }
+    case REGISTER_SUBMIT_VALIDATION_FAILED:
+      return {
+        ...state,
+        submitted: true
+      };
     default:
       return state;
   }

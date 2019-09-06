@@ -5,9 +5,15 @@ import { User } from "../login/types";
 import { post } from "../../util/fetchJson";
 import { backendUrl } from "../../util/backendUrl";
 
-export const createUser = (user: User) => async (
+export const createUser = (username?: string, password?: string) => async (
   dispatch: ThunkDispatch<{}, {}, any>
 ): Promise<void> => {
+  if (!username || !password) {
+    dispatch({ type: REGISTER_SUBMIT_VALIDATION_FAILED });
+    return;
+  }
+
+  const user = { username: username, password: password };
   dispatch(request(user));
 
   try {
@@ -46,12 +52,15 @@ export const CREATE_USER_BEGIN = "CREATE_USER_BEGIN";
 export const CREATE_USER_SUCCESS = "CREATE_USER_SUCCESS";
 export const CREATE_USER_FAILURE = "CREATE_USER_FAILURE";
 export const CHANGE_REGISTER_EDITING = "CHANGE_REGISTER_EDITING";
+export const REGISTER_SUBMIT_VALIDATION_FAILED =
+  "REGISTER_SUBMIT_VALIDATION_FAILED";
 
 export type RegisterActions =
   | CreateUserBeginAction
   | CreateUserSuccessAction
   | CreateUserFailureAction
-  | ChangeRegisterEditingAction;
+  | ChangeRegisterEditingAction
+  | RegisterSubmitValidationFailed;
 
 export interface CreateUserBeginAction {
   type: typeof CREATE_USER_BEGIN;
@@ -72,4 +81,8 @@ export interface ChangeRegisterEditingAction {
   type: typeof CHANGE_REGISTER_EDITING;
   username?: string;
   password?: string;
+}
+
+export interface RegisterSubmitValidationFailed {
+  type: typeof REGISTER_SUBMIT_VALIDATION_FAILED;
 }

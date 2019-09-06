@@ -7,7 +7,6 @@ import {
 import { RegisterState } from "../../store/register/registerReducer";
 import { AppState } from "../../store";
 import { ContentEditableEvent } from "react-contenteditable";
-import { User } from "../../store/login/types";
 
 class RegisterPage extends React.Component<RegisterProps, RegisterState> {
   handleChangeUsername = (event: ContentEditableEvent) => {
@@ -27,9 +26,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
 
     const { username, password } = this.props;
     console.log("handleSubmit", username, password);
-    if (username && password) {
-      this.props.createUser({ username: username, password: password });
-    }
+    this.props.createUser(username, password);
   };
 
   render() {
@@ -41,7 +38,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
             <div>
               <div className="col-md-6 col-md-offset-3">
                 <h2>Register</h2>
-                <form name="form" onSubmit={this.handleSubmit}>
+                <form name="register" onSubmit={this.handleSubmit}>
                   <div
                     className={
                       "form-group" +
@@ -103,7 +100,8 @@ interface RegisterProps {
   username?: string;
   password?: string;
   changeRegisterEditing: typeof changeRegisterEditing;
-  createUser: (user: User) => Promise<void>;
+  // XXX ActionCreator<CreateUserThunk>?
+  createUser: (username?: string, password?: string) => Promise<void>;
 }
 
 function mapStateToProps(state: AppState) {
