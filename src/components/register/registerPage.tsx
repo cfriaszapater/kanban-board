@@ -6,20 +6,20 @@ import {
 } from "../../store/register/registerActions";
 import { RegisterState } from "../../store/register/registerReducer";
 import { AppState } from "../../store";
-import { ThunkDispatch } from "redux-thunk";
 import { ContentEditableEvent } from "react-contenteditable";
+import { User } from "../../store/login/types";
 
 class RegisterPage extends React.Component<RegisterProps, RegisterState> {
   handleChangeUsername = (event: ContentEditableEvent) => {
     const { value } = event.target;
     console.log("handleChangeUsername", value);
-    this.props.dispatch(changeRegisterEditing({ username: value }));
+    this.props.changeRegisterEditing({ username: value });
   };
 
   handleChangePassword = (event: ContentEditableEvent) => {
     const { value } = event.target;
     console.log("handleChangePassword", value);
-    this.props.dispatch(changeRegisterEditing({ password: value }));
+    this.props.changeRegisterEditing({ password: value });
   };
 
   handleSubmit = (e: { preventDefault: () => void }) => {
@@ -28,9 +28,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
     const { username, password } = this.props;
     console.log("handleSubmit", username, password);
     if (username && password) {
-      this.props.dispatch(
-        createUser({ username: username, password: password })
-      );
+      this.props.createUser({ username: username, password: password });
     }
   };
 
@@ -100,11 +98,12 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
 }
 
 interface RegisterProps {
-  dispatch: ThunkDispatch<{}, {}, any>;
   registerInProgress?: boolean;
   submitted?: boolean;
   username?: string;
   password?: string;
+  changeRegisterEditing: typeof changeRegisterEditing;
+  createUser: (user: User) => Promise<void>;
 }
 
 function mapStateToProps(state: AppState) {
@@ -117,5 +116,8 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-const connectedRegisterPage = connect(mapStateToProps)(RegisterPage);
+const connectedRegisterPage = connect(
+  mapStateToProps,
+  { changeRegisterEditing, createUser }
+)(RegisterPage);
 export { connectedRegisterPage as RegisterPage };
