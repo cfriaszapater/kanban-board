@@ -2,6 +2,7 @@ import { Card, Column, KanbanBoardState } from "../src/store/board/types";
 import { givenColumnWithCards } from "./givenColumnWithCards";
 import { AppState } from "../src/store";
 import { initialState as registerInitialState } from "../src/store/register/registerReducer";
+import { initialState as loginInitialState } from "../src/store/login/loginReducer";
 
 export function givenKanbanBoardStateWithSomeCards() {
   const column1: Column = givenColumnWithCards("be-col-1", "col-1");
@@ -44,7 +45,7 @@ export function givenAppStateWithSomeCards(): AppState {
   const boardState = givenKanbanBoardStateWithSomeCards();
   return {
     board: boardState,
-    login: { loggedIn: true, user: "jarl" },
+    login: loginInitialState,
     alert: {},
     register: registerInitialState
   };

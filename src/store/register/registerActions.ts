@@ -47,7 +47,7 @@ async function registerAndSetupUser(user: User) {
 
   // In the future we may allow users creating the columns they want, so we create columns here in frontend instead of backend on user creation
   // Get token for POST /columns; it's stored in localStorage
-  await loginClient.login(user.username, user.password);
+  await loginClient.loginForToken(user.username, user.password);
   // Reads the token from localStorage and sets it in the fetch headers
   await postColumns();
 

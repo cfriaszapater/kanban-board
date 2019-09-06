@@ -1,12 +1,10 @@
-export function authBearerToken() {
-  const loggedInUser = localStorage.getItem("user");
-  if (loggedInUser) {
-    // return authorization header with jwt token
-    let user = JSON.parse(loggedInUser);
+import { tokenInLocalStorage } from "./tokenInLocalStorage";
 
-    if (user && user.token) {
-      return "Bearer " + user.token;
-    }
+export function authBearerToken() {
+  const token = tokenInLocalStorage();
+  if (token) {
+    // return authorization header with jwt token
+    return "Bearer " + token;
   }
   return null;
 }

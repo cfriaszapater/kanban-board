@@ -1,50 +1,49 @@
 import { backendUrl } from "../../../util/backendUrl";
-import { User } from "../types";
+import {
+  storeTokenInLocalStorage,
+  removeTokenFromLocalStorage
+} from "../../../util/tokenInLocalStorage";
 
 export const loginClient = {
-  login,
+  loginForToken,
   logout
 };
 
-function login(username: string, password: string): Promise<User> {
+async function loginForToken(
+  username: string,
+  password: string
+): Promise<string> {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
   };
 
-  return fetch(`${backendUrl()}/users/token`, requestOptions)
-    .then(handleResponse)
-    .then(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem("user", JSON.stringify(user));
-
-      return user;
-    });
+  const response = await fetch(`${backendUrl()}/users/token`, requestOptions);
+  const token = await handleResponse(response);
+  // store jwt token in local storage to keep user logged in between page refreshes
+  storeTokenInLocalStorage(token);
+  return token;
 }
 
 function logout() {
-  // remove user from local storage to log user out
-  localStorage.removeItem("user");
+  // remove token from local storage to log user out
+  removeTokenFromLocalStorage();
 }
 
-function handleResponse(response: Response): Promise<User> {
-  return response.text().then(text => {
-    if (!response.ok) {
-      if (response.status === 401) {
-        // auto logout if 401 response returned from api
-        logout();
-        // eslint-disable-next-line no-restricted-globals
-        location.reload(true);
-      }
-
-      const data: any = text && JSON.parse(text);
-      const error: string = (data && data.message) || response.statusText;
-      return Promise.reject(error);
+async function handleResponse(response: Response): Promise<string> {
+  let text = await response.text();
+  if (!response.ok) {
+    if (response.status === 401) {
+      // auto logout if 401 response returned from api
+      logout();
+      // eslint-disable-next-line no-restricted-globals
+      location.reload(true);
     }
-
-    // TODO this is not User, it also contains .token attribute (which is the important one indeed, we could change it to be just Token)
-    const user: User = text && JSON.parse(text);
-    return Promise.resolve(user);
-  });
+    const data: any = text && JSON.parse(text);
+    const error: string = (data && data.message) || response.statusText;
+    return Promise.reject(error);
+  }
+  const token = JSON.parse(text);
+  return Promise.resolve(token);
 }

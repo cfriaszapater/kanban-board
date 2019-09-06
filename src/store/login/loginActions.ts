@@ -13,9 +13,9 @@ function login(username: string, password: string) {
   return (dispatch: any) => {
     dispatch(request({ username: username, password: password }));
 
-    loginClient.login(username, password).then(
-      user => {
-        dispatch(success(user));
+    loginClient.loginForToken(username, password).then(
+      () => {
+        dispatch(success());
         history.push("/");
       },
       (error: Error | string) => {
@@ -31,11 +31,10 @@ function login(username: string, password: string) {
   function request(user: User) {
     return { type: loginConstants.LOGIN_REQUEST, user };
   }
-  function success(user: User) {
-    return { type: loginConstants.LOGIN_SUCCESS, user };
+  function success() {
+    return { type: loginConstants.LOGIN_SUCCESS };
   }
   function failure(error: Error) {
-    console.log("user.actions.failure: " + error);
     return { type: loginConstants.LOGIN_FAILURE, error };
   }
 }
