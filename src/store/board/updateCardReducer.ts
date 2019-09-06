@@ -49,7 +49,7 @@ export function deleteCardBegin(
   const updatedCards = cardsWithoutCard(cards, card);
   return {
     ...state,
-    columns: updatedColumns,
-    cards: updatedCards
+    cards: updatedCards,
+    columns: updatedColumns
   };
 }

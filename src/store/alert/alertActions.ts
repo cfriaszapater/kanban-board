@@ -1,9 +1,9 @@
 import { alertConstants } from "./alertConstants";
 
 export const alertActions = {
-  success,
+  clear,
   error,
-  clear
+  success
 };
 
 function success(message: string) {

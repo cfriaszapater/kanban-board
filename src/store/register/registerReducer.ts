@@ -16,11 +16,11 @@ export interface RegisterState {
 }
 
 export const initialState: RegisterState = {
-  username: "",
   password: "",
   password2: "",
+  registerInProgress: false,
   submitted: false,
-  registerInProgress: false
+  username: ""
 };
 
 export function registerReducer(

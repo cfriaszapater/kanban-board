@@ -37,26 +37,26 @@ import {
 export const initialState: KanbanBoardState = {
   cards: {},
   // XXX columns can be [] in initialState
+  columnOrder: ["column-1", "column-2", "column-3"],
   columns: {
     "column-1": {
+      cardIds: [],
       id: "column-1",
-      title: "To do",
-      cardIds: []
+      title: "To do"
     },
     "column-2": {
+      cardIds: [],
       id: "column-2",
-      title: "In progress",
-      cardIds: []
+      title: "In progress"
     },
     "column-3": {
+      cardIds: [],
       id: "column-3",
-      title: "Done",
-      cardIds: []
+      title: "Done"
     }
   },
-  columnOrder: ["column-1", "column-2", "column-3"],
-  loading: false,
-  error: null
+  error: null,
+  loading: false
 };
 
 export function boardReducer(
@@ -69,8 +69,8 @@ export function boardReducer(
       // Also, reset any errors. We're starting fresh.
       return {
         ...state,
-        loading: true,
-        error: null
+        error: null,
+        loading: true
       };
 
     case FETCH_CARDS_SUCCESS:
@@ -78,10 +78,10 @@ export function boardReducer(
       // Also, replace the items with the ones from the server
       return {
         ...state,
-        loading: false,
         cards: action.payload.cards,
+        columnOrder: action.payload.columnOrder,
         columns: action.payload.columns,
-        columnOrder: action.payload.columnOrder
+        loading: false
       };
 
     case FETCH_CARDS_FAILURE:
@@ -90,11 +90,11 @@ export function boardReducer(
       // Since it failed, we don't have items to display anymore, so set it empty.
       return {
         ...state,
-        loading: false,
-        error: action.error,
         cards: {},
+        columnOrder: [],
         columns: {},
-        columnOrder: []
+        error: action.error,
+        loading: false
       };
 
     case DRAG_CARD_WITHIN_COLUMN_BEGIN:

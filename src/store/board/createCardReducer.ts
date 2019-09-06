@@ -50,8 +50,8 @@ export function createCardFailure(
 ): KanbanBoardState {
   const cardWithErrorSet: CardErrorLoading = {
     ...action.payload,
-    loading: false,
-    error: true
+    error: true,
+    loading: false
   };
   return {
     ...stateWithUpdatedCard(state, cardWithErrorSet),

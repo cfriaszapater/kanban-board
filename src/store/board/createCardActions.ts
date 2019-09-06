@@ -42,23 +42,23 @@ export const createCard = (card: Card) => async (
 
 function createCardBegin(card: Card): CreateCardBeginAction {
   return {
-    type: CREATE_CARD_BEGIN,
-    payload: card
+    payload: card,
+    type: CREATE_CARD_BEGIN
   };
 }
 
 function createCardSuccess(createdCard: CardLoaded): CreateCardSuccessAction {
   return {
-    type: CREATE_CARD_SUCCESS,
-    payload: createdCard
+    payload: createdCard,
+    type: CREATE_CARD_SUCCESS
   };
 }
 
 function createCardFailure(card: Card, error: Error): CreateCardFailureAction {
   console.log(error);
   return {
-    type: CREATE_CARD_FAILURE,
+    error,
     payload: card,
-    error
+    type: CREATE_CARD_FAILURE
   };
 }

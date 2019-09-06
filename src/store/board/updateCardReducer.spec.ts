@@ -18,9 +18,9 @@ describe("card update (editing) reducer", () => {
     );
 
     const resultState: KanbanBoardState = boardReducer(previousState, {
-      type: BEGIN_TASK_EDITING,
       card: previousCard,
-      editing: true
+      editing: true,
+      type: BEGIN_TASK_EDITING
     });
 
     expect(resultState).toEqual({
@@ -34,9 +34,9 @@ describe("card update (editing) reducer", () => {
 
   it("should update card with new content on CHANGE_TASK_EDITING", () => {
     const previousCard: Card = {
-      id: "card-1234",
       content: "An easy card",
-      editing: true
+      editing: true,
+      id: "card-1234"
     };
     const previousState: KanbanBoardState = stateAfterOneCreate(
       initialState,
@@ -45,9 +45,9 @@ describe("card update (editing) reducer", () => {
 
     const newContent = "condemor!";
     const resultState: KanbanBoardState = boardReducer(previousState, {
-      type: CHANGE_TASK_EDITING,
       card: previousCard,
-      newContent
+      newContent,
+      type: CHANGE_TASK_EDITING
     });
 
     expect(resultState).toEqual({
@@ -77,8 +77,8 @@ describe("card update (editing) reducer", () => {
       editing: false
     };
     const resultState: KanbanBoardState = boardReducer(previousState, {
-      type: UPDATE_CARD_BEGIN,
-      card: cardWithUpdatedContent
+      card: cardWithUpdatedContent,
+      type: UPDATE_CARD_BEGIN
     });
 
     expect(resultState).toEqual({
@@ -97,14 +97,14 @@ describe("card update (editing) reducer", () => {
   it("given column with cards, when BEGIN delete, then deleted card and removed from column", () => {
     const column1: Column = givenColumnWithCards("be-col-1", "col-1");
     const card1: Card = {
-      id: "card-1",
       _id: "grmblf-1",
-      content: "I fear being deleted"
+      content: "I fear being deleted",
+      id: "card-1"
     };
     const card2: Card = {
-      id: "card-2",
       _id: "grmblf-2",
-      content: "I fear being deleted 2"
+      content: "I fear being deleted 2",
+      id: "card-2"
     };
     const column2: Column = givenColumnWithCards(
       "be-col-2",
@@ -118,34 +118,34 @@ describe("card update (editing) reducer", () => {
       "card-42"
     );
     const givenState: KanbanBoardState = {
-      columns: {
-        [column1.id]: column1,
-        [column2.id]: column2,
-        [column3.id]: column3
-      },
       cards: {
         [card1.id]: card1,
         [card2.id]: card2,
         ["card-42"]: { id: "card-42", content: "jarl" }
       },
       columnOrder: [column2.id, column2.id],
-      loading: false,
-      error: null
+      columns: {
+        [column1.id]: column1,
+        [column2.id]: column2,
+        [column3.id]: column3
+      },
+      error: null,
+      loading: false
     };
 
     const resultState: KanbanBoardState = boardReducer(givenState, {
-      type: DELETE_CARD_BEGIN,
-      card: card1
+      card: card1,
+      type: DELETE_CARD_BEGIN
     });
 
     const column2WithoutCard2 = { ...column2, cardIds: [card2.id] };
     expect(resultState).toEqual({
       ...givenState,
-      columns: { ...givenState.columns, [column2.id]: column2WithoutCard2 },
       cards: {
         [card2.id]: card2,
         ["card-42"]: { id: "card-42", content: "jarl" }
-      }
+      },
+      columns: { ...givenState.columns, [column2.id]: column2WithoutCard2 }
     });
   });
 });

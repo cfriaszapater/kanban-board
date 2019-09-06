@@ -2,8 +2,8 @@ import { authBearerToken } from "../util/authBearerToken";
 
 export async function get(url: string): Promise<any> {
   const req = new Request(url, {
-    method: "GET",
-    headers: headers()
+    headers: headers(),
+    method: "GET"
   });
   const res = await fetch(req);
   if (!res.ok) {
@@ -14,9 +14,9 @@ export async function get(url: string): Promise<any> {
 
 export async function post(url: string, body: any): Promise<any> {
   const req = new Request(url, {
-    method: "POST",
+    body: JSON.stringify(body),
     headers: headers(),
-    body: JSON.stringify(body)
+    method: "POST"
   });
   const res = await fetch(req);
   if (!res.ok) {
@@ -27,9 +27,9 @@ export async function post(url: string, body: any): Promise<any> {
 
 export async function put(url: string, body: any): Promise<Response> {
   const req = new Request(url, {
-    method: "PUT",
+    body: JSON.stringify(body),
     headers: headers(),
-    body: JSON.stringify(body)
+    method: "PUT"
   });
   const res = await fetch(req);
   if (!res.ok) {
@@ -40,8 +40,8 @@ export async function put(url: string, body: any): Promise<Response> {
 
 export async function del(url: string): Promise<Response> {
   const req = new Request(url, {
-    method: "DELETE",
-    headers: headers()
+    headers: headers(),
+    method: "DELETE"
   });
   const res = await fetch(req);
   if (!res.ok) {
@@ -51,14 +51,14 @@ export async function del(url: string): Promise<Response> {
 }
 
 function headers(): Headers {
-  let headers = new Headers();
-  headers.append("Accept", "application/json");
-  headers.append("Content-Type", "application/json");
+  const result = new Headers();
+  result.append("Accept", "application/json");
+  result.append("Content-Type", "application/json");
   const bearerToken = authBearerToken();
   if (bearerToken != null) {
-    headers.append("Authorization", bearerToken);
+    result.append("Authorization", bearerToken);
   }
-  return headers;
+  return result;
 }
 
 async function errorMessage(res: Response) {

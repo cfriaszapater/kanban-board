@@ -49,8 +49,8 @@ describe("drag card actions", () => {
         };
         const expectedActions: CardsActionsTypes[] = [
           {
-            type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
-            column: expectedColumnWithSwappedCardIds
+            column: expectedColumnWithSwappedCardIds,
+            type: DRAG_CARD_WITHIN_COLUMN_BEGIN
           }
         ];
         expect(store.getActions()).toEqual(expectedActions);
@@ -89,8 +89,8 @@ describe("drag card actions", () => {
         };
         const expectedActions: CardsActionsTypes[] = [
           {
-            type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
-            column: expectedColumnWithSwappedCardIds
+            column: expectedColumnWithSwappedCardIds,
+            type: DRAG_CARD_WITHIN_COLUMN_BEGIN
           },
           { type: DRAG_CARD_FAILURE, error }
         ];
@@ -139,9 +139,9 @@ describe("drag card actions", () => {
         };
         const expectedActions: CardsActionsTypes[] = [
           {
-            type: DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
+            endColumn: expectedEndColumnWithDraggedCard,
             startColumn: expectedStartColumnWithoutDraggedCard,
-            endColumn: expectedEndColumnWithDraggedCard
+            type: DRAG_CARD_BETWEEN_COLUMNS_BEGIN
           }
         ];
         expect(store.getActions()).toEqual(expectedActions);

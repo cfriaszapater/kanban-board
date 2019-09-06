@@ -42,8 +42,7 @@ export function columnContainingCard(
 ): Column {
   const columnKeys = Object.keys(columns);
 
-  for (let i = 0; i < columnKeys.length; i++) {
-    const columnId = columnKeys[i];
+  for (const columnId of columnKeys) {
     if (columns[columnId].cardIds.includes(card.id)) {
       return columns[columnId];
     }

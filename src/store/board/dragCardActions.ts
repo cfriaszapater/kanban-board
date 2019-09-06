@@ -52,16 +52,16 @@ function dragCardWithinColumnBegin(
   updatedColumn: Column
 ): DragCardWithinColumnBeginAction {
   return {
-    type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
-    column: updatedColumn
+    column: updatedColumn,
+    type: DRAG_CARD_WITHIN_COLUMN_BEGIN
   };
 }
 
 function dragCardWithinColumnFailure(error: Error): DragCardFailureAction {
   console.log(error);
   return {
-    type: DRAG_CARD_FAILURE,
-    error
+    error,
+    type: DRAG_CARD_FAILURE
   };
 }
 
@@ -105,8 +105,8 @@ function dragCardBetweenColumnsBegin(
   endCol: Column
 ): DragCardBetweenColumnsBeginAction {
   return {
-    type: DRAG_CARD_BETWEEN_COLUMNS_BEGIN,
+    endColumn: endCol,
     startColumn: startCol,
-    endColumn: endCol
+    type: DRAG_CARD_BETWEEN_COLUMNS_BEGIN
   };
 }

@@ -23,8 +23,8 @@ describe("drag card reducer", () => {
       cardIds: [card2.id, card1.id]
     };
     const action: DragCardWithinColumnBeginAction = {
-      type: DRAG_CARD_WITHIN_COLUMN_BEGIN,
-      column: columnWithSwappedCardIds
+      column: columnWithSwappedCardIds,
+      type: DRAG_CARD_WITHIN_COLUMN_BEGIN
     };
     const resultState = boardReducer(initialState, action);
 

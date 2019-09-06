@@ -49,9 +49,9 @@ export interface DeleteCardBeginAction {
 
 export function beginCardEditing(card: Card): BeginCardEditingAction {
   return {
-    type: BEGIN_TASK_EDITING,
     card,
-    editing: true
+    editing: true,
+    type: BEGIN_TASK_EDITING
   };
 }
 
@@ -60,9 +60,9 @@ export function changeCardEditing(
   newContent: string
 ): ChangeCardEditingAction {
   return {
-    type: CHANGE_TASK_EDITING,
     card,
-    newContent
+    newContent,
+    type: CHANGE_TASK_EDITING
   };
 }
 
@@ -77,8 +77,8 @@ export function updateCardBegin(
   };
 
   return {
-    type: UPDATE_CARD_BEGIN,
-    card: cardWithUpdatedContent
+    card: cardWithUpdatedContent,
+    type: UPDATE_CARD_BEGIN
   };
 }
 
@@ -106,16 +106,16 @@ export const updateCard = (card: Card, newContent: string) => async (
 
 function updateCardSuccess(card: Card): UpdateCardSuccessAction {
   return {
-    type: UPDATE_CARD_SUCCESS,
-    card
+    card,
+    type: UPDATE_CARD_SUCCESS
   };
 }
 
 function updateCardFailure(card: Card, error: Error): UpdateCardFailureAction {
   console.log(error);
   return {
-    type: UPDATE_CARD_FAILURE,
-    card
+    card,
+    type: UPDATE_CARD_FAILURE
   };
 }
 
@@ -136,7 +136,7 @@ export const deleteCard = (card: Card) => async (
 
 export function deleteCardBegin(card: Card): DeleteCardBeginAction {
   return {
-    type: DELETE_CARD_BEGIN,
-    card
+    card,
+    type: DELETE_CARD_BEGIN
   };
 }

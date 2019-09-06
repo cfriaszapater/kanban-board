@@ -47,8 +47,8 @@ async function getBoard(): Promise<Board> {
   });
   return {
     cards: cardMap,
-    columns: columnMap,
-    columnOrder: Object.keys(columnMap)
+    columnOrder: Object.keys(columnMap),
+    columns: columnMap
   };
 }
 
@@ -65,11 +65,11 @@ export const fetchCardsBegin = (): FetchCardsBeginAction => ({
 });
 
 export const fetchCardsSuccess = (cards: Board): FetchCardsSuccessAction => ({
-  type: FETCH_CARDS_SUCCESS,
-  payload: cards
+  payload: cards,
+  type: FETCH_CARDS_SUCCESS
 });
 
 export const fetchCardsFailure = (error: Error): FetchCardsFailureAction => ({
-  type: FETCH_CARDS_FAILURE,
-  error
+  error,
+  type: FETCH_CARDS_FAILURE
 });

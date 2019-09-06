@@ -8,10 +8,10 @@ import { loginReducer as login } from "./login/loginReducer";
 import { registerReducer as register } from "./register/registerReducer";
 
 const rootReducer = combineReducers({
+  alert,
   board,
   login,
-  register,
-  alert
+  register
 });
 
 const loggerMiddleware = createLogger();
