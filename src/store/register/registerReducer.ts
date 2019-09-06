@@ -33,7 +33,10 @@ export function registerReducer(
         submitted: true
       };
     case CREATE_USER_SUCCESS:
-      return {};
+      return {
+        ...state,
+        registerInProgress: false
+      };
     case CREATE_USER_FAILURE:
       return {};
     case CHANGE_REGISTER_EDITING:
