@@ -1,7 +1,7 @@
 import { backendUrl } from "../../../util/backendUrl";
 import {
-  storeTokenInLocalStorage,
-  removeTokenFromLocalStorage
+  removeTokenFromLocalStorage,
+  storeTokenInLocalStorage
 } from "../../../util/tokenInLocalStorage";
 
 export const loginClient = {
@@ -14,9 +14,9 @@ async function loginForToken(
   password: string
 ): Promise<string> {
   const requestOptions = {
-    method: "POST",
+    body: JSON.stringify({ username, password }),
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
+    method: "POST"
   };
 
   const response = await fetch(`${backendUrl()}/users/token`, requestOptions);
@@ -32,7 +32,7 @@ function logout() {
 }
 
 async function handleResponse(response: Response): Promise<string> {
-  let text = await response.text();
+  const text = await response.text();
   if (!response.ok) {
     if (response.status === 401) {
       // auto logout if 401 response returned from api

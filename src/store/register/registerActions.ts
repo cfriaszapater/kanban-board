@@ -1,11 +1,11 @@
 import { ThunkDispatch } from "redux-thunk";
-import { alertActions } from "../alert/alertActions";
-import { history } from "../../util/history";
-import { User } from "../login/types";
-import { post } from "../../util/fetchJson";
 import { backendUrl } from "../../util/backendUrl";
+import { post } from "../../util/fetchJson";
+import { history } from "../../util/history";
+import { alertActions } from "../alert/alertActions";
 import { Column } from "../board/types";
 import { loginClient } from "../login/client/login";
+import { User } from "../login/types";
 
 export const createUser = (
   username?: string,
@@ -17,7 +17,7 @@ export const createUser = (
     return;
   }
 
-  const user = { username: username, password: password };
+  const user = { username, password };
   dispatch(request(user));
 
   try {
@@ -30,14 +30,13 @@ export const createUser = (
     dispatch(failure(err));
   }
 
-  function request(user: User) {
-    return { type: CREATE_USER_BEGIN, user };
+  function request(requestedUser: User) {
+    return { type: CREATE_USER_BEGIN, requestedUser };
   }
-  function success(user: User) {
-    return { type: CREATE_USER_SUCCESS, user };
+  function success(createdUser: User) {
+    return { type: CREATE_USER_SUCCESS, user: createdUser };
   }
   function failure(error: Error) {
-    console.log(error);
     return { type: CREATE_USER_FAILURE, error };
   }
 };
@@ -75,10 +74,10 @@ export function changeRegisterEditing(userData: {
   password2?: string;
 }): ChangeRegisterEditingAction {
   return {
-    type: CHANGE_REGISTER_EDITING,
-    username: userData.username,
     password: userData.password,
-    password2: userData.password2
+    password2: userData.password2,
+    type: CHANGE_REGISTER_EDITING,
+    username: userData.username
   };
 }
 
