@@ -48,6 +48,13 @@ Config:
 heroku config
 ```
 
+## Known issues
+
+This project was built to practice with typescript, react, node... Maybe sometime in the future these may be improved:
+
+- Lack of UX design / styling.
+- Create your own columns: not difficult.
+
 ## License
 
 See [LICENSE](./LICENSE).
