@@ -1,4 +1,5 @@
 import { backendUrl } from "../../../util/backendUrl";
+import { errorMessage } from "../../../util/fetchJson";
 import {
   removeTokenFromLocalStorage,
   storeTokenInLocalStorage
@@ -32,7 +33,6 @@ function logout() {
 }
 
 async function handleResponse(response: Response): Promise<string> {
-  const text = await response.text();
   if (!response.ok) {
     if (response.status === 401) {
       // auto logout if 401 response returned from api
@@ -40,10 +40,10 @@ async function handleResponse(response: Response): Promise<string> {
       // eslint-disable-next-line no-restricted-globals
       location.reload(true);
     }
-    const data: any = text && JSON.parse(text);
-    const error: string = (data && data.message) || response.statusText;
+    const error: string = await errorMessage(response);
     return Promise.reject(error);
   }
+  const text = await response.text();
   const token = JSON.parse(text);
   return Promise.resolve(token);
 }

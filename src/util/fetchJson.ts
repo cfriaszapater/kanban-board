@@ -61,9 +61,9 @@ function headers(): Headers {
   return result;
 }
 
-async function errorMessage(res: Response) {
-  const errorMsg = "Fetch response KO - " + res.status + " " + res.statusText;
+export async function errorMessage(res: Response) {
   const body = await res.text();
-  console.log(errorMsg + " - " + body);
+  const data: any = body && JSON.parse(body);
+  const errorMsg: string = (data && data.message) || res.statusText;
   return errorMsg;
 }

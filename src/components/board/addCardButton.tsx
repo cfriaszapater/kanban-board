@@ -7,7 +7,7 @@ import { Card } from "../../store/board/types";
 export class AddCardButton extends React.Component<AddCardButtonProps> {
   public onClick = () => {
     const card: Card = {
-      content: "Click here to edit this card",
+      content: "Click to edit this card",
       id: uuid()
     };
     this.props.dispatch(createCard(card));

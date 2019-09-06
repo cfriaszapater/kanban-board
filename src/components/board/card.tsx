@@ -45,6 +45,7 @@ export class CardView extends React.Component<CardProps> {
         "not beginning editing because this card's create has not yet finished",
         this.props.card
       );
+      return;
     }
     this.props.dispatch(beginCardEditing(this.props.card));
   };
@@ -82,6 +83,11 @@ export class CardView extends React.Component<CardProps> {
                 disabled={!this.props.card.editing} // use true to disable edition
                 onBlur={this.handleBlur}
                 onChange={this.handleChange}
+                style={
+                  this.props.card.editing
+                    ? { cursor: "text" }
+                    : { cursor: "inherit" }
+                }
               />
             </ContainerDiv>
           );
