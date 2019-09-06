@@ -36,7 +36,7 @@ export function registerReducer(
     case CREATE_USER_FAILURE:
       return {};
     case CHANGE_REGISTER_EDITING:
-      if (action.username) {
+      if (typeof action.username !== "undefined") {
         return {
           ...state,
           username: action.username
