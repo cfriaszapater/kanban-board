@@ -21,7 +21,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
     this.props.changeRegisterEditing({ password: value });
   };
 
-  handleSubmit = (e: { preventDefault: () => void }) => {
+  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { username, password } = this.props;
@@ -75,7 +75,24 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
                       <div className="help-block">Password is required</div>
                     )}
                   </div>
-                  {/* TODO password2 field */}
+                  {/* <div
+                    className={
+                      "form-group" +
+                      (submitted && !password ? " has-error" : "")
+                    }
+                  >
+                    <label htmlFor="password">Repeat password</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="password2"
+                      value={password2}
+                      onChange={this.handleChangePassword2}
+                    />
+                    {submitted && !password && (
+                      <div className="help-block">Password is required</div>
+                    )}
+                  </div> */}
                   <div className="form-group">
                     <button className="btn btn-primary">Register</button>
                     {registerInProgress && (
@@ -96,10 +113,10 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
 }
 
 interface RegisterProps {
-  registerInProgress?: boolean;
-  submitted?: boolean;
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
+  submitted: boolean;
+  registerInProgress: boolean;
   changeRegisterEditing: typeof changeRegisterEditing;
   // XXX ActionCreator<CreateUserThunk>?
   createUser: (username?: string, password?: string) => Promise<void>;

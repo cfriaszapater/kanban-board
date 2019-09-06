@@ -8,17 +8,17 @@ import {
 } from "./registerActions";
 
 export interface RegisterState {
-  registerInProgress?: boolean;
-  submitted?: boolean;
-  // XXX Set directly by registerPage for now:
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
+  submitted: boolean;
+  registerInProgress: boolean;
 }
 
-const initialState = {
+export const initialState: RegisterState = {
   username: "",
   password: "",
-  submitted: false
+  submitted: false,
+  registerInProgress: false
 };
 
 export function registerReducer(
@@ -38,18 +38,23 @@ export function registerReducer(
         registerInProgress: false
       };
     case CREATE_USER_FAILURE:
-      return {};
+      return {
+        ...state,
+        registerInProgress: false
+      };
     case CHANGE_REGISTER_EDITING:
-      if (typeof action.username !== "undefined") {
+      if (action.username !== undefined) {
         return {
           ...state,
           username: action.username
         };
-      } else {
+      } else if (action.password !== undefined) {
         return {
           ...state,
           password: action.password
         };
+      } else {
+        throw Error("Unexpected: both username and password are undefined");
       }
     case REGISTER_SUBMIT_VALIDATION_FAILED:
       return {
