@@ -1,19 +1,19 @@
 import React from "react";
-import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
-import { ColumnView } from "./column";
+import styled from "styled-components";
+import {
+  dragCardBetweenColumns,
+  dragCardWithinColumn
+} from "../../store/board/dragCardActions";
 import { fetchBoard } from "../../store/board/fetchBoardActions";
 import {
-  dragCardWithinColumn,
-  dragCardBetweenColumns
-} from "../../store/board/dragCardActions";
-import {
-  NameToColumnMap,
+  KanbanBoardState,
   NameToCardMap,
-  KanbanBoardState
+  NameToColumnMap
 } from "../../store/board/types";
-import { Link } from "react-router-dom";
+import { ColumnView } from "./column";
 
 interface KanbanBoardProps {
   cards: NameToCardMap;
@@ -32,11 +32,11 @@ export default class KanbanBoard extends React.Component<
   KanbanBoardProps,
   KanbanBoardState
 > {
-  componentDidMount() {
+  public componentDidMount() {
     this.props.dispatch(fetchBoard());
   }
 
-  onDragEnd = (result: DropResult) => {
+  public onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -71,7 +71,7 @@ export default class KanbanBoard extends React.Component<
     }
   };
 
-  render() {
+  public render() {
     const { error, loading } = this.props;
 
     if (loading) {

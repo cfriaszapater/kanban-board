@@ -1,15 +1,15 @@
 import React from "react";
-import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
+import { ThunkDispatch } from "redux-thunk";
+import styled from "styled-components";
 import { Card } from "../../store/board/types";
 import {
   beginCardEditing,
   changeCardEditing,
-  updateCard,
-  deleteCard
+  deleteCard,
+  updateCard
 } from "../../store/board/updateCardActions";
-import { ThunkDispatch } from "redux-thunk";
-import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 interface CardProps {
   key: string;
@@ -39,7 +39,7 @@ const DeleteButton = styled.a`
 `;
 
 export class CardView extends React.Component<CardProps> {
-  handleClick = () => {
+  public handleClick = () => {
     if (this.cardCreateDidNotSuccessYet()) {
       console.log(
         "not beginning editing because this card's create has not yet finished",
@@ -49,23 +49,19 @@ export class CardView extends React.Component<CardProps> {
     this.props.dispatch(beginCardEditing(this.props.card));
   };
 
-  handleChange = (event: ContentEditableEvent) => {
+  public handleChange = (event: ContentEditableEvent) => {
     this.props.dispatch(changeCardEditing(this.props.card, event.target.value));
   };
 
-  handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
+  public handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
     this.props.dispatch(updateCard(this.props.card, event.target.innerHTML));
   };
 
-  handleClickDelete = () => {
+  public handleClickDelete = () => {
     this.props.dispatch(deleteCard(this.props.card));
   };
 
-  private cardCreateDidNotSuccessYet() {
-    return typeof this.props.card._id === "undefined";
-  }
-
-  render() {
+  public render() {
     return (
       <Draggable draggableId={this.props.card.id} index={this.props.index}>
         {(provided, snapshot) => {
@@ -92,5 +88,9 @@ export class CardView extends React.Component<CardProps> {
         }}
       </Draggable>
     );
+  }
+
+  private cardCreateDidNotSuccessYet() {
+    return typeof this.props.card._id === "undefined";
   }
 }

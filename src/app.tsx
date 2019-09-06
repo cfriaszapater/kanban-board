@@ -1,16 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import KanbanBoard from "./components/board/kanbanBoard";
-import { history } from "./util/history";
-import { alertActions } from "./store/alert/alertActions";
-import { PrivateRoute } from "./components/privateRoute";
-import { LoginPage } from "./components/login/loginPage";
-import { RegisterPage } from "./components/register/registerPage";
-import { Router, Route } from "react-router-dom";
+import { Route, Router } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
+import KanbanBoard from "./components/board/kanbanBoard";
+import { LoginPage } from "./components/login/loginPage";
+import { PrivateRoute } from "./components/privateRoute";
+import { RegisterPage } from "./components/register/registerPage";
 import { AppState } from "./store";
-import { NameToColumnMap, NameToCardMap } from "./store/board/types";
+import { alertActions } from "./store/alert/alertActions";
 import { Alert } from "./store/alert/types";
+import { NameToCardMap, NameToColumnMap } from "./store/board/types";
+import { history } from "./util/history";
 
 class App extends React.Component<AppProps> {
   constructor(props: AppProps) {
@@ -22,9 +22,8 @@ class App extends React.Component<AppProps> {
     });
   }
 
-  render() {
+  public render() {
     const { alert } = this.props;
-    console.log(JSON.stringify(alert));
     return (
       <div className="App">
         {alert.message && (
@@ -63,12 +62,12 @@ interface AppProps {
 }
 
 const mapStateToProps = (state: AppState) => ({
+  alert: state.alert,
+  cards: state.board.cards,
   columnOrder: state.board.columnOrder,
   columns: state.board.columns,
-  cards: state.board.cards,
-  loading: state.board.loading,
   error: state.board.error,
-  alert: state.alert
+  loading: state.board.loading
 });
 
 export default connect(mapStateToProps)(App);

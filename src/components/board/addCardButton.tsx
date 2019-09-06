@@ -1,19 +1,19 @@
 import React from "react";
+import { ThunkDispatch } from "redux-thunk";
 import uuid from "uuid/v1";
 import { createCard } from "../../store/board/createCardActions";
 import { Card } from "../../store/board/types";
-import { ThunkDispatch } from "redux-thunk";
 
 export class AddCardButton extends React.Component<AddCardButtonProps> {
-  onClick = () => {
-    let card: Card = {
-      id: uuid(),
-      content: "Click here to edit this card"
+  public onClick = () => {
+    const card: Card = {
+      content: "Click here to edit this card",
+      id: uuid()
     };
     this.props.dispatch(createCard(card));
   };
 
-  render() {
+  public render() {
     return (
       <button name="addCard" type="button" onClick={this.onClick}>
         +

@@ -1,22 +1,22 @@
 import React from "react";
+import { ContentEditableEvent } from "react-contenteditable";
 import { connect } from "react-redux";
+import { AppState } from "../../store";
 import {
-  createUser,
   changeRegisterEditing,
+  createUser,
   validPwd
 } from "../../store/register/registerActions";
 import { RegisterState } from "../../store/register/registerReducer";
-import { AppState } from "../../store";
-import { ContentEditableEvent } from "react-contenteditable";
 
 class RegisterPage extends React.Component<RegisterProps, RegisterState> {
-  handleChange = (event: ContentEditableEvent) => {
+  public handleChange = (event: ContentEditableEvent) => {
     const { value, name } = event.target as HTMLInputElement;
     console.log("handleChange", name, value);
     this.props.changeRegisterEditing({ [name]: value });
   };
 
-  handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  public handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { username, password, password2 } = this.props;
@@ -24,7 +24,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
     this.props.createUser(username, password, password2);
   };
 
-  render() {
+  public render() {
     const {
       registerInProgress,
       username,
@@ -151,11 +151,11 @@ function mapStateToProps(state: AppState): RegisterStateProps {
     submitted
   } = state.register;
   return {
-    registerInProgress,
-    username,
     password,
     password2,
-    submitted
+    registerInProgress,
+    submitted,
+    username
   };
 }
 

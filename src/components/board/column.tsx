@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
-import { CardView } from "./card";
-import { AddCardButton } from "./addCardButton";
-import { Column, Card } from "../../store/board/types";
 import { ThunkDispatch } from "redux-thunk";
+import styled from "styled-components";
+import { Card, Column } from "../../store/board/types";
+import { AddCardButton } from "./addCardButton";
+import { InnerList } from "./innerList";
 
 interface ColumnProps {
   key: string;
@@ -19,7 +19,7 @@ interface CardListProps {
   dispatch: ThunkDispatch<{}, {}, any>;
 }
 
-interface InnerListProps {
+export interface InnerListProps {
   cards: Card[];
   dispatch: ThunkDispatch<{}, {}, any>;
 }
@@ -45,22 +45,8 @@ const CardList = styled.div<CardListProps>`
   min-height: 100px;
 `;
 
-class InnerList extends React.PureComponent<InnerListProps> {
-  render() {
-    return this.props.cards.map((card, index) => (
-      <CardView
-        key={card.id}
-        card={card}
-        index={index}
-        // XXX passing dispatch not needed
-        dispatch={this.props.dispatch}
-      />
-    ));
-  }
-}
-
 export class ColumnView extends React.Component<ColumnProps> {
-  render() {
+  public render() {
     return (
       <Container>
         <Title>{this.props.column.title}</Title>
