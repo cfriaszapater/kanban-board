@@ -10,6 +10,7 @@ import {
 export interface RegisterState {
   username: string;
   password: string;
+  password2: string;
   submitted: boolean;
   registerInProgress: boolean;
 }
@@ -17,6 +18,7 @@ export interface RegisterState {
 export const initialState: RegisterState = {
   username: "",
   password: "",
+  password2: "",
   submitted: false,
   registerInProgress: false
 };
@@ -53,8 +55,15 @@ export function registerReducer(
           ...state,
           password: action.password
         };
+      } else if (action.password2 !== undefined) {
+        return {
+          ...state,
+          password2: action.password2
+        };
       } else {
-        throw Error("Unexpected: both username and password are undefined");
+        throw Error(
+          "Unexpected: all username, password and password2 are undefined"
+        );
       }
     case REGISTER_SUBMIT_VALIDATION_FAILED:
       return {

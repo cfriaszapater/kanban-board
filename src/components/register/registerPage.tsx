@@ -2,35 +2,36 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   createUser,
-  changeRegisterEditing
+  changeRegisterEditing,
+  validPwd
 } from "../../store/register/registerActions";
 import { RegisterState } from "../../store/register/registerReducer";
 import { AppState } from "../../store";
 import { ContentEditableEvent } from "react-contenteditable";
 
 class RegisterPage extends React.Component<RegisterProps, RegisterState> {
-  handleChangeUsername = (event: ContentEditableEvent) => {
-    const { value } = event.target;
-    console.log("handleChangeUsername", value);
-    this.props.changeRegisterEditing({ username: value });
-  };
-
-  handleChangePassword = (event: ContentEditableEvent) => {
-    const { value } = event.target;
-    console.log("handleChangePassword", value);
-    this.props.changeRegisterEditing({ password: value });
+  handleChange = (event: ContentEditableEvent) => {
+    const { value, name } = event.target as HTMLInputElement;
+    console.log("handleChange", name, value);
+    this.props.changeRegisterEditing({ [name]: value });
   };
 
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { username, password } = this.props;
-    console.log("handleSubmit", username, password);
-    this.props.createUser(username, password);
+    const { username, password, password2 } = this.props;
+    console.log("handleSubmit", username, password, password2);
+    this.props.createUser(username, password, password2);
   };
 
   render() {
-    const { registerInProgress, username, password, submitted } = this.props;
+    const {
+      registerInProgress,
+      username,
+      password,
+      password2,
+      submitted
+    } = this.props;
     return (
       <div className="jumbotron">
         <div className="container">
@@ -51,7 +52,7 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
                       className="form-control"
                       name="username"
                       value={username}
-                      onChange={this.handleChangeUsername}
+                      onChange={this.handleChange}
                     />
                     {submitted && !username && (
                       <div className="help-block">Username is required</div>
@@ -69,16 +70,18 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
                       className="form-control"
                       name="password"
                       value={password}
-                      onChange={this.handleChangePassword}
+                      onChange={this.handleChange}
                     />
                     {submitted && !password && (
                       <div className="help-block">Password is required</div>
                     )}
                   </div>
-                  {/* <div
+                  <div
                     className={
                       "form-group" +
-                      (submitted && !password ? " has-error" : "")
+                      (submitted && !validPwd(password, password2)
+                        ? " has-error"
+                        : "")
                     }
                   >
                     <label htmlFor="password">Repeat password</label>
@@ -87,12 +90,19 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
                       className="form-control"
                       name="password2"
                       value={password2}
-                      onChange={this.handleChangePassword2}
+                      onChange={this.handleChange}
                     />
-                    {submitted && !password && (
-                      <div className="help-block">Password is required</div>
+                    {submitted && !password2 && (
+                      <div className="help-block">
+                        Repeated password is required
+                      </div>
                     )}
-                  </div> */}
+                    {submitted &&
+                      password2 &&
+                      !validPwd(password, password2) && (
+                        <div className="help-block">Passwords should match</div>
+                      )}
+                  </div>
                   <div className="form-group">
                     <button className="btn btn-primary">Register</button>
                     {registerInProgress && (
@@ -112,22 +122,39 @@ class RegisterPage extends React.Component<RegisterProps, RegisterState> {
   }
 }
 
-interface RegisterProps {
+interface RegisterStateProps {
   username: string;
   password: string;
+  password2: string;
   submitted: boolean;
   registerInProgress: boolean;
-  changeRegisterEditing: typeof changeRegisterEditing;
-  // XXX ActionCreator<CreateUserThunk>?
-  createUser: (username?: string, password?: string) => Promise<void>;
 }
 
-function mapStateToProps(state: AppState) {
-  const { registerInProgress, username, password, submitted } = state.register;
+interface RegisterDispatchProps {
+  changeRegisterEditing: typeof changeRegisterEditing;
+  // XXX ActionCreator<CreateUserThunk>?
+  createUser: (
+    username?: string,
+    password?: string,
+    password2?: string
+  ) => Promise<void>;
+}
+
+interface RegisterProps extends RegisterStateProps, RegisterDispatchProps {}
+
+function mapStateToProps(state: AppState): RegisterStateProps {
+  const {
+    registerInProgress,
+    username,
+    password,
+    password2,
+    submitted
+  } = state.register;
   return {
     registerInProgress,
     username,
     password,
+    password2,
     submitted
   };
 }

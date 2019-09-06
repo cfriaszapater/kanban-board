@@ -7,10 +7,12 @@ import { backendUrl } from "../../util/backendUrl";
 import { Column } from "../board/types";
 import { loginClient } from "../login/client/login";
 
-export const createUser = (username?: string, password?: string) => async (
-  dispatch: ThunkDispatch<{}, {}, any>
-): Promise<void> => {
-  if (!username || !password) {
+export const createUser = (
+  username?: string,
+  password?: string,
+  password2?: string
+) => async (dispatch: ThunkDispatch<{}, {}, any>): Promise<void> => {
+  if (!username || !password || !validPwd(password, password2)) {
     dispatch({ type: REGISTER_SUBMIT_VALIDATION_FAILED });
     return;
   }
@@ -70,12 +72,18 @@ async function postColumns() {
 export function changeRegisterEditing(userData: {
   username?: string;
   password?: string;
+  password2?: string;
 }): ChangeRegisterEditingAction {
   return {
     type: CHANGE_REGISTER_EDITING,
     username: userData.username,
-    password: userData.password
+    password: userData.password,
+    password2: userData.password2
   };
+}
+
+export function validPwd(password?: string, password2?: string) {
+  return password && password2 && password === password2;
 }
 
 export const CREATE_USER_BEGIN = "CREATE_USER_BEGIN";
@@ -111,6 +119,7 @@ export interface ChangeRegisterEditingAction {
   type: typeof CHANGE_REGISTER_EDITING;
   username?: string;
   password?: string;
+  password2?: string;
 }
 
 export interface RegisterSubmitValidationFailed {
