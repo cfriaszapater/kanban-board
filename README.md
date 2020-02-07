@@ -28,6 +28,20 @@ npm test
 npm start
 ```
 
+#### Configuration - Backend URL
+
+Locally:
+
+```sh
+export REACT_APP_BACKEND_URL='https://bs-kanban-board-backend.herokuapp.com'
+```
+
+In heroku:
+
+```sh
+heroku config:set REACT_APP_BACKEND_URL='https://bs-kanban-board-backend.herokuapp.com'
+```
+
 ### Deploy to production
 
 This is what I used to deploy to production (having an heroku account and git heroku remote set to point to it):
